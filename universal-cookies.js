@@ -25,10 +25,12 @@ async function loadScript(url) {
 window.addEventListener('load', async function () {
   // Load another JavaScript file
   try {
+    debugger;
     // await loadScript('./dist/uc.js');
     await loadScript(
       'https://sr-promise-prod.s3.ap-south-1.amazonaws.com/sr-promise/static/uc.js',
     );
+    debugger;
     console.log('uc.js has been loaded and executed');
     if (window.SHIPROCKET_ANALYTICS) {
       window.SHIPROCKET_ANALYTICS.initialize();
