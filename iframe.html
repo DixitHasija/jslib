@@ -1,0 +1,68 @@
+Universal Cookies
+<!-- <button onclick="sendData()">Send Data</button> -->
+<script type="module">
+  import * as CONSTANTS from './src/constants.js';
+  window.addEventListener('message', function (event) {
+    // Ensure the message is from the expected origin (if known)
+    if (event.origin !== window.location.origin) {
+      // return;
+      console.log('Origin is different in iframe');
+    }
+    // Access the data received from the parent
+    switch (event?.data?.name) {
+      case CONSTANTS.MESSAGE_EVENT_LIST.GET_USER_PROFILE_FROM_IFRAME: {
+        console.log(getUserProfile(), 'event?.data');
+        break;
+      }
+
+      case CONSTANTS.MESSAGE_EVENT_LIST.SEND_USER_PROFILE_TO_PARENT: {
+        console.log(event?.data, 'event?.data');
+        break;
+      }
+      case CONSTANTS.MESSAGE_EVENT_LIST.SET_USER_PROFILE_TO_IFRAME: {
+        setData(event?.data?.data);
+        break;
+      }
+      default: {
+        console.log('Default print');
+      }
+    }
+  });
+
+  let getUserProfile = () => {
+    let userProfile = {};
+    if (self?.localStorage && self?.localStorage[CONSTANTS.LOCALSTORAGE_KEY]) {
+      userProfile = JSON.parse(self?.localStorage[CONSTANTS.LOCALSTORAGE_KEY]);
+    }
+    postMessageMethod(
+      CONSTANTS.MESSAGE_EVENT_LIST.SEND_USER_PROFILE_TO_PARENT,
+      userProfile,
+    );
+  };
+
+  let setData = (data) => {
+    if (self?.localStorage && self?.localStorage[CONSTANTS.LOCALSTORAGE_KEY]) {
+    } else {
+      self?.localStorage.setItem(CONSTANTS.LOCALSTORAGE_KEY, '{}');
+    }
+    const userProfile = JSON.parse(
+      self?.localStorage[CONSTANTS.LOCALSTORAGE_KEY],
+    );
+    userProfile[CONSTANTS.CONSTANTS.USER_PROFILE] = data;
+    self?.localStorage.setItem(
+      CONSTANTS.LOCALSTORAGE_KEY,
+      JSON.stringify(userProfile),
+    );
+  };
+
+  let postMessageMethod = (name, data) => {
+    console.log('postMessageMethod in Iframe');
+    self?.parent?.postMessage(
+      {
+        name,
+        data,
+      },
+      '*',
+    );
+  };
+</script>
