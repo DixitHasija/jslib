@@ -74,15 +74,24 @@ Universal Cookies
   };
 
   // Function to set a cookie
-  function setCookie(name, value, days = 30) {
-    let expires = '';
-    if (days) {
-      const date = new Date();
-      date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
-      expires = '; expires=' + date.toUTCString();
-    }
-    document.cookie = name + '=' + (value || '') +';'+ expires + ';path=/;SameSite=None;Secure';
-    document.cookie = "cookieName=cookieValue; expires=Fri, 31 Dec 9999 23:59:59 GMT;path=/;SameSite=None;Secure;domain=jslib-dixithasijas-projects.vercel.app";
+  // function setCookie(name, value, days = 30) {
+  //   let expires = '';
+  //   if (days) {
+  //     const date = new Date();
+  //     date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+  //     expires = '; expires=' + date.toUTCString();
+  //   }
+  //   cookie = name + '=' + (value || '') +';'+ expires + ';path=/;SameSite=None;Secure';    
+  // }
+  const setCookie = (name,value) => {
+    var exdate = new Date(new Date().getDate() + 1);
+    exdate.setDate(exdate.getDate());
+    document.cookie =
+      encodeURIComponent(name) +
+      '=' +
+      encodeURIComponent(value) +
+      '; expires=' +
+      exdate.toUTCString()+';path=/;SameSite=None;Secure';
   }
 
   function getCookie(name) {
