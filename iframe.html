@@ -1,7 +1,7 @@
 Universal Cookies
 <!-- <button onclick="sendData()">Send Data</button> -->
 <script type="module">
-  import * as CONSTANTS from './constants.js';
+  import * as CONSTANTS from './src/constants.js';
   window.addEventListener('message', function (event) {
     // Ensure the message is from the expected origin (if known)
     if (event.origin !== window.location.origin) {
@@ -31,28 +31,33 @@ Universal Cookies
 
   let getUserProfile = () => {
     let userProfile = {};
-    if (self?.localStorage && self?.localStorage[CONSTANTS.LOCALSTORAGE_KEY]) {
-      userProfile = JSON.parse(self?.localStorage[CONSTANTS.LOCALSTORAGE_KEY]);
+    // if (self?.localStorage && self?.localStorage[CONSTANTS.LOCALSTORAGE_KEY]) {
+    //   userProfile = JSON.parse(self?.localStorage[CONSTANTS.LOCALSTORAGE_KEY]);
+    // }
+    debugger;
+    userProfile = getCookie(CONSTANTS.CONSTANTS.USER_PROFILE);
+    if (userProfile) {
+      postMessageMethod(
+        CONSTANTS.MESSAGE_EVENT_LIST.SEND_USER_PROFILE_TO_PARENT,
+        JSON.parse(userProfile),
+      );
     }
-    postMessageMethod(
-      CONSTANTS.MESSAGE_EVENT_LIST.SEND_USER_PROFILE_TO_PARENT,
-      userProfile,
-    );
   };
 
   let setData = (data) => {
-    if (self?.localStorage && self?.localStorage[CONSTANTS.LOCALSTORAGE_KEY]) {
-    } else {
-      self?.localStorage.setItem(CONSTANTS.LOCALSTORAGE_KEY, '{}');
-    }
-    const userProfile = JSON.parse(
-      self?.localStorage[CONSTANTS.LOCALSTORAGE_KEY],
-    );
-    userProfile[CONSTANTS.CONSTANTS.USER_PROFILE] = data;
-    self?.localStorage.setItem(
-      CONSTANTS.LOCALSTORAGE_KEY,
-      JSON.stringify(userProfile),
-    );
+    setCookie(CONSTANTS.CONSTANTS.USER_PROFILE, JSON.stringify(data));
+    // if (self?.localStorage && self?.localStorage[CONSTANTS.LOCALSTORAGE_KEY]) {
+    // } else {
+    //   self?.localStorage.setItem(CONSTANTS.LOCALSTORAGE_KEY, '{}');
+    // }
+    // const userProfile = JSON.parse(
+    //   self?.localStorage[CONSTANTS.LOCALSTORAGE_KEY],
+    // );
+    // userProfile[CONSTANTS.CONSTANTS.USER_PROFILE] = data;
+    // self?.localStorage.setItem(
+    //   CONSTANTS.LOCALSTORAGE_KEY,
+    //   JSON.stringify(userProfile),
+    // );
   };
 
   let postMessageMethod = (name, data) => {
@@ -65,4 +70,25 @@ Universal Cookies
       '*',
     );
   };
+
+  // Function to set a cookie
+  function setCookie(name, value, days = 30) {
+    let expires = '';
+    if (days) {
+      const date = new Date();
+      date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+      expires = '; expires=' + date.toUTCString();
+    }
+    document.cookie = name + '=' + (value || '') + expires + '; path=/';
+  }
+
+  function getCookie(name) {
+    const cookies = document.cookie.split(';');
+    for (let cookie of cookies) {
+      const [cookieName, cookieValue] = cookie.split('=').map((c) => c.trim());
+      if (cookieName === name) {
+        return decodeURIComponent(cookieValue);
+      }
+    }
+  }
 </script>
