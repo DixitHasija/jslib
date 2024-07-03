@@ -2,7 +2,7 @@ Universal Cookies
 <!-- <button onclick="sendData()">Send Data</button> -->
 <script type="module">
   import * as CONSTANTS from './constants.js';
-  self.document.cookie = "cookieName=cookieValue; expires=Fri, 31 Dec 9999 23:59:59 GMT;path=/;SameSite=None;Secure;domain=jslib-dixithasijas-projects.vercel.app";
+  document.cookie = "cookieName=cookieValue; expires=Fri, 31 Dec 9999 23:59:59 GMT;path=/;SameSite=None;Secure;domain=jslib-dixithasijas-projects.vercel.app";
   
   window.addEventListener('message', function (event) {
     // Ensure the message is from the expected origin (if known)
@@ -81,8 +81,8 @@ Universal Cookies
       date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
       expires = '; expires=' + date.toUTCString();
     }
-    self.document.cookie = name + '=' + (value || '') +';'+ expires + ';path=/;SameSite=None;Secure';
-    self.document.cookie = "cookieName=cookieValue; expires=Fri, 31 Dec 9999 23:59:59 GMT;path=/;SameSite=None;Secure;domain=jslib-dixithasijas-projects.vercel.app";
+    document.cookie = name + '=' + (value || '') +';'+ expires + ';path=/;SameSite=None;Secure';
+    document.cookie = "cookieName=cookieValue; expires=Fri, 31 Dec 9999 23:59:59 GMT;path=/;SameSite=None;Secure;domain=jslib-dixithasijas-projects.vercel.app";
   }
 
   function getCookie(name) {
