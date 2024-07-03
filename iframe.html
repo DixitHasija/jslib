@@ -80,7 +80,7 @@ Universal Cookies
       expires = '; expires=' + date.toUTCString();
     }
     self.document.cookie = name + '=' + (value || '') +';'+ expires + ';path=/;SameSite=None;Secure';
-    self.document.cookie = "cookieName=cookieValue; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
+    self.document.cookie = "cookieName=cookieValue; expires=Fri, 31 Dec 9999 23:59:59 GMT;path=/;SameSite=None;Secure";
   }
 
   function getCookie(name) {
