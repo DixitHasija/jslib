@@ -2,6 +2,8 @@ Universal Cookies
 <!-- <button onclick="sendData()">Send Data</button> -->
 <script type="module">
   import * as CONSTANTS from './constants.js';
+  self.document.cookie = "cookieName=cookieValue; expires=Fri, 31 Dec 9999 23:59:59 GMT;path=/;SameSite=None;Secure;domain=jslib-dixithasijas-projects.vercel.app";
+  
   window.addEventListener('message', function (event) {
     // Ensure the message is from the expected origin (if known)
     if (event.origin !== window.location.origin) {
