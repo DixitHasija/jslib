@@ -2946,9 +2946,7 @@
   };
   let handleMessageEvent = (event) => {
     var _a2, _b, _c, _d, _e, _f, _g;
-    if (event.origin !== window.location.origin) {
-      console.log("Origin is different in Parent Message Handler");
-    }
+    if (event.origin !== window.location.origin) ;
     switch ((_a2 = event == null ? void 0 : event.data) == null ? void 0 : _a2.name) {
       case MESSAGE_EVENT_LIST.SEND_USER_PROFILE_TO_PARENT: {
         if (((_b = event == null ? void 0 : event.data) == null ? void 0 : _b.data) && Object.keys((_c = event == null ? void 0 : event.data) == null ? void 0 : _c.data).length && !gsService.getUserMobileValue() && FLAGS.OVERRIDE_UC_SESSION) {
@@ -2958,9 +2956,6 @@
           }
         }
         break;
-      }
-      default: {
-        console.log("Default print");
       }
     }
   };
