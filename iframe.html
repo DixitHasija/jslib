@@ -34,7 +34,8 @@ Universal Cookies
     // if (self?.localStorage && self?.localStorage[CONSTANTS.LOCALSTORAGE_KEY]) {
     //   userProfile = JSON.parse(self?.localStorage[CONSTANTS.LOCALSTORAGE_KEY]);
     // }
-    debugger;
+
+    
     userProfile = getCookie(CONSTANTS.CONSTANTS.USER_PROFILE);
     if (userProfile) {
       postMessageMethod(
@@ -80,7 +81,7 @@ Universal Cookies
       expires = '; expires=' + date.toUTCString();
     }
     //document.cookie = 'cookieName=cookieValue; expires=Fri, 31 Dec 9999 23:59:59 GMT;path=/;SameSite=None;Secure;domain=jslib-dixithasijas-projects.vercel.app';
-  console.log(import.meta.env.VITE_API_URL);
+  
  document.cookie = name + '=' + (value || '') + expires + '; path=/; SameSite=None; Secure;domain=jslib-dixithasijas-projects.vercel.app';
   }
 
