@@ -1,7 +1,91 @@
 Universal Cookies
 <!-- <button onclick="sendData()">Send Data</button> -->
+<script></script>
 <script type="module">
-  import * as CONSTANTS from './constants.js';
+  // @ts-check
+
+const CONSTANTS_BACKUP = {
+  UDID: 'UDID',
+  UFID: 'UFID',
+  PAYLOAD: 'PAYLOAD',
+  UTID: 'UTID',
+  CHANNEL: 'CHANNEL',
+  TRACK_INFO: 'TRACK_INFO',
+  UEID: 'UEID',
+  UMID: 'UMID',
+  USER_PROFILE: '_uc_session',
+  USER_MOBILE_KEY: 'sc_mid',
+};
+const CONSTANTS = {
+  UDID: 'udid',
+  UFID: 'ufid',
+  PAYLOAD: 'payload',
+  UTID: 'utid',
+  CHANNEL: 'channel',
+  TRACK_INFO: 'track_info',
+  UEID: 'ueid',
+  UMID: 'umid',
+  USER_PROFILE: '_uc_session',
+  USER_MOBILE_KEY: 'sc_mid',
+};
+const CONSTANTS_MAPPING = {
+  UDID: 'udid',
+  UFID: 'ufid',
+  PAYLOAD: 'payload',
+  UTID: 'utid',
+  EVENT_NAME: 'event_name',
+  CHANNEL: 'channel',
+  URL: 'url',
+  UMID: 'umid',
+  UEID: 'ueid',
+};
+const EVENTS_NAME = {
+  ON_LOAD: 'page_view',
+  ATC: 'atc',
+  BUY: 'buy',
+  ORDER: 'order',
+  REGISTER: 'register',
+  LOGIN: 'login',
+  LOGOUT: 'logout',
+  PDP_VIEW: 'pdp_view',
+  UPDATE_UMID: 'update_umid',
+  UPDATE_UEID: 'update_ueid',
+  UPDATE_USER_PROFILE: 'update_user_profile',
+  ORDER_TRACK: 'order_track',
+};
+
+const CHANNEL_BINARY_VALUE = {
+  wigzo: 1,
+  promise: 2,
+  engage: 4,
+  tracking_page: 8,
+};
+const FLAGS = {
+  EVENT_DETAILS_MODE: true,
+  CALL_API: true,
+  OVERRIDE_UC_SESSION: true,
+};
+/**
+ * @constant {number} EVENT_TTL constant in Seconds.
+ * @description This is event time to live. Event will expires after this time.
+ * @type number
+ */
+const EVENT_TTL = 5;
+const EVENT_AUTO_TRIGGER_TTL = 10;
+const I_FRAME_ID = '__uc_iframe';
+/**
+ * BLOCKED_CHANNELS will block API call if channel is present in the localstorage .
+ * IMP: Make sure to pass string values only
+ */
+const BLOCKED_CHANNELS = [];
+const MESSAGE_EVENT_LIST = {
+  GET_USER_PROFILE_FROM_IFRAME: 'getUserProfileFromIframe',
+  SET_USER_PROFILE_TO_IFRAME: 'setUserProfileToIframe',
+  SEND_USER_PROFILE_TO_PARENT: 'sendUserProfileToParent',
+};
+const LOCALSTORAGE_KEY = '__uc_site';
+
+  // import * as CONSTANTS from './src/constants.js';
   window.addEventListener('message', function (event) {
     // Ensure the message is from the expected origin (if known)
     if (event.origin !== window.location.origin) {
@@ -29,13 +113,14 @@ Universal Cookies
     }
   });
 
+  // const domain = 'jslib-dixithasijas-projects.vercel.app';
+  const domain = 'sr-promise-prod.s3.ap-south-1.amazonaws.com';
+
   let getUserProfile = () => {
     let userProfile = {};
     // if (self?.localStorage && self?.localStorage[CONSTANTS.LOCALSTORAGE_KEY]) {
     //   userProfile = JSON.parse(self?.localStorage[CONSTANTS.LOCALSTORAGE_KEY]);
     // }
-
-    
     userProfile = getCookie(CONSTANTS.CONSTANTS.USER_PROFILE);
     if (userProfile) {
       postMessageMethod(
@@ -80,9 +165,15 @@ Universal Cookies
       date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
       expires = '; expires=' + date.toUTCString();
     }
-    //document.cookie = 'cookieName=cookieValue; expires=Fri, 31 Dec 9999 23:59:59 GMT;path=/;SameSite=None;Secure;domain=jslib-dixithasijas-projects.vercel.app';
-  
- document.cookie = name + '=' + (value || '') + expires + '; path=/; SameSite=None; Secure;domain=jslib-dixithasijas-projects.vercel.app';
+
+    // document.cookie = “cookieName=cookieValue; expires=Fri, 31 Dec 9999 23:59:59 GMT;path=/;SameSite=None;Secure;domain=jslib-dixithasijas-projects.vercel.app”;
+    document.cookie =
+      name +
+      '=' +
+      (value || '') +
+      expires +
+      '; path=/; SameSite=None; Secure;domain=' +
+      domain;
   }
 
   function getCookie(name) {
@@ -95,4 +186,3 @@ Universal Cookies
     }
   }
 </script>
-
