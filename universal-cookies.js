@@ -3135,7 +3135,8 @@
     }
   }
   let getUserData = (userMobileValue) => {
-    let url = "https://universal-cookies-qa-1.kartrocket.com/v1/user/info?mid=" + userMobileValue;
+    let base_url = "https://uc.shiprocket.in";
+    let url = base_url + "/v1/user/info?mid=" + userMobileValue;
     try {
       fetch(url, {
         method: "GET",
