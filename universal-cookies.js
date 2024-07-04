@@ -106,6 +106,13 @@
     let base64 = btoa(unescape(encodeURIComponent(str)));
     return base64.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
   }
+  function base64UrlToString(base64Url) {
+    let base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+    while (base64.length % 4) {
+      base64 += "=";
+    }
+    return decodeURIComponent(escape(atob(base64)));
+  }
   const CONSTANTS = {
     UDID: "udid",
     UFID: "ufid",
@@ -2928,6 +2935,9 @@
       state: data.state,
       country: data.country_code
     };
+    console.log(base64UrlToString(returnObject.mobile));
+    console.log(base64UrlToString(returnObject.email));
+    console.log(base64UrlToString(returnObject.address));
     return returnObject;
   };
   async function get_SHA_256(string) {
