@@ -102,6 +102,10 @@
     let list_two_set = new Set(list_two);
     return [...list_one_set.intersection(list_two_set)];
   }
+  function stringToBase64Url(str) {
+    let base64 = btoa(unescape(encodeURIComponent(str)));
+    return base64.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+  }
   const CONSTANTS = {
     UDID: "udid",
     UFID: "ufid",
@@ -2899,6 +2903,33 @@
     }
     return data;
   }
+  let userInfoMapper = (data) => {
+    data = data ? data : {
+      address_line_1: "K204,DLF Capital greens , Moti nagar",
+      address_line_2: "",
+      city: "West Delhi",
+      country: "India",
+      country_code: "IN",
+      email: "manassviarora28@gmail.com",
+      first_name: "ssvi",
+      isd_code: "+91",
+      last_name: "",
+      pincode: "110015",
+      state: "Delhi",
+      state_code: "DL"
+    };
+    let returnObject = {
+      name: data.first_name + data.last_name,
+      mobile: stringToBase64Url(data == null ? void 0 : data.mobile_no),
+      email: stringToBase64Url(data == null ? void 0 : data.email),
+      address: stringToBase64Url((data == null ? void 0 : data.address_line_1) + (data == null ? void 0 : data.address_line_2)),
+      pincode: data.pincode,
+      city: data.city,
+      state: data.state,
+      country: data.country_code
+    };
+    return returnObject;
+  };
   async function get_SHA_256(string) {
     const utf8 = new TextEncoder().encode(string);
     const hashBuffer = await crypto.subtle.digest("SHA-256", utf8);
@@ -3141,11 +3172,12 @@
           // 'ngrok-skip-browser-warning': true,
         }
       }).then((response) => response.json()).then((json) => {
-        console.log(json, "_uc_session Data");
+        let userInfo = userInfoMapper(json.data);
+        console.log(userInfo, "_uc_session Data");
         _triggerEvent(EVENTS_NAME.UPDATE_UMID, { mobile: userMobileValue });
         console.log("Update UMID from sc_mid");
-        setCookies(json.data);
-        _triggerEvent(EVENTS_NAME.UPDATE_USER_PROFILE, json.data);
+        setCookies(userInfo);
+        _triggerEvent(EVENTS_NAME.UPDATE_USER_PROFILE, userInfo);
       });
     } catch (error) {
       console.log(error);
