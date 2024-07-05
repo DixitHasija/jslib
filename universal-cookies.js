@@ -2904,6 +2904,7 @@
     return data;
   }
   let userInfoMapper = (data) => {
+    debugger;
     let returnObject = {
       name: (data == null ? void 0 : data.first_name) + (data == null ? void 0 : data.last_name),
       u_mid: data.u_mid,
@@ -3166,6 +3167,7 @@
         let userInfo = userInfoMapper(
           Object.assign(json.data, { u_mid: userMobileValue })
         );
+        console.log(userInfo, "_uc_session Data");
         _triggerEvent(EVENTS_NAME.UPDATE_UMID, { mobile: userMobileValue });
         setCookies(userInfo);
         _triggerEvent(EVENTS_NAME.UPDATE_USER_PROFILE, userInfo);
