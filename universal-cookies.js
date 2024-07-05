@@ -3167,7 +3167,6 @@
         let userInfo = userInfoMapper(
           Object.assign(json.data, { u_mid: userMobileValue })
         );
-        console.log(userInfo, "_uc_session Data");
         _triggerEvent(EVENTS_NAME.UPDATE_UMID, { mobile: userMobileValue });
         setCookies(userInfo);
         _triggerEvent(EVENTS_NAME.UPDATE_USER_PROFILE, userInfo);
