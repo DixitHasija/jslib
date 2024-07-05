@@ -106,13 +106,6 @@
     let base64 = btoa(unescape(encodeURIComponent(str)));
     return base64.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
   }
-  function base64UrlToString(base64Url) {
-    let base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
-    while (base64.length % 4) {
-      base64 += "=";
-    }
-    return decodeURIComponent(escape(atob(base64)));
-  }
   const CONSTANTS = {
     UDID: "udid",
     UFID: "ufid",
@@ -2739,7 +2732,7 @@
             "Content-type": "application/json"
             // 'ngrok-skip-browser-warning': true,
           }
-        }).then((response) => response.json()).then((json) => console.log(json));
+        }).then((response) => response.json()).then((json) => json);
       } catch (error) {
         console.log(error);
       }
@@ -2911,33 +2904,17 @@
     return data;
   }
   let userInfoMapper = (data) => {
-    data = data ? data : {
-      address_line_1: "K204,DLF Capital greens , Moti nagar",
-      address_line_2: "",
-      city: "West Delhi",
-      country: "India",
-      country_code: "IN",
-      email: "manassviarora28@gmail.com",
-      first_name: "ssvi",
-      isd_code: "+91",
-      last_name: "",
-      pincode: "110015",
-      state: "Delhi",
-      state_code: "DL"
-    };
     let returnObject = {
-      name: data.first_name + data.last_name,
+      name: (data == null ? void 0 : data.first_name) + (data == null ? void 0 : data.last_name),
+      u_mid: data.u_mid,
       mobile: stringToBase64Url(data == null ? void 0 : data.mobile_no),
       email: stringToBase64Url(data == null ? void 0 : data.email),
       address: stringToBase64Url((data == null ? void 0 : data.address_line_1) + (data == null ? void 0 : data.address_line_2)),
-      pincode: data.pincode,
-      city: data.city,
-      state: data.state,
-      country: data.country_code
+      pincode: data == null ? void 0 : data.pincode,
+      city: data == null ? void 0 : data.city,
+      state: data == null ? void 0 : data.state,
+      country: data == null ? void 0 : data.country_code
     };
-    console.log(base64UrlToString(returnObject.mobile));
-    console.log(base64UrlToString(returnObject.email));
-    console.log(base64UrlToString(returnObject.address));
     return returnObject;
   };
   async function get_SHA_256(string) {
@@ -3155,12 +3132,16 @@
     }
   }
   function registerChannelId() {
-    var _a2, _b;
+    var _a2, _b, _c;
     const script = document.getElementById("uc_shiprocket");
+    debugger;
+    if (!script && ((_a2 = document == null ? void 0 : document.currentScript) == null ? void 0 : _a2.src)) {
+      script = document == null ? void 0 : document.currentScript;
+    }
     if (script) {
       let src = script.src;
-      if ((_a2 = document == null ? void 0 : document.currentScript) == null ? void 0 : _a2.src) {
-        src = (_b = document == null ? void 0 : document.currentScript) == null ? void 0 : _b.src;
+      if ((_b = document == null ? void 0 : document.currentScript) == null ? void 0 : _b.src) {
+        src = (_c = document == null ? void 0 : document.currentScript) == null ? void 0 : _c.src;
       }
       const urlParams = new URLSearchParams(src.split("?")[1]);
       const channelId = urlParams.get("channel_id");
@@ -3182,10 +3163,10 @@
           // 'ngrok-skip-browser-warning': true,
         }
       }).then((response) => response.json()).then((json) => {
-        let userInfo = userInfoMapper(json.data);
-        console.log(userInfo, "_uc_session Data");
+        let userInfo = userInfoMapper(
+          Object.assign(json.data, { u_mid: userMobileValue })
+        );
         _triggerEvent(EVENTS_NAME.UPDATE_UMID, { mobile: userMobileValue });
-        console.log("Update UMID from sc_mid");
         setCookies(userInfo);
         _triggerEvent(EVENTS_NAME.UPDATE_USER_PROFILE, userInfo);
       });
