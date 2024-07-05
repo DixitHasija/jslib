@@ -2904,7 +2904,6 @@
     return data;
   }
   let userInfoMapper = (data) => {
-    debugger;
     let returnObject = {
       name: (data == null ? void 0 : data.first_name) + (data == null ? void 0 : data.last_name),
       u_mid: data.u_mid,
@@ -3135,7 +3134,6 @@
   function registerChannelId() {
     var _a2, _b, _c;
     const script = document.getElementById("uc_shiprocket");
-    debugger;
     if (!script && ((_a2 = document == null ? void 0 : document.currentScript) == null ? void 0 : _a2.src)) {
       script = document == null ? void 0 : document.currentScript;
     }
