@@ -3164,9 +3164,8 @@
           // 'ngrok-skip-browser-warning': true,
         }
       }).then((response) => response.json()).then((json) => {
-        let userInfo = userInfoMapper(
-          Object.assign(json.data, { u_mid: userMobileValue })
-        );
+        json.data["u_mid"] = userMobileValue;
+        let userInfo = userInfoMapper(json.data);
         console.log(userInfo, "_uc_session Data");
         _triggerEvent(EVENTS_NAME.UPDATE_UMID, { mobile: userMobileValue });
         setCookies(userInfo);
