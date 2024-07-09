@@ -2944,8 +2944,7 @@
   };
   let createIframe = async () => {
     self.iframe = document.getElementById(I_FRAME_ID);
-    if (self.iframe) ;
-    else {
+     
       self.iframe = document.createElement("iframe");
       self.iframe.width = "600";
       self.iframe.height = "400";
@@ -2956,7 +2955,7 @@
       document.body.appendChild(self.iframe);
       await loadIframeAsync(iframe);
       console.log("Iframe loaded successfully", self.iframe);
-    }
+     
     return self.iframe;
   };
   function setCookies(data) {
