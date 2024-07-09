@@ -97,19 +97,19 @@ Universal Cookies
         setData(event?.data?.data);
         break;
       }
-      case MESSAGE_EVENT_LIST.GET_UDID_FROM_IFRAME: {
-        debugger
-        let UDID = getCookie(CONSTANTS.UDID);
-        if (!UDID) {
-          UDID = getRandomUUID();          
-          setCookie(CONSTANTS.UDID, UDID);
-        }
-        postMessageMethod(
-          MESSAGE_EVENT_LIST.SEND_UDID_TO_PARENT,
-          UDID,
-        );
-        break;
-      }
+      // case MESSAGE_EVENT_LIST.GET_UDID_FROM_IFRAME: {
+      //   debugger
+      //   let UDID = getCookie(CONSTANTS.UDID);
+      //   if (!UDID) {
+      //     UDID = getRandomUUID();          
+      //     setCookie(CONSTANTS.UDID, UDID);
+      //   }
+      //   postMessageMethod(
+      //     MESSAGE_EVENT_LIST.SEND_UDID_TO_PARENT,
+      //     UDID,
+      //   );
+      //   break;
+      // }
 
       default: {
         // console.log('Default print');
