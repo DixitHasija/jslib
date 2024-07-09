@@ -2754,6 +2754,7 @@
     if (!Object.values(EVENTS_NAME).includes(event_name)) {
       return console.error(`Event ${event_name} is invalid`);
     }
+    debugger;
     let apiData = {
       [CONSTANTS_MAPPING.EVENT_NAME]: event_name,
       [CONSTANTS_MAPPING.UFID]: gsService.getUFID(),
