@@ -3144,6 +3144,7 @@
     }, EVENT_AUTO_TRIGGER_TTL * 1e3);
     await createIframe();
     debugger;
+    console.log(gsService.getUDID(CONSTANTS.UDID), "gsService.getUDID(CONSTANTS.UDID)");
     getUDIDFromIframe();
     const userMobileValue = gsService.getUserMobileValue();
     if (userMobileValue) {
