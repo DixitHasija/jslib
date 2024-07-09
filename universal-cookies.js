@@ -116,7 +116,8 @@
     UEID: "ueid",
     UMID: "umid",
     USER_PROFILE: "_uc_session",
-    USER_MOBILE_KEY: "sc_mid"
+    USER_MOBILE_KEY: "sc_mid",
+    UWID: "uwid"
   };
   const CONSTANTS_MAPPING = {
     UDID: "udid",
@@ -127,7 +128,8 @@
     CHANNEL: "channel",
     URL: "url",
     UMID: "umid",
-    UEID: "ueid"
+    UEID: "ueid",
+    UWID: "uwid"
   };
   const EVENTS_NAME = {
     ON_LOAD: "page_view",
@@ -155,7 +157,9 @@
   const MESSAGE_EVENT_LIST = {
     GET_USER_PROFILE_FROM_IFRAME: "getUserProfileFromIframe",
     SET_USER_PROFILE_TO_IFRAME: "setUserProfileToIframe",
-    SEND_USER_PROFILE_TO_PARENT: "sendUserProfileToParent"
+    SEND_USER_PROFILE_TO_PARENT: "sendUserProfileToParent",
+    GET_UDID_FROM_IFRAME: "getUDIDFromIframe",
+    SEND_UDID_TO_PARENT: "sendUDIDToParent"
   };
   const LOCALSTORAGE_KEY = "__uc_site";
   var FingerprintJS = function(e2) {
@@ -2234,6 +2238,12 @@
   function setUserMobileValue(value) {
     LocalStorageService.directSet(CONSTANTS.USER_MOBILE_KEY, value);
   }
+  function getUWID() {
+    return LocalStorageService.get(CONSTANTS.UWID);
+  }
+  function setUWID(value) {
+    LocalStorageService.set(CONSTANTS.UWID, value);
+  }
   const gsService = {
     getUDID,
     setUDID,
@@ -2255,7 +2265,9 @@
     removeTrackInfo,
     setUP,
     getUserMobileValue,
-    setUserMobileValue
+    setUserMobileValue,
+    getUWID,
+    setUWID
   };
   function e(e2, r2, n2, t) {
     return new (n2 || (n2 = Promise))(function(o2, a2) {
@@ -2722,7 +2734,7 @@
   function sendEvent(apiData) {
     console.table(apiData);
     if (intersectionInTwoArrays(BLOCKED_CHANNELS, gsService.getChannels()).length === 0) {
-      let base_url = "https://uc.shiprocket.in";
+      let base_url = "https://universal-cookies-qa-1.kartrocket.com";
       let url = base_url + "/v1/track/user";
       try {
         fetch(url, {
@@ -2939,7 +2951,7 @@
       self.iframe.height = "400";
       self.iframe.style.border = "none";
       self.iframe.style.display = "none";
-      self.iframe.src = "https://sr-promise-prod.s3.ap-south-1.amazonaws.com/sr-promise/static/iframe.html";
+      self.iframe.src = "http://localhost:5174/iframe.html";
       self.iframe.id = I_FRAME_ID;
       document.body.appendChild(self.iframe);
       await loadIframeAsync(iframe);
@@ -2962,8 +2974,11 @@
   let getCookie = () => {
     postMessageMethod(MESSAGE_EVENT_LIST.GET_USER_PROFILE_FROM_IFRAME);
   };
+  let getUDIDFromIframe = () => {
+    postMessageMethod(MESSAGE_EVENT_LIST.GET_UDID_FROM_IFRAME);
+  };
   let handleMessageEvent = (event) => {
-    var _a2, _b, _c, _d, _e, _f, _g;
+    var _a2, _b, _c, _d, _e, _f, _g, _h;
     if (event.origin !== window.location.origin) ;
     switch ((_a2 = event == null ? void 0 : event.data) == null ? void 0 : _a2.name) {
       case MESSAGE_EVENT_LIST.SEND_USER_PROFILE_TO_PARENT: {
@@ -2974,6 +2989,10 @@
           }
         }
         break;
+      }
+      case MESSAGE_EVENT_LIST.SEND_UDID_TO_PARENT: {
+        debugger;
+        gsService.setUDID((_h = event == null ? void 0 : event.data) == null ? void 0 : _h.data);
       }
     }
   };
@@ -3087,7 +3106,7 @@
     }
   }
   let UFID = "";
-  let UDID = "";
+  let UWID = "";
   let UTID = "";
   let intervalId = "";
   async function getFingerprintObject() {
@@ -3106,11 +3125,11 @@
     const FingerprintObject = await getFingerprintObject();
     const ThumbmarkJsObject = await getThumbmarkJs();
     UFID = FingerprintObject == null ? void 0 : FingerprintObject.visitorId;
-    UDID = gsService.getUDID(CONSTANTS.UDID);
+    UWID = gsService.getUWID(CONSTANTS.UWID);
     UTID = gsService.getUTID(CONSTANTS.UTID);
-    if (!UDID) {
-      UDID = getRandomUUID();
-      gsService.setUDID(UDID);
+    if (!UWID) {
+      UWID = getRandomUUID();
+      gsService.setUWID(UWID);
     }
     if (!UTID) {
       UTID = gsService.setUTID(ThumbmarkJsObject.hash);
@@ -3124,6 +3143,8 @@
       triggerExpireEvent(0);
     }, EVENT_AUTO_TRIGGER_TTL * 1e3);
     await createIframe();
+    debugger;
+    getUDIDFromIframe();
     const userMobileValue = gsService.getUserMobileValue();
     if (userMobileValue) {
       getUserData(userMobileValue);
@@ -3152,7 +3173,7 @@
     }
   }
   let getUserData = (userMobileValue) => {
-    let base_url = "https://uc.shiprocket.in";
+    let base_url = "https://universal-cookies-qa-1.kartrocket.com";
     let url = base_url + "/v1/user/info?mid=" + userMobileValue;
     try {
       fetch(url, {
