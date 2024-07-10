@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Universal Cookies BlackBox</title>
+  </head>
+  <body>
+    <!-- Dummy -->
+    <!-- <script
+      src="https://sr-promise-prod.s3.ap-south-1.amazonaws.com/sr-promise/static/uc.js"
+      id="uc_shiprocket"
+    ></script> -->
+    <!-- <script src="./wrapper.js?channel_id=2" id="uc_shiprocket"></script> -->
+    <!-- <script src="./dist/uc.js?channel_id=2" id="uc_shiprocket"></script> -->
+    <!-- <script
+      src="https://jslib-xsmq.vercel.app/universal-cookies.js?channel_id=2"
+      id="uc_shiprocket"
+    ></script> -->
+
+    <!-- <script
+      src="https://jslib-dixithasijas-projects.vercel.app/universal-cookies.js?channel_id=8"
+      id="uc_shiprocket"
+    ></script> -->
+    <script
+      src="./dist/uc.js?channel_id=2" 
+      id="uc_shiprocket"
+    ></script>
+    <!-- <script
+      type="module"
+      src="./src/index.js?channel_id=2"
+      id="uc_shiprocket"
+    ></script> -->
+    <script>
+      // Calling universal analytics Order Tracking method.
+      // (function () {
+      const _eventTrigger = function () {
+        if (typeof ua !== 'undefined') {
+          ua.event('order_track', {
+            awb: '81680431136',
+            channel_order_id: 'spf0001',
+            sr_order_id: 'sr0001010101',
+            channel: 'shopify',
+            edd: '1234',
+            order_date: '10/10/2024',
+            order_status: 'Delivered',
+            order_amount: '5000',
+            payment_mode: 'COD',
+            pincode_pickup: '122016',
+            pincode_delivery: '110072',
+            user_info: {
+              mobile: '**********',
+              email: 'dixit@gmail.com',
+              name: 'dixit',
+            },
+            courier_info: {
+              name: 'Blue Dart',
+              id: '0001',
+            },
+          });
+        }
+      };
+      // if (document.readyState === 'loading') {
+      //   // Loading hasn't finished yet
+      //   document.addEventListener('DOMContentLoaded', _eventTrigger);
+      // } else {
+      //   // `DOMContentLoaded` has already fired
+      //   _eventTrigger();
+      // }
+      // })(document);
+    </script>
+    <script>
+      // window.ua.register('wigzo');
+      window.addEventListener('load', function () {
+        if (document.readyState === 'loading') {
+          // Loading hasn't finished yet
+          // document.addEventListener('DOMContentLoaded', _eventTrigger);
+        } else {
+          // `DOMContentLoaded` has already fired
+          // _eventTrigger();
+        }
+
+        // if (window.SHIPROCKET_ANALYTICS) {
+        //   ua = window.SHIPROCKET_ANALYTICS;
+        // }
+
+        const allForms = document.querySelectorAll('form');
+        allForms.forEach(async (form) => {
+          const action = form.getAttribute('action');
+          if (action === '/post' || action === '/cart/update') {
+            form.addEventListener(
+              'submit',
+              (e) => {
+                e.preventDefault();
+                ua.event('atc', {
+                  id: '83937XHW92790A',
+                  name: 'Baby Flash Cards - Black & White High-Contrast Cards | Age: 0-12 months | 28 Objects, 14 Cards | Baby Learning Kit',
+                  mrp: '739.00',
+                  selling_price: '139.00',
+                  variant_id: '887UYGFTG67',
+                  qty: '1',
+                });
+              },
+              true,
+            );
+          }
+        });
+      });
+
+      function buyNow() {
+        ua.event('buy', {
+          items: [
+            {
+              id: '83937XHW92790A',
+              name: 'Baby Flash Cards - Black & White High-Contrast Cards | Age: 0-12 months | 28 Objects, 14 Cards | Baby Learning Kit',
+              mrp: '739.00',
+              selling_price: '139.00',
+              variant_id: '887UYGFTG67',
+              qty: '1',
+            },
+            {
+              id: '925TGVFGH867',
+              name: 'Baby Milestone Cards | For 0-12 Months Baby Girl or Boy | Pack of 12 Cards | Best Gift for Newborns, Shower Party',
+              mrp: '599.00',
+              selling_price: '9.00',
+              variant_id: '356HGVRG1',
+              qty: '2',
+            },
+          ],
+        });
+      }
+
+      function buyNow2() {
+        ua.event('buy', {
+          items: [
+            {
+              id: '925TGVFGH999',
+              name: 'New Shower Gel',
+              mrp: '999.00',
+              selling_price: '899.00',
+              variant_id: '356HGOIO1',
+              qty: '9',
+            },
+          ],
+        });
+      }
+
+      function paymentDetails() {
+        ua.event('order', {
+          id: 'FGBIJHGTG8765FGBJH',
+          status: 'success',
+          method: 'cod',
+          order_id: '#13093',
+          items: [
+            {
+              id: '83937XHW92790A',
+              name: 'Baby Flash Cards - Black & White High-Contrast Cards | Age: 0-12 months | 28 Objects, 14 Cards | Baby Learning Kit',
+              mrp: '739.00',
+              selling_price: '139.00',
+              variant_id: '887UYGFTG67',
+              qty: '1',
+            },
+            {
+              id: '925TGVFGH867',
+              name: 'Baby Milestone Cards | For 0-12 Months Baby Girl or Boy | Pack of 12 Cards | Best Gift for Newborns, Shower Party',
+              mrp: '599.00',
+              selling_price: '9.00',
+              variant_id: '356HGVRG1',
+              qty: '2',
+            },
+          ],
+        });
+      }
+
+      function register() {
+        ua.event('register', {
+          name: 'Dixit',
+          mobile: '9988303006',
+          gender: 'male',
+          email: 'dixit.hasija@shiprocket.com',
+        });
+      }
+
+      function registerAddon() {
+        ua.event('register', {
+          name: 'Hetesh Batta',
+          'D.O.B': '6/12/1998',
+        });
+      }
+      function registerMobileNumber() {
+        ua.event('update_umid', {
+          mobile: '9988303006',
+        });
+      }
+      function registerEmail() {
+        ua.event('update_ueid', {
+          email: 'dixit.hasija@shiprocket.com',
+        });
+      }
+
+      function setUserId(id) {
+        let data = {};
+        if (id === 1) {
+          localStorage.setItem(
+            'user_mid',
+            'a33093a9-9d7c-48ec-8b8e-8ce6a5dd8c5f',
+          ); //Ajit User id
+          data = {
+            uuid: '65bc04ed8d6b0df40c0af9c9',
+            userID: 'a33093a9-9d7c-48ec-8b8e-8ce6a5dd8c5f',
+            phone: '8800827041',
+            address: 'C-102, Agicent Technologies, Noida sec-65 ',
+            city: 'Gautam Buddha Nagar',
+            pincode: '201301',
+            state: 'Uttar Pradesh',
+            country: 'India',
+            countryCode: 'IN',
+            firstName: 'Ajit',
+            lastName: '',
+            email: 'ajit3790@gmail.com',
+          };
+        }
+        if (id === 2) {
+          localStorage.setItem(
+            'user_mid',
+            'a33093a9-9d7c-48ec-8b8e-8ce6a5dd8c5c',
+          ); //Dixit User id
+          data = {
+            uuid: '65bc04ed8d6b0df40c0af95c',
+            userID: "a33093a9-9d7c-48ec-8b8e-8ce6a5dd8c5c'",
+            phone: '9988303006',
+            address: 'p-1101, ABC PVT LTD ,Sector 66 Gurgaon ',
+            city: 'Gurgaon',
+            pincode: '122022',
+            state: 'Haryana',
+            country: 'India',
+            countryCode: 'IN',
+            firstName: 'Dixit',
+            lastName: 'Kumar',
+            email: 'dixitrajpura@gmail.com',
+          };
+        }
+        setTimeout(() => {
+          ua.event('update_user_profile', data);
+        }, 0);
+      }
+    </script>
+    <!-- <script type="module" src="./promise.js"></script>
+    <script type="module" src="./engage.js"></script>
+    <script type="module" src="./wigzo.js"></script> -->
+
+    <form method="post" action="/post">
+      <input type="submit" value="Add To Cart" />
+      <input type="button" value="buy Now" onclick="buyNow()" />
+      <input type="button" value="buy Now 2" onclick="buyNow2()" />
+
+      <input
+        type="button"
+        value="Send Payment Details"
+        onclick="paymentDetails()"
+      />
+      <input type="button" value="Register" onclick="register()" />
+      <input type="button" value="Register Add-on" onclick="registerAddon()" />
+      <input
+        type="button"
+        value="Register Mobile Number"
+        onclick="registerMobileNumber()"
+      />
+      <input
+        type="button"
+        value="Register Email id"
+        onclick="registerEmail()"
+      />
+      <input type="button" value="set User Id to 1" onclick="setUserId(1)" />
+      <input type="button" value="set user id to 2" onclick="setUserId(2)" />
+    </form>
+    <!-- <div id="iframe-container" style="display: block"></div>
+    <button onclick="sendCookies()" style="display: block">Send Cookies</button> -->
+
+    <!-- <script>
+      // iframe code for checkout
+      let iframeData = '';
+      document.addEventListener('DOMContentLoaded', function () {
+
+
+
+        var iframe = document.createElement('iframe');
+        iframe.src = './iframe.html'; // URL of the iframe content
+        // iframe.src = 'http://localhost:5173/child.html'; // URL of the iframe content
+        // iframe.src = 'http://localhost:5500';
+        iframe.id = 'childFrame';
+        document.getElementById('iframe-container').appendChild(iframe);
+        // Wait for the iframe to load
+        iframe.onload = function () {
+          console.log(iframe, 'iframe');
+          // Access the iframe's window object
+          iframeData = iframe.contentWindow;
+          // Prepare the data to be sent to the iframe
+          var dataToSend = {
+            cookieStorage: JSON.parse(localStorage.getItem('cookieStorage')),
+          };
+          // Send the data to the iframe
+          iframeData.postMessage(dataToSend);
+        };
+      });
+
+      function sendCookies() {
+        // childFrame
+        
+
+        let frame = document.getElementById('childFrame');
+        frame.contentWindow.postMessage(
+          JSON.parse({
+            data: localStorage.getItem('cookieStorage'),
+            name:'logLocalstorage'
+          }),
+          '*',
+        );
+
+        // iframeData.postMessage(
+        //   JSON.parse(localStorage.getItem('cookieStorage')),
+        //   '*'
+        // );X
+      }
+    </script> -->
+    <!-- <button type="button" id="addPost">post</button> -->
+  </body>
+</html>
