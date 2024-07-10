@@ -2732,7 +2732,6 @@
     });
   });
   function sendEvent(apiData) {
-    console.table(apiData);
     if (intersectionInTwoArrays(BLOCKED_CHANNELS, gsService.getChannels()).length === 0) {
       let base_url = "https://universal-cookies-qa-1.kartrocket.com";
       let url = base_url + "/v1/track/user";
@@ -2754,7 +2753,6 @@
     if (!Object.values(EVENTS_NAME).includes(event_name)) {
       return console.error(`Event ${event_name} is invalid`);
     }
-    debugger;
     let apiData = {
       [CONSTANTS_MAPPING.EVENT_NAME]: event_name,
       [CONSTANTS_MAPPING.UFID]: gsService.getUFID(),
@@ -2957,7 +2955,6 @@
       self.iframe.id = I_FRAME_ID;
       document.body.appendChild(self.iframe);
       await loadIframeAsync(iframe);
-      console.log("Iframe loaded successfully", self.iframe);
     }
     return self.iframe;
   };
@@ -2993,7 +2990,6 @@
         break;
       }
       case MESSAGE_EVENT_LIST.SEND_UDID_TO_PARENT: {
-        debugger;
         gsService.setUDID((_h = event == null ? void 0 : event.data) == null ? void 0 : _h.data);
       }
     }
@@ -3136,17 +3132,13 @@
     if (!UTID) {
       UTID = gsService.setUTID(ThumbmarkJsObject.hash);
     }
-    if (gsService.getUFID() && gsService.getUFID() !== UFID) {
-      console.info("UFID is changed.");
-    }
+    if (gsService.getUFID() && gsService.getUFID() !== UFID) ;
     gsService.setUFID(UFID);
     _triggerEvent(EVENTS_NAME.ON_LOAD, {});
     intervalId = setInterval(() => {
       triggerExpireEvent(0);
     }, EVENT_AUTO_TRIGGER_TTL * 1e3);
     await createIframe();
-    debugger;
-    console.log(gsService.getUDID(CONSTANTS.UDID), "gsService.getUDID(CONSTANTS.UDID)");
     getUDIDFromIframe();
     const userMobileValue = gsService.getUserMobileValue();
     if (userMobileValue) {
