@@ -1,1 +1,191 @@
-HI
+Universal Cookies
+<!-- <button onclick="sendData()">Send Data</button> -->
+<script type="module">
+  const CONSTANTS = {
+    UDID: 'udid',
+    UFID: 'ufid',
+    PAYLOAD: 'payload',
+    UTID: 'utid',
+    CHANNEL: 'channel',
+    TRACK_INFO: 'track_info',
+    UEID: 'ueid',
+    UMID: 'umid',
+    USER_PROFILE: '_uc_session',
+    USER_MOBILE_KEY: 'sc_mid',
+  };
+  const MESSAGE_EVENT_LIST = {
+    GET_USER_PROFILE_FROM_IFRAME: 'getUserProfileFromIframe',
+    SET_USER_PROFILE_TO_IFRAME: 'setUserProfileToIframe',
+    SEND_USER_PROFILE_TO_PARENT: 'sendUserProfileToParent',
+    GET_UDID_FROM_IFRAME: 'getUDIDFromIframe',
+    SEND_UDID_TO_PARENT: 'sendUDIDToParent',
+  };
+  const LOCALSTORAGE_KEY = '__uc_site';
+  function getRandomUUID() {
+    if (self && self?.crypto && self?.crypto?.randomUUID) {
+    } else {
+      self.crypto.randomUUID = function () {
+        const crypto = self.crypto || self.msCrypto;
+        if (!crypto || !crypto.getRandomValues) {
+          throw new Error(
+            'crypto.getRandomValues() not supported by this browser',
+          );
+        }
+
+        // Generate an array of 16 bytes (128 bits)
+        const bytes = new Uint8Array(16);
+        crypto.getRandomValues(bytes);
+
+        // Set the UUID version to 4 (random)
+        bytes[6] = (bytes[6] & 0x0f) | 0x40;
+        // Set the UUID variant to 2 (DCE 1.1)
+        bytes[8] = (bytes[8] & 0x3f) | 0x80;
+
+        const byteToHex = [];
+        for (let i = 0; i < 256; ++i) {
+          byteToHex.push((i + 0x100).toString(16).substr(1));
+        }
+
+        const uuid = (
+          byteToHex[bytes[0]] +
+          byteToHex[bytes[1]] +
+          byteToHex[bytes[2]] +
+          byteToHex[bytes[3]] +
+          '-' +
+          byteToHex[bytes[4]] +
+          byteToHex[bytes[5]] +
+          '-' +
+          byteToHex[bytes[6]] +
+          byteToHex[bytes[7]] +
+          '-' +
+          byteToHex[bytes[8]] +
+          byteToHex[bytes[9]] +
+          '-' +
+          byteToHex[bytes[10]] +
+          byteToHex[bytes[11]] +
+          byteToHex[bytes[12]] +
+          byteToHex[bytes[13]] +
+          byteToHex[bytes[14]] +
+          byteToHex[bytes[15]]
+        ).toLowerCase();
+
+        return uuid;
+      };
+    }
+    return self.crypto.randomUUID();
+  }
+
+  // import * as CONSTANTS from './src/constants.js';
+  window.addEventListener('message', function (event) {
+    // Ensure the message is from the expected origin (if known)
+    if (event.origin !== window.location.origin) {
+      // return;
+      // console.log('Origin is different in iframe');
+    }
+    // Access the data received from the parent
+    switch (event?.data?.name) {
+      case MESSAGE_EVENT_LIST.GET_USER_PROFILE_FROM_IFRAME: {
+        // console.log(getUserProfile(), 'event?.data');
+        break;
+      }
+
+      case MESSAGE_EVENT_LIST.SEND_USER_PROFILE_TO_PARENT: {
+        // console.log(event?.data, 'event?.data');
+        break;
+      }
+      case MESSAGE_EVENT_LIST.SET_USER_PROFILE_TO_IFRAME: {
+        setData(event?.data?.data);
+        break;
+      }
+      case MESSAGE_EVENT_LIST.GET_UDID_FROM_IFRAME: {
+        let UDID = getCookie(CONSTANTS.UDID);
+        if (!UDID) {
+          UDID = getRandomUUID();          
+          setCookie(CONSTANTS.UDID, UDID);
+        }
+        postMessageMethod(
+          MESSAGE_EVENT_LIST.SEND_UDID_TO_PARENT,
+          UDID,
+        );
+        break;
+      }
+
+      default: {
+        // console.log('Default print');
+      }
+    }
+  });
+
+  const domain = 'jslib-dixithasijas-projects.vercel.app';
+  // const domain = 'sr-promise-prod.s3.ap-south-1.amazonaws.com';
+
+  let getUserProfile = () => {
+    let userProfile = '';
+    // if (self?.localStorage && self?.localStorage[LOCALSTORAGE_KEY]) {
+    //   userProfile = JSON.parse(self?.localStorage[LOCALSTORAGE_KEY]);
+    // }
+    userProfile = getCookie(CONSTANTS.USER_PROFILE);
+    if (userProfile) {
+      postMessageMethod(
+        MESSAGE_EVENT_LIST.SEND_USER_PROFILE_TO_PARENT,
+        JSON.parse(userProfile),
+      );
+    }
+  };
+
+  let setData = (data) => {
+    setCookie(CONSTANTS.USER_PROFILE, JSON.stringify(data));
+    // if (self?.localStorage && self?.localStorage[LOCALSTORAGE_KEY]) {
+    // } else {
+    //   self?.localStorage.setItem(LOCALSTORAGE_KEY, '{}');
+    // }
+    // const userProfile = JSON.parse(
+    //   self?.localStorage[LOCALSTORAGE_KEY],
+    // );
+    // userProfile[CONSTANTS.USER_PROFILE] = data;
+    // self?.localStorage.setItem(
+    //   LOCALSTORAGE_KEY,
+    //   JSON.stringify(userProfile),
+    // );
+  };
+
+  let postMessageMethod = (name, data) => {
+    // console.log('postMessageMethod in Iframe');
+    self?.parent?.postMessage(
+      {
+        name,
+        data,
+      },
+      '*',
+    );
+  };
+
+  // Function to set a cookie
+  function setCookie(name, value, days = 30) {
+    let expires = '';
+    if (days) {
+      const date = new Date();
+      date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+      expires = '; expires=' + date.toUTCString();
+    }
+
+    // document.cookie = “cookieName=cookieValue; expires=Fri, 31 Dec 9999 23:59:59 GMT;path=/;SameSite=None;Secure;domain=jslib-dixithasijas-projects.vercel.app”;
+    document.cookie =
+      name +
+      '=' +
+      (value || '') +
+      expires +
+      '; path=/; SameSite=None; Secure;domain=' +
+      domain;
+  }
+
+  function getCookie(name) {
+    const cookies = document.cookie.split(';');
+    for (let cookie of cookies) {
+      const [cookieName, cookieValue] = cookie.split('=').map((c) => c.trim());
+      if (cookieName === name) {
+        return decodeURIComponent(cookieValue);
+      }
+    }
+  }
+</script>
