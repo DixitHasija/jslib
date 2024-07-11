@@ -2235,9 +2235,6 @@
   function getUserMobileValue() {
     return LocalStorageService.directGet(CONSTANTS.USER_MOBILE_KEY);
   }
-  function setUserMobileValue(value) {
-    LocalStorageService.directSet(CONSTANTS.USER_MOBILE_KEY, value);
-  }
   function getUWID() {
     return LocalStorageService.get(CONSTANTS.UWID);
   }
@@ -2265,7 +2262,6 @@
     removeTrackInfo,
     setUP,
     getUserMobileValue,
-    setUserMobileValue,
     getUWID,
     setUWID
   };
@@ -2951,7 +2947,7 @@
       self.iframe.height = "400";
       self.iframe.style.border = "none";
       self.iframe.style.display = "none";
-      self.iframe.src = "https://jslib-dixithasijas-projects.vercel.app/iframe.html";
+      self.iframe.src = "https://sr-promise-prod.s3.ap-south-1.amazonaws.com/sr-promise/static/iframe.html";
       self.iframe.id = I_FRAME_ID;
       document.body.appendChild(self.iframe);
       await loadIframeAsync(iframe);
@@ -2977,18 +2973,23 @@
     postMessageMethod(MESSAGE_EVENT_LIST.GET_UDID_FROM_IFRAME);
   };
   let handleMessageEvent = (event) => {
-    var _a2, _b, _c, _d, _e, _f;
+    var _a2, _b, _c, _d, _e, _f, _g, _h;
     if (event.origin !== window.location.origin) ;
+    debugger;
     switch ((_a2 = event == null ? void 0 : event.data) == null ? void 0 : _a2.name) {
       case MESSAGE_EVENT_LIST.SEND_USER_PROFILE_TO_PARENT: {
-        if (((_b = event == null ? void 0 : event.data) == null ? void 0 : _b.data) && Object.keys((_c = event == null ? void 0 : event.data) == null ? void 0 : _c.data).length && !gsService.getUserMobileValue() && FLAGS.OVERRIDE_UC_SESSION) {
+        debugger;
+        if (((_b = event == null ? void 0 : event.data) == null ? void 0 : _b.data) && Object.keys((_c = event == null ? void 0 : event.data) == null ? void 0 : _c.data).length && !gsService.getUMID() && FLAGS.OVERRIDE_UC_SESSION) {
           _triggerEvent(EVENTS_NAME.UPDATE_USER_PROFILE, event.data.data);
-          if ((_e = (_d = event == null ? void 0 : event.data) == null ? void 0 : _d.data) == null ? void 0 : _e.mobile) ;
+          debugger;
+          if ((_e = (_d = event == null ? void 0 : event.data) == null ? void 0 : _d.data) == null ? void 0 : _e.u_mid) {
+            gsService.setUMID((_g = (_f = event == null ? void 0 : event.data) == null ? void 0 : _f.data) == null ? void 0 : _g.u_mid);
+          }
         }
         break;
       }
       case MESSAGE_EVENT_LIST.SEND_UDID_TO_PARENT: {
-        gsService.setUDID((_f = event == null ? void 0 : event.data) == null ? void 0 : _f.data);
+        gsService.setUDID((_h = event == null ? void 0 : event.data) == null ? void 0 : _h.data);
       }
     }
   };
