@@ -2232,6 +2232,9 @@
   function setUP(value) {
     LocalStorageService.directSet(CONSTANTS.USER_PROFILE, value);
   }
+  function getUP() {
+    LocalStorageService.directGet(CONSTANTS.USER_PROFILE);
+  }
   function getUserMobileValue() {
     return LocalStorageService.directGet(CONSTANTS.USER_MOBILE_KEY);
   }
@@ -2264,6 +2267,7 @@
     setUEID,
     removeTrackInfo,
     setUP,
+    getUP,
     getUserMobileValue,
     setUserMobileValue,
     getUWID,
@@ -2733,7 +2737,7 @@
   });
   function sendEvent(apiData) {
     if (intersectionInTwoArrays(BLOCKED_CHANNELS, gsService.getChannels()).length === 0) {
-      let base_url = "https://universal-cookies-qa-1.kartrocket.com";
+      let base_url = "https://uc.shiprocket.in";
       let url = base_url + "/v1/track/user";
       try {
         fetch(url, {
@@ -2951,7 +2955,7 @@
       self.iframe.height = "400";
       self.iframe.style.border = "none";
       self.iframe.style.display = "none";
-      self.iframe.src = "https://jslib-dixithasijas-projects.vercel.app/iframe.html";
+      self.iframe.src = "https://sr-promise-prod.s3.ap-south-1.amazonaws.com/sr-promise/static/iframe.html";
       self.iframe.id = I_FRAME_ID;
       document.body.appendChild(self.iframe);
       await loadIframeAsync(iframe);
@@ -3141,7 +3145,11 @@
     await createIframe();
     getUDIDFromIframe();
     const userMobileValue = gsService.getUserMobileValue();
-    if (userMobileValue) {
+    const savedUserProfile = gsService.getUP();
+    const userMobileNumberSession = savedUserProfile[CONSTANTS.USER_PROFILE] ? savedUserProfile[CONSTANTS.USER_PROFILE] : null;
+    debugger;
+    savedUserProfile && savedUserProfile[CONSTANTS.USER_PROFILE];
+    if (userMobileValue && (userMobileNumberSession && userMobileNumberSession !== userMobileValue || !userMobileNumberSession)) {
       getUserData(userMobileValue);
     } else {
       getCookie();
@@ -3149,7 +3157,7 @@
   }
   function registerChannelId() {
     var _a2, _b, _c;
-    const script = document.getElementById("uc_shiprocket");
+    let script = document.getElementById("uc_shiprocket");
     if (!script && ((_a2 = document == null ? void 0 : document.currentScript) == null ? void 0 : _a2.src)) {
       script = document == null ? void 0 : document.currentScript;
     }
@@ -3168,7 +3176,7 @@
     }
   }
   let getUserData = (userMobileValue) => {
-    let base_url = "https://universal-cookies-qa-1.kartrocket.com";
+    let base_url = "https://uc.shiprocket.in";
     let url = base_url + "/v1/user/info?mid=" + userMobileValue;
     try {
       fetch(url, {
