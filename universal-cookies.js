@@ -2232,9 +2232,6 @@
   function setUP(value) {
     LocalStorageService.directSet(CONSTANTS.USER_PROFILE, value);
   }
-  function getUP() {
-    return LocalStorageService.directGet(CONSTANTS.USER_PROFILE);
-  }
   function getUserMobileValue() {
     return LocalStorageService.directGet(CONSTANTS.USER_MOBILE_KEY);
   }
@@ -2267,7 +2264,6 @@
     setUEID,
     removeTrackInfo,
     setUP,
-    getUP,
     getUserMobileValue,
     setUserMobileValue,
     getUWID,
@@ -2955,7 +2951,7 @@
       self.iframe.height = "400";
       self.iframe.style.border = "none";
       self.iframe.style.display = "none";
-      self.iframe.src = "https://jslib-dixithasijas-projects.vercel.app/iframe.html";
+      self.iframe.src = "https://sr-promise-prod.s3.ap-south-1.amazonaws.com/sr-promise/static/iframe.html";
       self.iframe.id = I_FRAME_ID;
       document.body.appendChild(self.iframe);
       await loadIframeAsync(iframe);
@@ -2981,20 +2977,18 @@
     postMessageMethod(MESSAGE_EVENT_LIST.GET_UDID_FROM_IFRAME);
   };
   let handleMessageEvent = (event) => {
-    var _a2, _b, _c, _d, _e, _f, _g, _h;
+    var _a2, _b, _c, _d, _e, _f;
     if (event.origin !== window.location.origin) ;
     switch ((_a2 = event == null ? void 0 : event.data) == null ? void 0 : _a2.name) {
       case MESSAGE_EVENT_LIST.SEND_USER_PROFILE_TO_PARENT: {
         if (((_b = event == null ? void 0 : event.data) == null ? void 0 : _b.data) && Object.keys((_c = event == null ? void 0 : event.data) == null ? void 0 : _c.data).length && !gsService.getUserMobileValue() && FLAGS.OVERRIDE_UC_SESSION) {
           _triggerEvent(EVENTS_NAME.UPDATE_USER_PROFILE, event.data.data);
-          if ((_e = (_d = event == null ? void 0 : event.data) == null ? void 0 : _d.data) == null ? void 0 : _e.mobile) {
-            gsService.setUserMobileValue((_g = (_f = event == null ? void 0 : event.data) == null ? void 0 : _f.data) == null ? void 0 : _g.mobile);
-          }
+          if ((_e = (_d = event == null ? void 0 : event.data) == null ? void 0 : _d.data) == null ? void 0 : _e.mobile) ;
         }
         break;
       }
       case MESSAGE_EVENT_LIST.SEND_UDID_TO_PARENT: {
-        gsService.setUDID((_h = event == null ? void 0 : event.data) == null ? void 0 : _h.data);
+        gsService.setUDID((_f = event == null ? void 0 : event.data) == null ? void 0 : _f.data);
       }
     }
   };
@@ -3118,7 +3112,6 @@
   }
   async function onLoad() {
     registerChannelId();
-    debugger;
     const FingerprintObject = await getFingerprintObject();
     const ThumbmarkJsObject = await getThumbmarkJs();
     UFID = FingerprintObject == null ? void 0 : FingerprintObject.visitorId;
@@ -3140,13 +3133,7 @@
     await createIframe();
     getUDIDFromIframe();
     const userMobileValue = gsService.getUserMobileValue();
-    let savedUserProfile = gsService.getUP();
-    if (savedUserProfile) {
-      savedUserProfile = JSON.parse(savedUserProfile);
-    }
-    const userMobileNumberSession = savedUserProfile && savedUserProfile.u_mid ? savedUserProfile.u_mid : null;
-    savedUserProfile && savedUserProfile[CONSTANTS.USER_PROFILE];
-    if (userMobileValue && (userMobileNumberSession && userMobileNumberSession !== userMobileValue || !userMobileNumberSession)) {
+    if (userMobileValue) {
       _triggerEvent(EVENTS_NAME.UPDATE_UMID, { mobile: userMobileValue });
       getUserData(userMobileValue);
     } else {
