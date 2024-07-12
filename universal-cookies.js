@@ -2957,10 +2957,10 @@
   function setCookies(data) {
     postMessageMethod(MESSAGE_EVENT_LIST.SET_USER_PROFILE_TO_IFRAME, data);
   }
-  let postMessageMethod = (name, data) => {
+  let postMessageMethod = (name2, data) => {
     self.iframe.contentWindow.postMessage(
       {
-        name,
+        name: name2,
         data
       },
       "*"
@@ -3094,6 +3094,14 @@
       }
     }
   }
+  function notificationService(_name, _data) {
+    switch (name) {
+      case "update_mobile": {
+        console.log("Mobile Number Update notification received" + _data);
+        break;
+      }
+    }
+  }
   let UFID = "";
   let UWID = "";
   let UTID = "";
@@ -3202,8 +3210,7 @@
     register: gsService.setChannel,
     showRegisterChannels: gsService.getChannels,
     initialize: onLoad,
-    notify: UC.notificationService,
-
+    notify: notificationService
   };
   const ua = window.SHIPROCKET_ANALYTICS;
   window.ua = ua;
