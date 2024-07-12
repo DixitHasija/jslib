@@ -3099,7 +3099,7 @@
         console.log("Mobile Number Update notification received", _data);
         const userMobileValue = (_data == null ? void 0 : _data.mobile) || gsService.getUserMobileValue();
         if (userMobileValue) {
-          UC.event(EVENTS_NAME.UPDATE_UMID, { mobile: userMobileValue });
+          _triggerEvent(EVENTS_NAME.UPDATE_UMID, { mobile: userMobileValue });
           break;
         }
       }
