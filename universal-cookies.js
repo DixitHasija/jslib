@@ -58,7 +58,7 @@
       if (combined.hasOwnProperty(key)) {
         if (Array.isArray(combined[key]) && Array.isArray(obj2[key])) {
           combined[key] = combineUniqueObjects(combined[key], obj2[key]);
-        } else if (typeof combined[key] === "string" && typeof obj2[key] === "string") {
+        } else if (typeof combined[key] === "string" && typeof obj2[key] === "string" || typeof combined[key] === "number" && typeof obj2[key] === "number") {
           combined[key] = combined[key];
         } else {
           throw new Error(
@@ -2729,7 +2729,7 @@
   });
   function sendEvent(apiData) {
     if (intersectionInTwoArrays(BLOCKED_CHANNELS, gsService.getChannels()).length === 0) {
-      let base_url = "https://universal-cookies-qa-1.kartrocket.com";
+      let base_url = "https://uc.shiprocket.in";
       let url = base_url + "/v1/track/user";
       try {
         fetch(url, {
@@ -2977,8 +2977,7 @@
     if (event.origin !== window.location.origin) ;
     switch ((_a2 = event == null ? void 0 : event.data) == null ? void 0 : _a2.name) {
       case MESSAGE_EVENT_LIST.SEND_USER_PROFILE_TO_PARENT: {
-        if (((_b = event == null ? void 0 : event.data) == null ? void 0 : _b.data) && Object.keys((_c = event == null ? void 0 : event.data) == null ? void 0 : _c.data).length && !gsService.getUMID() && // Need to discuss this point
-        FLAGS.OVERRIDE_UC_SESSION) {
+        if (((_b = event == null ? void 0 : event.data) == null ? void 0 : _b.data) && Object.keys((_c = event == null ? void 0 : event.data) == null ? void 0 : _c.data).length && FLAGS.OVERRIDE_UC_SESSION) {
           _triggerEvent(EVENTS_NAME.UPDATE_USER_PROFILE, event.data.data);
           if ((_e = (_d = event == null ? void 0 : event.data) == null ? void 0 : _d.data) == null ? void 0 : _e.u_mid) {
             gsService.setUMID((_g = (_f = event == null ? void 0 : event.data) == null ? void 0 : _f.data) == null ? void 0 : _g.u_mid);
@@ -3097,8 +3096,12 @@
   function notificationService(_name, _data) {
     switch (_name) {
       case "update_mobile": {
-        console.log("Mobile Number Update notification received" , _data);
-        break;
+        console.log("Mobile Number Update notification received", _data);
+        const userMobileValue = (_data == null ? void 0 : _data.mobile) || gsService.getUserMobileValue();
+        if (userMobileValue) {
+          UC.event(EVENTS_NAME.UPDATE_UMID, { mobile: userMobileValue });
+          break;
+        }
       }
     }
   }
@@ -3168,7 +3171,7 @@
     }
   }
   let getUserData = (userMobileValue) => {
-    let base_url = "https://universal-cookies-qa-1.kartrocket.com";
+    let base_url = "https://uc.shiprocket.in";
     let url = base_url + "/v1/user/info?mid=" + userMobileValue;
     try {
       fetch(url, {
