@@ -2957,10 +2957,10 @@
   function setCookies(data) {
     postMessageMethod(MESSAGE_EVENT_LIST.SET_USER_PROFILE_TO_IFRAME, data);
   }
-  let postMessageMethod = (name2, data) => {
+  let postMessageMethod = (name, data) => {
     self.iframe.contentWindow.postMessage(
       {
-        name: name2,
+        name,
         data
       },
       "*"
@@ -3095,7 +3095,7 @@
     }
   }
   function notificationService(_name, _data) {
-    switch (name) {
+    switch (_name) {
       case "update_mobile": {
         console.log("Mobile Number Update notification received" + _data);
         break;
