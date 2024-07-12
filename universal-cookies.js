@@ -3202,7 +3202,8 @@
     register: gsService.setChannel,
     showRegisterChannels: gsService.getChannels,
     initialize: onLoad,
-    notify: notificationService
+    notify: UC.notificationService,
+
   };
   const ua = window.SHIPROCKET_ANALYTICS;
   window.ua = ua;
