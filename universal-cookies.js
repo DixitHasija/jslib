@@ -2977,7 +2977,8 @@
     if (event.origin !== window.location.origin) ;
     switch ((_a2 = event == null ? void 0 : event.data) == null ? void 0 : _a2.name) {
       case MESSAGE_EVENT_LIST.SEND_USER_PROFILE_TO_PARENT: {
-        if (((_b = event == null ? void 0 : event.data) == null ? void 0 : _b.data) && Object.keys((_c = event == null ? void 0 : event.data) == null ? void 0 : _c.data).length && !gsService.getUMID() && FLAGS.OVERRIDE_UC_SESSION) {
+        if (((_b = event == null ? void 0 : event.data) == null ? void 0 : _b.data) && Object.keys((_c = event == null ? void 0 : event.data) == null ? void 0 : _c.data).length && !gsService.getUMID() && // Need to discuss this point
+        FLAGS.OVERRIDE_UC_SESSION) {
           _triggerEvent(EVENTS_NAME.UPDATE_USER_PROFILE, event.data.data);
           if ((_e = (_d = event == null ? void 0 : event.data) == null ? void 0 : _d.data) == null ? void 0 : _e.u_mid) {
             gsService.setUMID((_g = (_f = event == null ? void 0 : event.data) == null ? void 0 : _f.data) == null ? void 0 : _g.u_mid);
@@ -3200,7 +3201,8 @@
     event: _triggerEvent,
     register: gsService.setChannel,
     showRegisterChannels: gsService.getChannels,
-    initialize: onLoad
+    initialize: onLoad,
+    notify: notificationServices
   };
   const ua = window.SHIPROCKET_ANALYTICS;
   window.ua = ua;
