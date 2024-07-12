@@ -2729,7 +2729,7 @@
   });
   function sendEvent(apiData) {
     if (intersectionInTwoArrays(BLOCKED_CHANNELS, gsService.getChannels()).length === 0) {
-      let base_url = "https://uc.shiprocket.in";
+      let base_url = "https://universal-cookies-qa-1.kartrocket.com";
       let url = base_url + "/v1/track/user";
       try {
         fetch(url, {
@@ -2975,13 +2975,10 @@
   let handleMessageEvent = (event) => {
     var _a2, _b, _c, _d, _e, _f, _g, _h;
     if (event.origin !== window.location.origin) ;
-    debugger;
     switch ((_a2 = event == null ? void 0 : event.data) == null ? void 0 : _a2.name) {
       case MESSAGE_EVENT_LIST.SEND_USER_PROFILE_TO_PARENT: {
-        debugger;
         if (((_b = event == null ? void 0 : event.data) == null ? void 0 : _b.data) && Object.keys((_c = event == null ? void 0 : event.data) == null ? void 0 : _c.data).length && !gsService.getUMID() && FLAGS.OVERRIDE_UC_SESSION) {
           _triggerEvent(EVENTS_NAME.UPDATE_USER_PROFILE, event.data.data);
-          debugger;
           if ((_e = (_d = event == null ? void 0 : event.data) == null ? void 0 : _d.data) == null ? void 0 : _e.u_mid) {
             gsService.setUMID((_g = (_f = event == null ? void 0 : event.data) == null ? void 0 : _f.data) == null ? void 0 : _g.u_mid);
           }
@@ -3162,7 +3159,7 @@
     }
   }
   let getUserData = (userMobileValue) => {
-    let base_url = "https://uc.shiprocket.in";
+    let base_url = "https://universal-cookies-qa-1.kartrocket.com";
     let url = base_url + "/v1/user/info?mid=" + userMobileValue;
     try {
       fetch(url, {
