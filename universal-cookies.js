@@ -3097,7 +3097,7 @@
   function notificationService(_name, _data) {
     switch (_name) {
       case "update_mobile": {
-        console.log("Mobile Number Update notification received" + _data);
+        console.log("Mobile Number Update notification received" , _data);
         break;
       }
     }
