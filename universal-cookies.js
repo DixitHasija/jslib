@@ -3131,7 +3131,7 @@
       gsService.setUWID(UWID);
     }
     if (!UTID) {
-      UTID = gsService.setUTID(ThumbmarkJsObject.hash);
+      UTID = gsService.setUTID(ThumbmarkJsObject);
     }
     if (gsService.getUFID() && gsService.getUFID() !== UFID) ;
     gsService.setUFID(UFID);
