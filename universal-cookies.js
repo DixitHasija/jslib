@@ -3105,7 +3105,6 @@
   }
   let UFID = "";
   let UWID = "";
-  let UTID = "";
   let intervalId = "";
   async function getFingerprintObject() {
     const fp = await FingerprintJS.load({
@@ -3125,14 +3124,12 @@
     debugger;
     UFID = FingerprintObject == null ? void 0 : FingerprintObject.visitorId;
     UWID = gsService.getUWID(CONSTANTS.UWID);
-    UTID = gsService.getUTID(CONSTANTS.UTID);
+    gsService.getUTID(CONSTANTS.UTID);
     if (!UWID) {
       UWID = getRandomUUID();
       gsService.setUWID(UWID);
     }
-    if (!UTID) {
-      UTID = gsService.setUTID(ThumbmarkJsObject);
-    }
+    gsService.setUTID(ThumbmarkJsObject);
     if (gsService.getUFID() && gsService.getUFID() !== UFID) ;
     gsService.setUFID(UFID);
     _triggerEvent(EVENTS_NAME.ON_LOAD, {});
