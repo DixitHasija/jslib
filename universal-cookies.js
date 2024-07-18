@@ -58,7 +58,7 @@
       if (combined.hasOwnProperty(key)) {
         if (Array.isArray(combined[key]) && Array.isArray(obj2[key])) {
           combined[key] = combineUniqueObjects(combined[key], obj2[key]);
-        } else if (typeof combined[key] === "string" && typeof obj2[key] === "string" || typeof combined[key] === "number" && typeof obj2[key] === "number") {
+        } else if (typeof combined[key] === "string" && typeof obj2[key] === "string") {
           combined[key] = combined[key];
         } else {
           throw new Error(
@@ -2235,6 +2235,9 @@
   function getUserMobileValue() {
     return LocalStorageService.directGet(CONSTANTS.USER_MOBILE_KEY);
   }
+  function setUserMobileValue(value) {
+    LocalStorageService.directSet(CONSTANTS.USER_MOBILE_KEY, value);
+  }
   function getUWID() {
     return LocalStorageService.get(CONSTANTS.UWID);
   }
@@ -2262,6 +2265,7 @@
     removeTrackInfo,
     setUP,
     getUserMobileValue,
+    setUserMobileValue,
     getUWID,
     setUWID
   };
@@ -2436,7 +2440,7 @@
           case 0:
             return r2.trys.push([0, 2, , 3]), [4, w()];
           case 1:
-            return e2 = r2.sent(), t = m(JSON.stringify(e2)), [2, { hash: t.toString(), data: e2 }];
+            return e2 = r2.sent(), t = m(JSON.stringify(e2)), [2, t.toString()];
           case 2:
             throw r2.sent();
           case 3:
@@ -2947,7 +2951,7 @@
       self.iframe.height = "400";
       self.iframe.style.border = "none";
       self.iframe.style.display = "none";
-      self.iframe.src = "https://jslib-dixithasijas-projects.vercel.app/iframe.html";
+      self.iframe.src = "https://sr-promise-prod.s3.ap-south-1.amazonaws.com/sr-promise/static/iframe.html";
       self.iframe.id = I_FRAME_ID;
       document.body.appendChild(self.iframe);
       await loadIframeAsync(iframe);
@@ -2977,10 +2981,10 @@
     if (event.origin !== window.location.origin) ;
     switch ((_a2 = event == null ? void 0 : event.data) == null ? void 0 : _a2.name) {
       case MESSAGE_EVENT_LIST.SEND_USER_PROFILE_TO_PARENT: {
-        if (((_b = event == null ? void 0 : event.data) == null ? void 0 : _b.data) && Object.keys((_c = event == null ? void 0 : event.data) == null ? void 0 : _c.data).length && FLAGS.OVERRIDE_UC_SESSION) {
+        if (((_b = event == null ? void 0 : event.data) == null ? void 0 : _b.data) && Object.keys((_c = event == null ? void 0 : event.data) == null ? void 0 : _c.data).length && !gsService.getUserMobileValue() && FLAGS.OVERRIDE_UC_SESSION) {
           _triggerEvent(EVENTS_NAME.UPDATE_USER_PROFILE, event.data.data);
-          if ((_e = (_d = event == null ? void 0 : event.data) == null ? void 0 : _d.data) == null ? void 0 : _e.u_mid) {
-            gsService.setUMID((_g = (_f = event == null ? void 0 : event.data) == null ? void 0 : _f.data) == null ? void 0 : _g.u_mid);
+          if ((_e = (_d = event == null ? void 0 : event.data) == null ? void 0 : _d.data) == null ? void 0 : _e.mobile) {
+            gsService.setUserMobileValue((_g = (_f = event == null ? void 0 : event.data) == null ? void 0 : _f.data) == null ? void 0 : _g.mobile);
           }
         }
         break;
@@ -3028,9 +3032,15 @@
         updatedAt: getCurrentTimeStamp()
       };
       if (!gsService.getUMID() || !gsService.getUEID()) {
+        let mobileEnumsList = ["mobile", "mobile_no"];
         let emailEnumsList = ["email", "email_id"];
+        let isMobileIsPresent = false;
         let isEmailIsPresent = false;
         Object.keys(payload).forEach(async (key) => {
+          if (!isMobileIsPresent && mobileEnumsList.includes(key)) {
+            isMobileIsPresent = true;
+            gsService.setUMID(await get_SHA_256(payload[key]));
+          }
           if (!isEmailIsPresent && emailEnumsList.includes(key)) {
             isEmailIsPresent = true;
             gsService.setUEID(await get_SHA_256(payload[key]));
@@ -3093,18 +3103,6 @@
       }
     }
   }
-  function notificationService(_name, _data) {
-    switch (_name) {
-      case "update_mobile": {
-        console.log("Mobile Number Update notification received", _data);
-        const userMobileValue = (_data == null ? void 0 : _data.mobile) || gsService.getUserMobileValue();
-        if (userMobileValue) {
-          _triggerEvent(EVENTS_NAME.UPDATE_UMID, { mobile: userMobileValue });
-          break;
-        }
-      }
-    }
-  }
   let UFID = "";
   let UWID = "";
   let UTID = "";
@@ -3124,6 +3122,7 @@
     registerChannelId();
     const FingerprintObject = await getFingerprintObject();
     const ThumbmarkJsObject = await getThumbmarkJs();
+    debugger;
     UFID = FingerprintObject == null ? void 0 : FingerprintObject.visitorId;
     UWID = gsService.getUWID(CONSTANTS.UWID);
     UTID = gsService.getUTID(CONSTANTS.UTID);
@@ -3144,7 +3143,6 @@
     getUDIDFromIframe();
     const userMobileValue = gsService.getUserMobileValue();
     if (userMobileValue) {
-      _triggerEvent(EVENTS_NAME.UPDATE_UMID, { mobile: userMobileValue });
       getUserData(userMobileValue);
     } else {
       getCookie();
@@ -3184,6 +3182,7 @@
         let userInfo = userInfoMapper(
           Object.assign(json.data, { u_mid: userMobileValue })
         );
+        _triggerEvent(EVENTS_NAME.UPDATE_UMID, { mobile: userMobileValue });
         setCookies(userInfo);
         _triggerEvent(EVENTS_NAME.UPDATE_USER_PROFILE, userInfo);
       });
@@ -3212,8 +3211,7 @@
     event: _triggerEvent,
     register: gsService.setChannel,
     showRegisterChannels: gsService.getChannels,
-    initialize: onLoad,
-    notify: notificationService
+    initialize: onLoad
   };
   const ua = window.SHIPROCKET_ANALYTICS;
   window.ua = ua;
