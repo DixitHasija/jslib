@@ -3120,8 +3120,7 @@
   async function onLoad() {
     registerChannelId();
     const FingerprintObject = await getFingerprintObject();
-    const ThumbmarkJsObject = await getThumbmarkJs();
-    debugger;
+    const ThumbmarkJsObject = await getThumbmarkJs();    
     UFID = FingerprintObject == null ? void 0 : FingerprintObject.visitorId;
     UWID = gsService.getUWID(CONSTANTS.UWID);
     gsService.getUTID(CONSTANTS.UTID);
