@@ -3435,19 +3435,17 @@
       console.log(error);
     }
   };
-  let registerUTIDKey = () => {
-    const timeOutId = setTimeout(async () => {
-      debugger;
-      if (!gsService.getUTID(CONSTANTS.UTID)) {
-        window.isThumbmarkIsLoading = true;
-        const ThumbmarkJsObject = await getThumbmarkJs();
-        delete window.isThumbmarkIsLoading;
-        UTID = ThumbmarkJsObject.hash;
-        gsService.setUTID(ThumbmarkJsObject.hash);
-        console.log(UTID, "UTID");
-        clearTimeout(timeOutId);
-      }
-    }, 1e3);
+  let registerUTIDKey = async () => {
+    debugger;
+    if (!gsService.getUTID(CONSTANTS.UTID)) {
+      window.isThumbmarkIsLoading = true;
+      const ThumbmarkJsObject = await getThumbmarkJs();
+      delete window.isThumbmarkIsLoading;
+      UTID = ThumbmarkJsObject.hash;
+      gsService.setUTID(ThumbmarkJsObject.hash);
+      console.log(UTID, "UTID");
+      clearTimeout(timeOutId);
+    }
   };
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", onLoad);
