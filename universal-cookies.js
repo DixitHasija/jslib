@@ -3370,7 +3370,7 @@
       debugger;
       const ThumbmarkJsObject = await getThumbmarkJs();
       UTID = gsService.setUTID(ThumbmarkJsObject.hash);
-      console.log(UTID, "UTID");
+      console.log(ThumbmarkJsObject.hash, "UTID");
     
     if (gsService.getUFID() && gsService.getUFID() !== UFID) ;
     gsService.setUFID(UFID);
