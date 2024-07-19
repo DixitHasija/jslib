@@ -3357,7 +3357,8 @@
       UWID = getRandomUUID();
       gsService.setUWID(UWID);
     }
-    gsService.setUTID(ThumbmarkJsObject.hash);
+    debugger;
+    gsService.setUTID(ThumbmarkJsObject);
     if (gsService.getUFID() && gsService.getUFID() !== UFID) ;
     gsService.setUFID(UFID);
     c().then((result) => {
