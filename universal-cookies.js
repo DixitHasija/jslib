@@ -3444,7 +3444,6 @@
       UTID = ThumbmarkJsObject.hash;
       gsService.setUTID(ThumbmarkJsObject.hash);
       console.log(UTID, "UTID");
-      clearTimeout(timeOutId);
     }
   };
   if (document.readyState === "loading") {
