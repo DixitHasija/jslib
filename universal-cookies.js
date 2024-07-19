@@ -3353,7 +3353,7 @@
     return result;
   }
   async function getThumbmarkJs() {
-    t$1("exclude", ["permissions_to_checks"]);
+    t$1("exclude", ["permissions"]);
     return y().then((fp) => fp);
   }
   async function onLoad() {
@@ -3366,12 +3366,12 @@
       UWID = getRandomUUID();
       gsService.setUWID(UWID);
     }
-    if (!UTID) {
+    
       debugger;
       const ThumbmarkJsObject = await getThumbmarkJs();
       UTID = gsService.setUTID(ThumbmarkJsObject.hash);
       console.log(UTID, "UTID");
-    }
+    
     if (gsService.getUFID() && gsService.getUFID() !== UFID) ;
     gsService.setUFID(UFID);
     c().then((result) => {
