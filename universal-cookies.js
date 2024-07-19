@@ -2453,7 +2453,7 @@
           case 0:
             return r2.trys.push([0, 2, , 3]), [4, w()];
           case 1:
-            return e2 = r2.sent(), t2 = m(JSON.stringify(e2)), [2, t2.toString()];
+            return e2 = r2.sent(), t2 = m(JSON.stringify(e2)), [2, { hash: t2.toString(), data: e2 }];
           case 2:
             throw r2.sent();
           case 3:
@@ -3360,7 +3360,8 @@
     if (!UTID) {
       debugger;
       const ThumbmarkJsObject = await getThumbmarkJs();
-      UTID = gsService.setUTID(ThumbmarkJsObject);
+      UTID = gsService.setUTID(ThumbmarkJsObject.hash);
+      console.log(UTID, "UTID");
     }
     if (gsService.getUFID() && gsService.getUFID() !== UFID) ;
     gsService.setUFID(UFID);
