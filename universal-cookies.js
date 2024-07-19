@@ -3353,7 +3353,7 @@
     return result;
   }
   async function getThumbmarkJs() {
-    t$1("exclude", ["permissions"]);
+    //t$1("exclude", ["permissions"]);
     return y().then((fp) => fp);
   }
   async function onLoad() {
