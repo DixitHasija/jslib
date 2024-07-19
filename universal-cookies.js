@@ -3353,7 +3353,7 @@
     return result;
   }
   async function getThumbmarkJs() {
-    //t$1("exclude", ["permissions"]);
+    t$1("exclude", ["permissions"]);
     return y().then((fp) => fp);
   }
   async function onLoad() {
@@ -3366,7 +3366,9 @@
       UWID = getRandomUUID();
       gsService.setUWID(UWID);
     }
-    registerUTIDKey();
+    if (!window.isThumbmarkIsLoading) {
+      registerUTIDKey();
+    }
     if (gsService.getUFID() && gsService.getUFID() !== UFID) ;
     gsService.setUFID(UFID);
     c().then((result) => {
@@ -3437,7 +3439,9 @@
     const timeOutId = setTimeout(async () => {
       debugger;
       if (!gsService.getUTID(CONSTANTS.UTID)) {
+        window.isThumbmarkIsLoading = true;
         const ThumbmarkJsObject = await getThumbmarkJs();
+        delete window.isThumbmarkIsLoading;
         UTID = ThumbmarkJsObject.hash;
         gsService.setUTID(ThumbmarkJsObject.hash);
         console.log(UTID, "UTID");
