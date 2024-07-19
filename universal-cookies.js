@@ -3358,6 +3358,7 @@
       gsService.setUWID(UWID);
     }
     debugger;
+    console.log(ThumbmarkJsObject,'ThumbmarkJsObject');
     gsService.setUTID(ThumbmarkJsObject);
     if (gsService.getUFID() && gsService.getUFID() !== UFID) ;
     gsService.setUFID(UFID);
