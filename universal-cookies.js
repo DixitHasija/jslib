@@ -2368,14 +2368,6 @@
   }
   "function" == typeof SuppressedError && SuppressedError;
   var n$1 = { exclude: [] };
-  function t$1(e2, r2) {
-    if (!["exclude", "permissions_to_check", "retries", "timeout"].includes(e2)) throw new Error("Unknown option " + e2);
-    if (["exclude", "permissions_to_check"].includes(e2) && (!Array.isArray(r2) || !r2.every(function(e3) {
-      return "string" == typeof e3;
-    }))) throw new Error("The value of the exclude and permissions_to_check must be an array of strings");
-    if (["retries", "timeout"].includes(e2) && "number" != typeof r2) throw new Error("The value of retries must be a number");
-    n$1[e2] = r2;
-  }
   var o$1 = {}, a = { timeout: "true" }, i$1 = function(e2, r2) {
     "undefined" != typeof window && (o$1[e2] = r2);
   }, u = function() {
@@ -3353,7 +3345,6 @@
     return result;
   }
   async function getThumbmarkJs() {
-    t$1("exclude", ["permissions"]);
     return y().then((fp) => fp);
   }
   async function onLoad() {
@@ -3436,7 +3427,6 @@
     }
   };
   let registerUTIDKey = async () => {
-    debugger;
     if (!gsService.getUTID(CONSTANTS.UTID)) {
       window.isThumbmarkIsLoading = true;
       const ThumbmarkJsObject = await getThumbmarkJs();
