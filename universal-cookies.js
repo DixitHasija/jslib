@@ -3357,7 +3357,7 @@
       UWID = getRandomUUID();
       gsService.setUWID(UWID);
     }
-    if (!window.isThumbmarkIsLoading) {
+    if (!window.isThumbmarkIsLoading && !UTID) {
       registerUTIDKey();
     }
     if (gsService.getUFID() && gsService.getUFID() !== UFID) ;
@@ -3430,10 +3430,9 @@
     if (!gsService.getUTID(CONSTANTS.UTID)) {
       window.isThumbmarkIsLoading = true;
       const ThumbmarkJsObject = await getThumbmarkJs();
-      delete window.isThumbmarkIsLoading;
       UTID = ThumbmarkJsObject.hash;
       gsService.setUTID(ThumbmarkJsObject.hash);
-      console.log(UTID, "UTID");
+      delete window.isThumbmarkIsLoading;
     }
   };
   if (document.readyState === "loading") {
