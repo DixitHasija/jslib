@@ -3366,12 +3366,7 @@
       UWID = getRandomUUID();
       gsService.setUWID(UWID);
     }
-    
-      debugger;
-      const ThumbmarkJsObject = await getThumbmarkJs();
-      UTID = gsService.setUTID(ThumbmarkJsObject.hash);
-      console.log(ThumbmarkJsObject.hash, "UTID");
-    
+    registerUTIDKey();
     if (gsService.getUFID() && gsService.getUFID() !== UFID) ;
     gsService.setUFID(UFID);
     c().then((result) => {
@@ -3437,6 +3432,18 @@
     } catch (error) {
       console.log(error);
     }
+  };
+  let registerUTIDKey = () => {
+    const timeOutId = setTimeout(async () => {
+      debugger;
+      if (!gsService.getUTID(CONSTANTS.UTID)) {
+        const ThumbmarkJsObject = await getThumbmarkJs();
+        UTID = ThumbmarkJsObject.hash;
+        gsService.setUTID(ThumbmarkJsObject.hash);
+        console.log(UTID, "UTID");
+        clearTimeout(timeOutId);
+      }
+    }, 1e3);
   };
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", onLoad);
