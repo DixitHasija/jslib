@@ -3417,6 +3417,209 @@
   const i = r;
   n.A;
   var c = n.k;
+  var lib = {};
+  var EncryptDecrypt = {};
+  Object.defineProperty(EncryptDecrypt, "__esModule", { value: true });
+  EncryptDecrypt.cyrb53 = EncryptDecrypt.javaHashCode = EncryptDecrypt.murmurhash3_32_gc = void 0;
+  function murmurhash3_32_gc(key, seed) {
+    var remainder, bytes, h1, h1b, c1, c2, k1, i2;
+    remainder = key.length & 3;
+    bytes = key.length - remainder;
+    h1 = seed;
+    c1 = 3432918353;
+    c2 = 461845907;
+    i2 = 0;
+    while (i2 < bytes) {
+      k1 = key.charCodeAt(i2) & 255 | (key.charCodeAt(++i2) & 255) << 8 | (key.charCodeAt(++i2) & 255) << 16 | (key.charCodeAt(++i2) & 255) << 24;
+      ++i2;
+      k1 = (k1 & 65535) * c1 + (((k1 >>> 16) * c1 & 65535) << 16) & 4294967295;
+      k1 = k1 << 15 | k1 >>> 17;
+      k1 = (k1 & 65535) * c2 + (((k1 >>> 16) * c2 & 65535) << 16) & 4294967295;
+      h1 ^= k1;
+      h1 = h1 << 13 | h1 >>> 19;
+      h1b = (h1 & 65535) * 5 + (((h1 >>> 16) * 5 & 65535) << 16) & 4294967295;
+      h1 = (h1b & 65535) + 27492 + (((h1b >>> 16) + 58964 & 65535) << 16);
+    }
+    k1 = 0;
+    switch (remainder) {
+      case 3:
+        k1 ^= (key.charCodeAt(i2 + 2) & 255) << 16;
+        break;
+      case 2:
+        k1 ^= (key.charCodeAt(i2 + 1) & 255) << 8;
+        break;
+      case 1:
+        k1 ^= key.charCodeAt(i2) & 255;
+        k1 = (k1 & 65535) * c1 + (((k1 >>> 16) * c1 & 65535) << 16) & 4294967295;
+        k1 = k1 << 15 | k1 >>> 17;
+        k1 = (k1 & 65535) * c2 + (((k1 >>> 16) * c2 & 65535) << 16) & 4294967295;
+        h1 ^= k1;
+        break;
+      default:
+        return 0;
+    }
+    h1 ^= key.length;
+    h1 ^= h1 >>> 16;
+    h1 = (h1 & 65535) * 2246822507 + (((h1 >>> 16) * 2246822507 & 65535) << 16) & 4294967295;
+    h1 ^= h1 >>> 13;
+    h1 = (h1 & 65535) * 3266489909 + (((h1 >>> 16) * 3266489909 & 65535) << 16) & 4294967295;
+    h1 ^= h1 >>> 16;
+    return h1 >>> 0;
+  }
+  EncryptDecrypt.murmurhash3_32_gc = murmurhash3_32_gc;
+  const javaHashCode = (string, K) => {
+    var hash = 0;
+    if (string.length === 0) {
+      return hash;
+    }
+    let char;
+    for (var i2 = 0; i2 < string.length; i2++) {
+      char = string.charCodeAt(i2);
+      hash = K * ((hash << 5) - hash) + char;
+      hash = hash & hash;
+    }
+    return hash;
+  };
+  EncryptDecrypt.javaHashCode = javaHashCode;
+  const cyrb53 = function(str, seed = 0) {
+    let h1 = 3735928559 ^ seed, h2 = 1103547991 ^ seed;
+    for (let i2 = 0, ch; i2 < str.length; i2++) {
+      ch = str.charCodeAt(i2);
+      h1 = Math.imul(h1 ^ ch, 2654435761);
+      h2 = Math.imul(h2 ^ ch, 1597334677);
+    }
+    h1 = Math.imul(h1 ^ h1 >>> 16, 2246822507) ^ Math.imul(h2 ^ h2 >>> 13, 3266489909);
+    h2 = Math.imul(h2 ^ h2 >>> 16, 2246822507) ^ Math.imul(h1 ^ h1 >>> 13, 3266489909);
+    return 4294967296 * (2097151 & h2) + (h1 >>> 0);
+  };
+  EncryptDecrypt.cyrb53 = cyrb53;
+  var GenerateCanvasFingerprint = {};
+  (function(exports3) {
+    Object.defineProperty(exports3, "__esModule", { value: true });
+    exports3.getCanvasFingerprint = exports3.isCanvasSupported = void 0;
+    const isCanvasSupported = () => {
+      var elem = document.createElement("canvas");
+      return !!(elem.getContext && elem.getContext("2d"));
+    };
+    exports3.isCanvasSupported = isCanvasSupported;
+    const getCanvasFingerprint = () => {
+      if (!(0, exports3.isCanvasSupported)())
+        return "broprint.js";
+      var canvas = document.createElement("canvas");
+      var ctx = canvas.getContext("2d");
+      var txt = "BroPrint.65@345876";
+      ctx.textBaseline = "top";
+      ctx.font = "14px 'Arial'";
+      ctx.textBaseline = "alphabetic";
+      ctx.fillStyle = "#f60";
+      ctx.fillRect(125, 1, 62, 20);
+      ctx.fillStyle = "#069";
+      ctx.fillText(txt, 2, 15);
+      ctx.fillStyle = "rgba(102, 204, 0, 0.7)";
+      ctx.fillText(txt, 4, 17);
+      return canvas.toDataURL();
+    };
+    exports3.getCanvasFingerprint = getCanvasFingerprint;
+  })(GenerateCanvasFingerprint);
+  var generateTheAudioPrints = {};
+  Object.defineProperty(generateTheAudioPrints, "__esModule", { value: true });
+  generateTheAudioPrints.generateTheAudioFingerPrint = void 0;
+  generateTheAudioPrints.generateTheAudioFingerPrint = /* @__PURE__ */ function() {
+    var context = null;
+    var currentTime = null;
+    var oscillator = null;
+    var compressor = null;
+    var fingerprint = null;
+    var callback = null;
+    function run(cb, debug = false) {
+      callback = cb;
+      try {
+        setup();
+        oscillator.connect(compressor);
+        compressor.connect(context.destination);
+        oscillator.start(0);
+        context.startRendering();
+        context.oncomplete = onComplete;
+      } catch (e2) {
+        if (debug) {
+          throw e2;
+        }
+      }
+    }
+    function setup() {
+      setContext();
+      currentTime = context.currentTime;
+      setOscillator();
+      setCompressor();
+    }
+    function setContext() {
+      var audioContext = window.OfflineAudioContext || window.webkitOfflineAudioContext;
+      context = new audioContext(1, 44100, 44100);
+    }
+    function setOscillator() {
+      oscillator = context.createOscillator();
+      oscillator.type = "triangle";
+      oscillator.frequency.setValueAtTime(1e4, currentTime);
+    }
+    function setCompressor() {
+      compressor = context.createDynamicsCompressor();
+      setCompressorValueIfDefined("threshold", -50);
+      setCompressorValueIfDefined("knee", 40);
+      setCompressorValueIfDefined("ratio", 12);
+      setCompressorValueIfDefined("reduction", -20);
+      setCompressorValueIfDefined("attack", 0);
+      setCompressorValueIfDefined("release", 0.25);
+    }
+    function setCompressorValueIfDefined(item, value) {
+      if (compressor[item] !== void 0 && typeof compressor[item].setValueAtTime === "function") {
+        compressor[item].setValueAtTime(value, context.currentTime);
+      }
+    }
+    function onComplete(event) {
+      generateFingerprints(event);
+      compressor.disconnect();
+    }
+    function generateFingerprints(event) {
+      var output = null;
+      for (var i2 = 4500; 5e3 > i2; i2++) {
+        var channelData = event.renderedBuffer.getChannelData(0)[i2];
+        output += Math.abs(channelData);
+      }
+      fingerprint = output.toString();
+      if (typeof callback === "function") {
+        return callback(fingerprint);
+      }
+    }
+    return {
+      run
+    };
+  }();
+  Object.defineProperty(lib, "__esModule", { value: true });
+  var getCurrentBrowserFingerPrint_1 = lib.getCurrentBrowserFingerPrint = void 0;
+  const EncryptDecrypt_1 = EncryptDecrypt;
+  const GenerateCanvasFingerprint_1 = GenerateCanvasFingerprint;
+  const generateTheAudioPrints_1 = generateTheAudioPrints;
+  const getCurrentBrowserFingerPrint = () => {
+    const getTheAudioPrints = new Promise((resolve, reject) => {
+      generateTheAudioPrints_1.generateTheAudioFingerPrint.run(function(fingerprint) {
+        resolve(fingerprint);
+      });
+    });
+    const DevicePrints = new Promise((resolve, reject) => {
+      getTheAudioPrints.then((audioChannelResult) => {
+        let fingerprint = window.btoa(audioChannelResult) + (0, GenerateCanvasFingerprint_1.getCanvasFingerprint)();
+        resolve((0, EncryptDecrypt_1.cyrb53)(fingerprint, 0));
+      }).catch(() => {
+        try {
+          resolve((0, EncryptDecrypt_1.cyrb53)((0, GenerateCanvasFingerprint_1.getCanvasFingerprint)()).toString());
+        } catch (error) {
+          reject("Failed to generate the finger print of this browser");
+        }
+      });
+    });
+    return DevicePrints;
+  };
+  getCurrentBrowserFingerPrint_1 = lib.getCurrentBrowserFingerPrint = getCurrentBrowserFingerPrint;
   let UWID = "";
   let intervalId = "";
   async function onLoad() {
@@ -3454,6 +3657,10 @@
       getCookie();
     }
     generateAccessToken();
+    //! Testing New Library
+    getCurrentBrowserFingerPrint_1().then((fingerprint) => {
+      debugger;
+    });
   }
   function registerChannelId() {
     var _a2, _b, _c;
