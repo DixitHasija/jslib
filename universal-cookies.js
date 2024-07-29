@@ -3660,6 +3660,8 @@
     //! Testing New Library
     getCurrentBrowserFingerPrint_1().then((fingerprint) => {
       debugger;
+
+      console.log(fingerprint,'fingerprint');
     });
   }
   function registerChannelId() {
