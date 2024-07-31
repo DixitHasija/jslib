@@ -12,10 +12,11 @@
     TRACK_INFO: "track_info",
     UEID: "ueid",
     UMID: "umid",
-    USER_PROFILE: "_uc_session",
+    USER_PROFILE: "_uc_session_v1",
     USER_MOBILE_KEY: "sc_mid",
     UWID: "uwid",
-    INCOGNITO: "incognito"
+    INCOGNITO: "incognito",
+    OLD_USER_PROFILE: "_uc_session"
   };
   const CONSTANTS_MAPPING = {
     UDID: "udid",
@@ -48,7 +49,8 @@
     EVENT_DETAILS_MODE: true,
     CALL_API: true,
     OVERRIDE_UC_SESSION: true,
-    REMOVE_PII: false
+    REMOVE_PII: false,
+    REMOVE_OLD_USER_PROFILE: true
   };
   const EVENT_TTL = 5;
   const EVENT_AUTO_TRIGGER_TTL = 10;
@@ -222,6 +224,9 @@
   function directGet(_key) {
     return localStorage.getItem(_key);
   }
+  function directRemove(_key) {
+    localStorage.removeItem(_key);
+  }
   const LocalStorageService = {
     set: wSet,
     get: wget,
@@ -229,7 +234,8 @@
     remove: wRemove,
     len,
     directSet,
-    directGet
+    directGet,
+    directRemove
   };
   function getUDID() {
     return LocalStorageService.get(CONSTANTS.UDID);
@@ -327,6 +333,12 @@
   function setPrivateMode(value) {
     LocalStorageService.set(CONSTANTS.INCOGNITO, value);
   }
+  function getOldUserProfile() {
+    return LocalStorageService.directGet(CONSTANTS.OLD_USER_PROFILE);
+  }
+  function removeOldUserProfile() {
+    return LocalStorageService.directRemove(CONSTANTS.OLD_USER_PROFILE);
+  }
   const gsService = {
     getUDID,
     setUDID,
@@ -352,11 +364,13 @@
     getUWID,
     setUWID,
     getPrivateMode,
-    setPrivateMode
+    setPrivateMode,
+    getOldUserProfile,
+    removeOldUserProfile
   };
   function sendEvent(apiData) {
     if (intersectionInTwoArrays(BLOCKED_CHANNELS, gsService.getChannels()).length === 0) {
-      let base_url = "https://universal-cookies-qa-1.kartrocket.com";
+      let base_url = "https://uc.shiprocket.in";
       let url = base_url + "/v1/track/user";
       try {
         fetch(url, {
@@ -635,7 +649,7 @@
   };
   function getUserInfo(userMobileValue) {
     return new Promise((resolve, reject) => {
-      let base_url = "https://universal-cookies-qa-1.kartrocket.com";
+      let base_url = "https://uc.shiprocket.in";
       let url = base_url + "/v1/user/info?mid=" + userMobileValue;
       fetch(url, {
         method: "GET",
@@ -651,7 +665,7 @@
     });
   }
   function getUserInfoWithCallback(userMobileValue, successCallback, errorCallback) {
-    var base_url = "https://universal-cookies-qa-1.kartrocket.com";
+    var base_url = "https://uc.shiprocket.in";
     var url = base_url + "/v1/user/info?mid=" + userMobileValue;
     var xhr = new XMLHttpRequest();
     xhr.open("GET", url, true);
@@ -673,7 +687,7 @@
     xhr.send();
   }
   let getUserInfo_old = (userMobileValue) => {
-    let base_url = "https://universal-cookies-qa-1.kartrocket.com";
+    let base_url = "https://uc.shiprocket.in";
     let url = base_url + "/v1/user/info?mid=" + userMobileValue;
     try {
       fetch(url, {
@@ -3462,6 +3476,9 @@
       }
     } else {
       getCookie();
+    }
+    if (gsService.getOldUserProfile()) {
+      gsService.removeOldUserProfile();
     }
   }
   function registerChannelId() {
