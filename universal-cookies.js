@@ -50,7 +50,7 @@
     CALL_API: true,
     OVERRIDE_UC_SESSION: true,
     REMOVE_PII: false,
-    REMOVE_OLD_USER_PROFILE: true
+    REMOVE_OLD_USER_PROFILE: false
   };
   const EVENT_TTL = 5;
   const EVENT_AUTO_TRIGGER_TTL = 10;
