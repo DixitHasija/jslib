@@ -3477,9 +3477,6 @@
     } else {
       getCookie();
     }
-    if (gsService.getOldUserProfile()) {
-      gsService.removeOldUserProfile();
-    }
   }
   function registerChannelId() {
     var _a2, _b, _c;
