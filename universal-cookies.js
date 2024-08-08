@@ -3215,8 +3215,7 @@
   }
   function validateEventListAndRemoveUnwantedEvents(_expiredObjectList) {
     const keys = Object.keys(_expiredObjectList);
-    debugger;
-    if ((keys.includes("pdp_view") || keys.includes("order_track")) && keys.includes("page_view")) {
+    if ((keys.includes(EVENTS_NAME.PDP_VIEW) || keys.includes(EVENTS_NAME.ORDER_TRACK)) && keys.includes(EVENTS_NAME.ON_LOAD)) {
       delete _expiredObjectList["page_view"];
     }
     return _expiredObjectList;
