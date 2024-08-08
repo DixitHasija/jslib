@@ -49,8 +49,8 @@
     EVENT_DETAILS_MODE: true,
     CALL_API: true,
     OVERRIDE_UC_SESSION: true,
-    REMOVE_PII: false,
-    REMOVE_OLD_USER_PROFILE: false
+    REMOVE_PII: true,
+    REMOVE_OLD_USER_PROFILE: true
   };
   const EVENT_TTL = 5;
   const EVENT_AUTO_TRIGGER_TTL = 10;
@@ -169,10 +169,6 @@
     let list_one_set = new Set(list_one);
     let list_two_set = new Set(list_two);
     return [...list_one_set.intersection(list_two_set)];
-  }
-  function stringToBase64Url(str) {
-    let base64 = btoa(unescape(encodeURIComponent(str)));
-    return base64.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
   }
   const objectName = LOCALSTORAGE_KEY;
   let localStorageObject = {};
@@ -553,20 +549,6 @@
     }
     return data;
   }
-  let userInfoMapper = (data) => {
-    let returnObject = {
-      // name: data?.first_name + data?.last_name,
-      u_mid: data.u_mid,
-      mobile: stringToBase64Url(data == null ? void 0 : data.mobile_no)
-      // email: stringToBase64Url(data?.email),
-      // address: stringToBase64Url(data?.address_line_1 + data?.address_line_2),
-      // pincode: data?.pincode,
-      // city: data?.city,
-      // state: data?.state,
-      // country: data?.country_code,
-    };
-    return returnObject;
-  };
   async function get_SHA_256(string) {
     const utf8 = new TextEncoder().encode(string);
     const hashBuffer = await crypto.subtle.digest("SHA-256", utf8);
@@ -686,26 +668,6 @@
     };
     xhr.send();
   }
-  let getUserInfo_old = (userMobileValue) => {
-    let base_url = "https://uc.shiprocket.in";
-    let url = base_url + "/v1/user/info?mid=" + userMobileValue;
-    try {
-      fetch(url, {
-        method: "GET",
-        headers: {
-          "Content-type": "application/json"
-        }
-      }).then((response) => response.json()).then((json) => {
-        let userInfo = userInfoMapper(
-          Object.assign(json.data, { u_mid: userMobileValue })
-        );
-        setCookies(userInfo);
-        _triggerEvent(EVENTS_NAME.UPDATE_USER_PROFILE, userInfo);
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
   var FingerprintJS = function(e2) {
     var n2 = function() {
       return n2 = Object.assign || function(e3) {
@@ -3227,6 +3189,7 @@
         if (!gsService.getUDID()) {
           gsService.setUDID(getRandomUUID());
         }
+        expiredObjectList = validateEventListAndRemoveUnwantedEvents(expiredObjectList);
         Object.keys(expiredObjectList).forEach((event_name) => {
           apiBodyDataMapper(event_name, expiredObjectList[event_name].payload);
         });
@@ -3241,12 +3204,21 @@
         if (userMobileValue) {
           _triggerEvent(EVENTS_NAME.UPDATE_UMID, { mobile: userMobileValue });
           {
-            getUserInfo_old(userMobileValue);
+            let userInfo = { u_mid: userMobileValue };
+            setCookies(userInfo);
+            _triggerEvent(EVENTS_NAME.UPDATE_USER_PROFILE, userInfo);
           }
           break;
         }
       }
     }
+  }
+  function validateEventListAndRemoveUnwantedEvents(_expiredObjectList) {
+    const keys = Object.keys(_expiredObjectList);
+    if ((keys.includes("pdp_view") || keys.includes("order")) && keys.includes("page_view")) {
+      delete _expiredObjectList["page_view"];
+    }
+    return _expiredObjectList;
   }
   /*!
    *
@@ -3472,10 +3444,15 @@
     const userMobileNumberSession = savedUserProfile && savedUserProfile.u_mid ? savedUserProfile.u_mid : null;
     if (userMobileValue && (userMobileNumberSession && userMobileNumberSession !== userMobileValue || !userMobileNumberSession)) {
       {
-        getUserInfo_old(userMobileValue);
+        let userInfo = { u_mid: userMobileValue };
+        setCookies(userInfo);
+        _triggerEvent(EVENTS_NAME.UPDATE_USER_PROFILE, userInfo);
       }
     } else {
       getCookie();
+    }
+    if (gsService.getOldUserProfile()) {
+      gsService.removeOldUserProfile();
     }
   }
   function registerChannelId() {
