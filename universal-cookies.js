@@ -36,8 +36,9 @@ async function loadScript(url) {
   });
 }
 
-window.addEventListener('load', async function () {
-  // Load another JavaScript file after the window has fully loaded
+// window.addEventListener('load', async function () {
+// Load another JavaScript file after the window has fully loaded
+async function onLoad() {
   try {
     // Attempt to load the script from the provided URL
     // await loadScript('./dist/uc.min.js');
@@ -46,7 +47,6 @@ window.addEventListener('load', async function () {
     // );
 
     console.log(document?.currentScript, 'document?.currentScript');
-
     await loadScript(
       'https://jslib-dixithasijas-projects.vercel.app/uc.min.js?',
     );
@@ -68,7 +68,7 @@ window.addEventListener('load', async function () {
         event: window.SHIPROCKET_ANALYTICS.event,
         notify: window.SHIPROCKET_ANALYTICS.notify,
         profile: window.SHIPROCKET_ANALYTICS.getUserInfo,
-        profileCallback:window.SHIPROCKET_ANALYTICS.profileCallback,
+        profileCallback: window.SHIPROCKET_ANALYTICS.profileCallback,
       };
       // Clean up the global namespace
       delete window.SHIPROCKET_ANALYTICS;
@@ -77,4 +77,12 @@ window.addEventListener('load', async function () {
     // Log any errors that occur during the script loading
     console.error(error);
   }
-});
+  // });
+}
+if (document.readyState === 'loading') {
+  // Loading hasn't finished yet
+  document.addEventListener('DOMContentLoaded', onLoad);
+} else {
+  // `DOMContentLoaded` has already fired
+  onLoad();
+}
