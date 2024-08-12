@@ -10,7 +10,7 @@ async function loadScript(url) {
     if (!uc_script && document?.currentScript?.src) {
       uc_script = document?.currentScript;
     }
-    // console.log(import.meta.url);
+    console.log(document?.currentScript);
     if (uc_script) {
       // Extract the src attribute of the script element
       let src = uc_script.src;
