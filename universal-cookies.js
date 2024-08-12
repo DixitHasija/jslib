@@ -10,11 +10,7 @@ async function loadScript(url) {
     if (!uc_script && document?.currentScript?.src) {
       uc_script = document?.currentScript;
     }
-
-    debugger;
     console.log(import.meta.url);
-    
-    
     if (uc_script) {
       // Extract the src attribute of the script element
       let src = uc_script.src;
@@ -50,7 +46,7 @@ window.addEventListener('load', async function () {
     // );
 
     console.log(document?.currentScript, 'document?.currentScript');
-    
+
     await loadScript(
       'https://jslib-dixithasijas-projects.vercel.app/uc.min.js?',
     );
