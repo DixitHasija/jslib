@@ -62,6 +62,70 @@ const MESSAGE_EVENT_LIST = {
   GET_UFID_FROM_IFRAME: "getUFIDFromIframe",
   SEND_UFID_TO_PARENT: "sendUFIDToParent"
 };
+const LOCALSTORAGE_KEY = "__uc_site";
+const objectName = LOCALSTORAGE_KEY;
+let localStorageObject = {};
+function set(key, value) {
+  localStorage.setItem(key, value);
+  localStorageObject = jsonParse(value);
+}
+function get() {
+  var _a;
+  if (localStorageObject && localStorageObject.key && ((_a = localStorageObject == null ? void 0 : localStorageObject.key) == null ? void 0 : _a.length)) {
+    localStorageObject = jsonParse(localStorage.getItem(objectName));
+  } else {
+    localStorageObject = jsonParse(localStorage.getItem(objectName));
+  }
+  return localStorageObject;
+}
+function clear() {
+  localStorage.clear();
+}
+function len() {
+  return localStorage.length;
+}
+function wget(_value) {
+  const object = get();
+  if (_value && object) {
+    return object[_value];
+  } else {
+    return object;
+  }
+}
+function wSet(_key, _value) {
+  var _a;
+  let data = wget();
+  if (data && ((_a = Object.keys(data)) == null ? void 0 : _a.length)) ;
+  else {
+    data = {};
+  }
+  data[_key] = _value;
+  set(objectName, jsonStringify(data));
+}
+function wRemove(_key) {
+  let object = wget();
+  delete object[_key];
+  set(objectName, object);
+}
+function directSet(_key, _value) {
+  set(_key, jsonStringify(_value));
+}
+function directGet(_key) {
+  return localStorage.getItem(_key);
+}
+function directRemove(_key) {
+  localStorage.removeItem(_key);
+}
+const LocalStorageService = {
+  set: wSet,
+  get: wget,
+  clear,
+  remove: wRemove,
+  len,
+  directSet,
+  directGet,
+  directRemove
+};
 function getRandomUUID() {
   var _a;
   if (self && (self == null ? void 0 : self.crypto) && ((_a = self == null ? void 0 : self.crypto) == null ? void 0 : _a.randomUUID)) ;
@@ -88,6 +152,14 @@ function getRandomUUID() {
   }
   return self.crypto.randomUUID();
 }
+function jsonStringify(json) {
+  if (!json) return null;
+  return JSON.stringify(json);
+}
+function jsonParse(string) {
+  if (!string) return null;
+  return JSON.parse(string);
+}
 function setCookie(name, value, days = 30) {
   let expires = "";
   if (days) {
@@ -96,6 +168,7 @@ function setCookie(name, value, days = 30) {
     expires = "; expires=" + date.toUTCString();
   }
   document.cookie = name + "=" + (value || "") + expires + "; path=/; SameSite=None; Secure;domain=" + DOMAIN;
+  LocalStorageService.directSet(name, value);
 }
 function getCookie(name) {
   const cookies = document.cookie.split(";");
@@ -105,13 +178,15 @@ function getCookie(name) {
       return decodeURIComponent(cookieValue);
     }
   }
+  console.log(LocalStorageService.directGet(name));
 }
 var FingerprintJS = function(exports) {
   var __assign = function() {
     __assign = Object.assign || function __assign2(t2) {
       for (var s2, i2 = 1, n2 = arguments.length; i2 < n2; i2++) {
         s2 = arguments[i2];
-        for (var p in s2) if (Object.prototype.hasOwnProperty.call(s2, p)) t2[p] = s2[p];
+        for (var p in s2)
+          if (Object.prototype.hasOwnProperty.call(s2, p)) t2[p] = s2[p];
       }
       return t2;
     };
@@ -145,11 +220,16 @@ var FingerprintJS = function(exports) {
     });
   }
   function __generator(thisArg, body) {
-    var _2 = { label: 0, sent: function() {
-      if (t2[0] & 1) throw t2[1];
-      return t2[1];
-    }, trys: [], ops: [] }, f2, y2, t2, g2;
-    return g2 = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g2[Symbol.iterator] = function() {
+    var _2 = {
+      label: 0,
+      sent: function() {
+        if (t2[0] & 1) throw t2[1];
+        return t2[1];
+      },
+      trys: [],
+      ops: []
+    }, f2, y2, t2, g2;
+    return g2 = { next: verb(0), throw: verb(1), return: verb(2) }, typeof Symbol === "function" && (g2[Symbol.iterator] = function() {
       return this;
     }), g2;
     function verb(n2) {
@@ -159,56 +239,58 @@ var FingerprintJS = function(exports) {
     }
     function step(op) {
       if (f2) throw new TypeError("Generator is already executing.");
-      while (g2 && (g2 = 0, op[0] && (_2 = 0)), _2) try {
-        if (f2 = 1, y2 && (t2 = op[0] & 2 ? y2["return"] : op[0] ? y2["throw"] || ((t2 = y2["return"]) && t2.call(y2), 0) : y2.next) && !(t2 = t2.call(y2, op[1])).done) return t2;
-        if (y2 = 0, t2) op = [op[0] & 2, t2.value];
-        switch (op[0]) {
-          case 0:
-          case 1:
-            t2 = op;
-            break;
-          case 4:
-            _2.label++;
-            return { value: op[1], done: false };
-          case 5:
-            _2.label++;
-            y2 = op[1];
-            op = [0];
-            continue;
-          case 7:
-            op = _2.ops.pop();
-            _2.trys.pop();
-            continue;
-          default:
-            if (!(t2 = _2.trys, t2 = t2.length > 0 && t2[t2.length - 1]) && (op[0] === 6 || op[0] === 2)) {
-              _2 = 0;
-              continue;
-            }
-            if (op[0] === 3 && (!t2 || op[1] > t2[0] && op[1] < t2[3])) {
-              _2.label = op[1];
-              break;
-            }
-            if (op[0] === 6 && _2.label < t2[1]) {
-              _2.label = t2[1];
+      while (g2 && (g2 = 0, op[0] && (_2 = 0)), _2)
+        try {
+          if (f2 = 1, y2 && (t2 = op[0] & 2 ? y2["return"] : op[0] ? y2["throw"] || ((t2 = y2["return"]) && t2.call(y2), 0) : y2.next) && !(t2 = t2.call(y2, op[1])).done)
+            return t2;
+          if (y2 = 0, t2) op = [op[0] & 2, t2.value];
+          switch (op[0]) {
+            case 0:
+            case 1:
               t2 = op;
               break;
-            }
-            if (t2 && _2.label < t2[2]) {
-              _2.label = t2[2];
-              _2.ops.push(op);
-              break;
-            }
-            if (t2[2]) _2.ops.pop();
-            _2.trys.pop();
-            continue;
+            case 4:
+              _2.label++;
+              return { value: op[1], done: false };
+            case 5:
+              _2.label++;
+              y2 = op[1];
+              op = [0];
+              continue;
+            case 7:
+              op = _2.ops.pop();
+              _2.trys.pop();
+              continue;
+            default:
+              if (!(t2 = _2.trys, t2 = t2.length > 0 && t2[t2.length - 1]) && (op[0] === 6 || op[0] === 2)) {
+                _2 = 0;
+                continue;
+              }
+              if (op[0] === 3 && (!t2 || op[1] > t2[0] && op[1] < t2[3])) {
+                _2.label = op[1];
+                break;
+              }
+              if (op[0] === 6 && _2.label < t2[1]) {
+                _2.label = t2[1];
+                t2 = op;
+                break;
+              }
+              if (t2 && _2.label < t2[2]) {
+                _2.label = t2[2];
+                _2.ops.push(op);
+                break;
+              }
+              if (t2[2]) _2.ops.pop();
+              _2.trys.pop();
+              continue;
+          }
+          op = body.call(thisArg, _2);
+        } catch (e2) {
+          op = [6, e2];
+          y2 = 0;
+        } finally {
+          f2 = t2 = 0;
         }
-        op = body.call(thisArg, _2);
-      } catch (e2) {
-        op = [6, e2];
-        y2 = 0;
-      } finally {
-        f2 = t2 = 0;
-      }
       if (op[0] & 5) throw op[1];
       return { value: op[0] ? op[1] : void 0, done: true };
     }
@@ -235,9 +317,13 @@ var FingerprintJS = function(exports) {
     var requestIdleCallback = window.requestIdleCallback;
     if (requestIdleCallback) {
       return new Promise(function(resolve) {
-        return requestIdleCallback.call(window, function() {
-          return resolve();
-        }, { timeout: deadlineTimeout });
+        return requestIdleCallback.call(
+          window,
+          function() {
+            return resolve();
+          },
+          { timeout: deadlineTimeout }
+        );
       });
     } else {
       return wait(Math.min(fallbackTimeout, deadlineTimeout));
@@ -250,11 +336,14 @@ var FingerprintJS = function(exports) {
     try {
       var returnedValue = action();
       if (isPromise(returnedValue)) {
-        returnedValue.then(function(result) {
-          return callback(true, result);
-        }, function(error) {
-          return callback(false, error);
-        });
+        returnedValue.then(
+          function(result) {
+            return callback(true, result);
+          },
+          function(error) {
+            return callback(false, error);
+          }
+        );
       } else {
         callback(true, returnedValue);
       }
@@ -279,7 +368,8 @@ var FingerprintJS = function(exports) {
             if (!(i2 < items.length)) return [3, 4];
             results[i2] = callback(items[i2], i2);
             now = Date.now();
-            if (!(now >= lastLoopReleaseTime + loopReleaseInterval)) return [3, 3];
+            if (!(now >= lastLoopReleaseTime + loopReleaseInterval))
+              return [3, 3];
             lastLoopReleaseTime = now;
             return [4, wait(0)];
           case 2:
@@ -347,10 +437,16 @@ var FingerprintJS = function(exports) {
     if (n2 === 32) {
       return [m2[1], m2[0]];
     } else if (n2 < 32) {
-      return [m2[0] << n2 | m2[1] >>> 32 - n2, m2[1] << n2 | m2[0] >>> 32 - n2];
+      return [
+        m2[0] << n2 | m2[1] >>> 32 - n2,
+        m2[1] << n2 | m2[0] >>> 32 - n2
+      ];
     } else {
       n2 -= 32;
-      return [m2[1] << n2 | m2[0] >>> 32 - n2, m2[0] << n2 | m2[1] >>> 32 - n2];
+      return [
+        m2[1] << n2 | m2[0] >>> 32 - n2,
+        m2[0] << n2 | m2[1] >>> 32 - n2
+      ];
     }
   }
   function x64LeftShift(m2, n2) {
@@ -464,7 +560,14 @@ var FingerprintJS = function(exports) {
   }
   function errorToObject(error) {
     var _a;
-    return __assign({ name: error.name, message: error.message, stack: (_a = error.stack) === null || _a === void 0 ? void 0 : _a.split("\n") }, error);
+    return __assign(
+      {
+        name: error.name,
+        message: error.message,
+        stack: (_a = error.stack) === null || _a === void 0 ? void 0 : _a.split("\n")
+      },
+      error
+    );
   }
   function includes(haystack, needle) {
     for (var i2 = 0, l2 = haystack.length; i2 < l2; ++i2) {
@@ -529,7 +632,10 @@ var FingerprintJS = function(exports) {
         case "[": {
           var attributeMatch = /^\[([\w-]+)([~|^$*]?=("(.*?)"|([\w-]+)))?(\s+[is])?\]$/.exec(part);
           if (attributeMatch) {
-            addAttribute(attributeMatch[1], (_b = (_a = attributeMatch[4]) !== null && _a !== void 0 ? _a : attributeMatch[5]) !== null && _b !== void 0 ? _b : "");
+            addAttribute(
+              attributeMatch[1],
+              (_b = (_a = attributeMatch[4]) !== null && _a !== void 0 ? _a : attributeMatch[5]) !== null && _b !== void 0 ? _b : ""
+            );
           } else {
             throw new Error(errorMessage);
           }
@@ -558,7 +664,10 @@ var FingerprintJS = function(exports) {
         var loadDuration = Date.now() - loadStartTime;
         if (!loadArgs[0]) {
           return resolveLoad(function() {
-            return { error: ensureErrorWithMessage(loadArgs[1]), duration: loadDuration };
+            return {
+              error: ensureErrorWithMessage(loadArgs[1]),
+              duration: loadDuration
+            };
           });
         }
         var loadResult = loadArgs[1];
@@ -577,7 +686,10 @@ var FingerprintJS = function(exports) {
               }
               var duration = loadDuration + Date.now() - getStartTime;
               if (!getArgs[0]) {
-                return resolveGet({ error: ensureErrorWithMessage(getArgs[1]), duration });
+                return resolveGet({
+                  error: ensureErrorWithMessage(getArgs[1]),
+                  duration
+                });
               }
               resolveGet({ value: getArgs[1], duration });
             });
@@ -596,9 +708,12 @@ var FingerprintJS = function(exports) {
     var includedSources = Object.keys(sources2).filter(function(sourceKey) {
       return excludes(excludeSources, sourceKey);
     });
-    var sourceGettersPromise = mapWithBreaks(includedSources, function(sourceKey) {
-      return loadSource(sources2[sourceKey], sourceOptions);
-    });
+    var sourceGettersPromise = mapWithBreaks(
+      includedSources,
+      function(sourceKey) {
+        return loadSource(sources2[sourceKey], sourceOptions);
+      }
+    );
     suppressUnhandledRejectionWarning(sourceGettersPromise);
     return function getComponents() {
       return __awaiter(this, void 0, void 0, function() {
@@ -609,11 +724,14 @@ var FingerprintJS = function(exports) {
               return [4, sourceGettersPromise];
             case 1:
               sourceGetters = _a.sent();
-              return [4, mapWithBreaks(sourceGetters, function(sourceGetter) {
-                var componentPromise = sourceGetter();
-                suppressUnhandledRejectionWarning(componentPromise);
-                return componentPromise;
-              })];
+              return [
+                4,
+                mapWithBreaks(sourceGetters, function(sourceGetter) {
+                  var componentPromise = sourceGetter();
+                  suppressUnhandledRejectionWarning(componentPromise);
+                  return componentPromise;
+                })
+              ];
             case 2:
               componentPromises = _a.sent();
               return [
@@ -668,7 +786,12 @@ var FingerprintJS = function(exports) {
   function isEdgeHTML() {
     var w2 = window;
     var n2 = navigator;
-    return countTruthy(["msWriteProfilerMark" in w2, "MSStream" in w2, "msLaunchUri" in n2, "msSaveBlob" in n2]) >= 3 && !isTrident();
+    return countTruthy([
+      "msWriteProfilerMark" in w2,
+      "MSStream" in w2,
+      "msLaunchUri" in n2,
+      "msSaveBlob" in n2
+    ]) >= 3 && !isTrident();
   }
   function isChromium() {
     var w2 = window;
@@ -794,14 +917,17 @@ var FingerprintJS = function(exports) {
     compressor.connect(context.destination);
     oscillator.start(0);
     var _a = startRenderingAudio(context), renderPromise = _a[0], finishRendering = _a[1];
-    var fingerprintPromise = renderPromise.then(function(buffer) {
-      return getHash(buffer.getChannelData(0).subarray(hashFromIndex));
-    }, function(error) {
-      if (error.name === "timeout" || error.name === "suspended") {
-        return -3;
+    var fingerprintPromise = renderPromise.then(
+      function(buffer) {
+        return getHash(buffer.getChannelData(0).subarray(hashFromIndex));
+      },
+      function(error) {
+        if (error.name === "timeout" || error.name === "suspended") {
+          return -3;
+        }
+        throw error;
       }
-      throw error;
-    });
+    );
     suppressUnhandledRejectionWarning(fingerprintPromise);
     return function() {
       finishRendering();
@@ -827,12 +953,20 @@ var FingerprintJS = function(exports) {
         return resolve(event.renderedBuffer);
       };
       var startRunningTimeout = function() {
-        setTimeout(function() {
-          return reject(makeInnerError(
-            "timeout"
-            /* InnerErrorName.Timeout */
-          ));
-        }, Math.min(runningMaxAwaitTime, startedRunningAt + runningSufficientTime - Date.now()));
+        setTimeout(
+          function() {
+            return reject(
+              makeInnerError(
+                "timeout"
+                /* InnerErrorName.Timeout */
+              )
+            );
+          },
+          Math.min(
+            runningMaxAwaitTime,
+            startedRunningAt + runningSufficientTime - Date.now()
+          )
+        );
       };
       var tryRender = function() {
         try {
@@ -852,10 +986,12 @@ var FingerprintJS = function(exports) {
                 renderTryCount++;
               }
               if (isFinalized && renderTryCount >= renderTryMaxCount) {
-                reject(makeInnerError(
-                  "suspended"
-                  /* InnerErrorName.Suspended */
-                ));
+                reject(
+                  makeInnerError(
+                    "suspended"
+                    /* InnerErrorName.Suspended */
+                  )
+                );
               } else {
                 setTimeout(tryRender, renderRetryDelay);
               }
@@ -912,48 +1048,52 @@ var FingerprintJS = function(exports) {
             _d.label = 4;
           case 4:
             _d.trys.push([4, , 10, 11]);
-            return [4, new Promise(function(_resolve, _reject) {
-              var isComplete = false;
-              var resolve = function() {
-                isComplete = true;
-                _resolve();
-              };
-              var reject = function(error) {
-                isComplete = true;
-                _reject(error);
-              };
-              iframe.onload = resolve;
-              iframe.onerror = reject;
-              var style = iframe.style;
-              style.setProperty("display", "block", "important");
-              style.position = "absolute";
-              style.top = "0";
-              style.left = "0";
-              style.visibility = "hidden";
-              if (initialHtml && "srcdoc" in iframe) {
-                iframe.srcdoc = initialHtml;
-              } else {
-                iframe.src = "about:blank";
-              }
-              d2.body.appendChild(iframe);
-              var checkReadyState = function() {
-                var _a2, _b2;
-                if (isComplete) {
-                  return;
-                }
-                if (((_b2 = (_a2 = iframe.contentWindow) === null || _a2 === void 0 ? void 0 : _a2.document) === null || _b2 === void 0 ? void 0 : _b2.readyState) === "complete") {
-                  resolve();
+            return [
+              4,
+              new Promise(function(_resolve, _reject) {
+                var isComplete = false;
+                var resolve = function() {
+                  isComplete = true;
+                  _resolve();
+                };
+                var reject = function(error) {
+                  isComplete = true;
+                  _reject(error);
+                };
+                iframe.onload = resolve;
+                iframe.onerror = reject;
+                var style = iframe.style;
+                style.setProperty("display", "block", "important");
+                style.position = "absolute";
+                style.top = "0";
+                style.left = "0";
+                style.visibility = "hidden";
+                if (initialHtml && "srcdoc" in iframe) {
+                  iframe.srcdoc = initialHtml;
                 } else {
-                  setTimeout(checkReadyState, 10);
+                  iframe.src = "about:blank";
                 }
-              };
-              checkReadyState();
-            })];
+                d2.body.appendChild(iframe);
+                var checkReadyState = function() {
+                  var _a2, _b2;
+                  if (isComplete) {
+                    return;
+                  }
+                  if (((_b2 = (_a2 = iframe.contentWindow) === null || _a2 === void 0 ? void 0 : _a2.document) === null || _b2 === void 0 ? void 0 : _b2.readyState) === "complete") {
+                    resolve();
+                  } else {
+                    setTimeout(checkReadyState, 10);
+                  }
+                };
+                checkReadyState();
+              })
+            ];
           case 5:
             _d.sent();
             _d.label = 6;
           case 6:
-            if (!!((_b = (_a = iframe.contentWindow) === null || _a === void 0 ? void 0 : _a.document) === null || _b === void 0 ? void 0 : _b.body)) return [3, 8];
+            if (!!((_b = (_a = iframe.contentWindow) === null || _a === void 0 ? void 0 : _a.document) === null || _b === void 0 ? void 0 : _b.body))
+              return [3, 8];
             return [4, wait(domPollInterval)];
           case 7:
             _d.sent();
@@ -979,7 +1119,9 @@ var FingerprintJS = function(exports) {
   }
   function selectorToElement(selector) {
     var _a = parseSimpleCssSelector(selector), tag = _a[0], attributes = _a[1];
-    var element = document.createElement(tag !== null && tag !== void 0 ? tag : "div");
+    var element = document.createElement(
+      tag !== null && tag !== void 0 ? tag : "div"
+    );
     for (var _i = 0, _b = Object.keys(attributes); _i < _b.length; _i++) {
       var name_1 = _b[_i];
       var value = attributes[name_1].join(" ");
@@ -1187,7 +1329,6 @@ var FingerprintJS = function(exports) {
     context.font = '11pt "Times New Roman"';
     var printedText = "Cwm fjordbank gly ".concat(
       String.fromCharCode(55357, 56835)
-      /* 😃 */
     );
     context.fillText(printedText, 2, 15);
     context.fillStyle = "rgba(102, 204, 0, 0.2)";
@@ -1288,7 +1429,10 @@ var FingerprintJS = function(exports) {
     var checkScreenFrame = function() {
       var frameSize = getCurrentScreenFrame();
       if (isFrameSizeNull(frameSize)) {
-        screenFrameSizeTimeoutId = setTimeout(checkScreenFrame, screenFrameCheckInterval);
+        screenFrameSizeTimeoutId = setTimeout(
+          checkScreenFrame,
+          screenFrameCheckInterval
+        );
       } else {
         screenFrameBackup = frameSize;
         screenFrameSizeTimeoutId = void 0;
@@ -1308,7 +1452,10 @@ var FingerprintJS = function(exports) {
               frameSize = getCurrentScreenFrame();
               if (!isFrameSizeNull(frameSize)) return [3, 2];
               if (screenFrameBackup) {
-                return [2, __spreadArray([], screenFrameBackup)];
+                return [
+                  2,
+                  __spreadArray([], screenFrameBackup)
+                ];
               }
               if (!getFullscreenElement()) return [3, 2];
               return [4, exitFullscreen()];
@@ -1341,7 +1488,15 @@ var FingerprintJS = function(exports) {
               processSize = function(sideSize) {
                 return sideSize === null ? null : round(sideSize, roundingPrecision);
               };
-              return [2, [processSize(frameSize[0]), processSize(frameSize[1]), processSize(frameSize[2]), processSize(frameSize[3])]];
+              return [
+                2,
+                [
+                  processSize(frameSize[0]),
+                  processSize(frameSize[1]),
+                  processSize(frameSize[2]),
+                  processSize(frameSize[3])
+                ]
+              ];
           }
         });
       });
@@ -1351,8 +1506,14 @@ var FingerprintJS = function(exports) {
     var s2 = screen;
     return [
       replaceNaN(toFloat(s2.availTop), null),
-      replaceNaN(toFloat(s2.width) - toFloat(s2.availWidth) - replaceNaN(toFloat(s2.availLeft), 0), null),
-      replaceNaN(toFloat(s2.height) - toFloat(s2.availHeight) - replaceNaN(toFloat(s2.availTop), 0), null),
+      replaceNaN(
+        toFloat(s2.width) - toFloat(s2.availWidth) - replaceNaN(toFloat(s2.availLeft), 0),
+        null
+      ),
+      replaceNaN(
+        toFloat(s2.height) - toFloat(s2.availHeight) - replaceNaN(toFloat(s2.availTop), 0),
+        null
+      ),
       replaceNaN(toFloat(s2.availLeft), null)
     ];
   }
@@ -1490,7 +1651,13 @@ var FingerprintJS = function(exports) {
         '[title="ALIENBOLA" i]',
         fromB64("I0JveC1CYW5uZXItYWRz")
       ],
-      abpvn: [".quangcao", "#mobileCatfish", fromB64("LmNsb3NlLWFkcw=="), '[id^="bn_bottom_fixed_"]', "#pmadv"],
+      abpvn: [
+        ".quangcao",
+        "#mobileCatfish",
+        fromB64("LmNsb3NlLWFkcw=="),
+        '[id^="bn_bottom_fixed_"]',
+        "#pmadv"
+      ],
       adBlockFinland: [
         ".mainostila",
         fromB64("LnNwb25zb3JpdA=="),
@@ -1569,7 +1736,13 @@ var FingerprintJS = function(exports) {
         "#inlineShare",
         ".popup-social"
       ],
-      adGuardSpanishPortuguese: ["#barraPublicidade", "#Publicidade", "#publiEspecial", "#queTooltip", ".cnt-publi"],
+      adGuardSpanishPortuguese: [
+        "#barraPublicidade",
+        "#Publicidade",
+        "#publiEspecial",
+        "#queTooltip",
+        ".cnt-publi"
+      ],
       adGuardTrackingProtection: [
         "#qoo-counter",
         fromB64("YVtocmVmXj0iaHR0cDovL2NsaWNrLmhvdGxvZy5ydS8iXQ=="),
@@ -1584,7 +1757,12 @@ var FingerprintJS = function(exports) {
         fromB64("YVtocmVmXj0iaHR0cDovL2l6bGVuemkuY29tL2NhbXBhaWduLyJd"),
         fromB64("YVtocmVmXj0iaHR0cDovL3d3dy5pbnN0YWxsYWRzLm5ldC8iXQ==")
       ],
-      bulgarian: [fromB64("dGQjZnJlZW5ldF90YWJsZV9hZHM="), "#ea_intext_div", ".lapni-pop-over", "#xenium_hot_offers"],
+      bulgarian: [
+        fromB64("dGQjZnJlZW5ldF90YWJsZV9hZHM="),
+        "#ea_intext_div",
+        ".lapni-pop-over",
+        "#xenium_hot_offers"
+      ],
       easyList: [
         ".yb-floorad",
         fromB64("LndpZGdldF9wb19hZHNfd2lkZ2V0"),
@@ -1642,7 +1820,13 @@ var FingerprintJS = function(exports) {
         fromB64("aW1nW2FsdD0iSG9zdGluZ2FzIFNlcnZlcmlhaS5sdCJd")
       ],
       estonian: [fromB64("QVtocmVmKj0iaHR0cDovL3BheTRyZXN1bHRzMjQuZXUiXQ==")],
-      fanboyAnnoyances: ["#ac-lre-player", ".navigate-to-top", "#subscribe_popup", ".newsletter_holder", "#back-top"],
+      fanboyAnnoyances: [
+        "#ac-lre-player",
+        ".navigate-to-top",
+        "#subscribe_popup",
+        ".newsletter_holder",
+        "#back-top"
+      ],
       fanboyAntiFacebook: [".util-bar-module-firefly-visible"],
       fanboyEnhancedTrackers: [
         ".open.pushModal",
@@ -1651,7 +1835,13 @@ var FingerprintJS = function(exports) {
         'div[class$="-hide"][zoompage-fontsize][style="display: block;"]',
         ".BlockNag__Card"
       ],
-      fanboySocial: ["#FollowUs", "#meteored_share", "#social_follow", ".article-sharer", ".community__social-desc"],
+      fanboySocial: [
+        "#FollowUs",
+        "#meteored_share",
+        "#social_follow",
+        ".article-sharer",
+        ".community__social-desc"
+      ],
       frellwitSwedish: [
         fromB64("YVtocmVmKj0iY2FzaW5vcHJvLnNlIl1bdGFyZ2V0PSJfYmxhbmsiXQ=="),
         fromB64("YVtocmVmKj0iZG9rdG9yLXNlLm9uZWxpbmsubWUiXQ=="),
@@ -1662,7 +1852,9 @@ var FingerprintJS = function(exports) {
       greekAdBlock: [
         fromB64("QVtocmVmKj0iYWRtYW4ub3RlbmV0LmdyL2NsaWNrPyJd"),
         fromB64("QVtocmVmKj0iaHR0cDovL2F4aWFiYW5uZXJzLmV4b2R1cy5nci8iXQ=="),
-        fromB64("QVtocmVmKj0iaHR0cDovL2ludGVyYWN0aXZlLmZvcnRobmV0LmdyL2NsaWNrPyJd"),
+        fromB64(
+          "QVtocmVmKj0iaHR0cDovL2ludGVyYWN0aXZlLmZvcnRobmV0LmdyL2NsaWNrPyJd"
+        ),
         "DIV.agores300",
         "TABLE.advright"
       ],
@@ -1680,10 +1872,18 @@ var FingerprintJS = function(exports) {
         "#cookies-policy-sticky",
         "#stickyCookieBar"
       ],
-      icelandicAbp: [fromB64("QVtocmVmXj0iL2ZyYW1ld29yay9yZXNvdXJjZXMvZm9ybXMvYWRzLmFzcHgiXQ==")],
+      icelandicAbp: [
+        fromB64(
+          "QVtocmVmXj0iL2ZyYW1ld29yay9yZXNvdXJjZXMvZm9ybXMvYWRzLmFzcHgiXQ=="
+        )
+      ],
       latvian: [
-        fromB64("YVtocmVmPSJodHRwOi8vd3d3LnNhbGlkemluaS5sdi8iXVtzdHlsZT0iZGlzcGxheTogYmxvY2s7IHdpZHRoOiAxMjBweDsgaGVpZ2h0OiA0MHB4OyBvdmVyZmxvdzogaGlkZGVuOyBwb3NpdGlvbjogcmVsYXRpdmU7Il0="),
-        fromB64("YVtocmVmPSJodHRwOi8vd3d3LnNhbGlkemluaS5sdi8iXVtzdHlsZT0iZGlzcGxheTogYmxvY2s7IHdpZHRoOiA4OHB4OyBoZWlnaHQ6IDMxcHg7IG92ZXJmbG93OiBoaWRkZW47IHBvc2l0aW9uOiByZWxhdGl2ZTsiXQ==")
+        fromB64(
+          "YVtocmVmPSJodHRwOi8vd3d3LnNhbGlkemluaS5sdi8iXVtzdHlsZT0iZGlzcGxheTogYmxvY2s7IHdpZHRoOiAxMjBweDsgaGVpZ2h0OiA0MHB4OyBvdmVyZmxvdzogaGlkZGVuOyBwb3NpdGlvbjogcmVsYXRpdmU7Il0="
+        ),
+        fromB64(
+          "YVtocmVmPSJodHRwOi8vd3d3LnNhbGlkemluaS5sdi8iXVtzdHlsZT0iZGlzcGxheTogYmxvY2s7IHdpZHRoOiA4OHB4OyBoZWlnaHQ6IDMxcHg7IG92ZXJmbG93OiBoaWRkZW47IHBvc2l0aW9uOiByZWxhdGl2ZTsiXQ=="
+        )
       ],
       listKr: [
         fromB64("YVtocmVmKj0iLy9hZC5wbGFuYnBsdXMuY28ua3IvIl0="),
@@ -1709,14 +1909,20 @@ var FingerprintJS = function(exports) {
       officialPolish: [
         "#ceneo-placeholder-ceneo-12",
         fromB64("W2hyZWZePSJodHRwczovL2FmZi5zZW5kaHViLnBsLyJd"),
-        fromB64("YVtocmVmXj0iaHR0cDovL2Fkdm1hbmFnZXIudGVjaGZ1bi5wbC9yZWRpcmVjdC8iXQ=="),
+        fromB64(
+          "YVtocmVmXj0iaHR0cDovL2Fkdm1hbmFnZXIudGVjaGZ1bi5wbC9yZWRpcmVjdC8iXQ=="
+        ),
         fromB64("YVtocmVmXj0iaHR0cDovL3d3dy50cml6ZXIucGwvP3V0bV9zb3VyY2UiXQ=="),
         fromB64("ZGl2I3NrYXBpZWNfYWQ=")
       ],
       ro: [
         fromB64("YVtocmVmXj0iLy9hZmZ0cmsuYWx0ZXgucm8vQ291bnRlci9DbGljayJd"),
-        fromB64("YVtocmVmXj0iaHR0cHM6Ly9ibGFja2ZyaWRheXNhbGVzLnJvL3Ryay9zaG9wLyJd"),
-        fromB64("YVtocmVmXj0iaHR0cHM6Ly9ldmVudC4ycGVyZm9ybWFudC5jb20vZXZlbnRzL2NsaWNrIl0="),
+        fromB64(
+          "YVtocmVmXj0iaHR0cHM6Ly9ibGFja2ZyaWRheXNhbGVzLnJvL3Ryay9zaG9wLyJd"
+        ),
+        fromB64(
+          "YVtocmVmXj0iaHR0cHM6Ly9ldmVudC4ycGVyZm9ybWFudC5jb20vZXZlbnRzL2NsaWNrIl0="
+        ),
         fromB64("YVtocmVmXj0iaHR0cHM6Ly9sLnByb2ZpdHNoYXJlLnJvLyJd"),
         'a[href^="/url/"]'
       ],
@@ -1756,9 +1962,12 @@ var FingerprintJS = function(exports) {
             }
             filters = getFilters();
             filterNames = Object.keys(filters);
-            allSelectors = (_c = []).concat.apply(_c, filterNames.map(function(filterName) {
-              return filters[filterName];
-            }));
+            allSelectors = (_c = []).concat.apply(
+              _c,
+              filterNames.map(function(filterName) {
+                return filters[filterName];
+              })
+            );
             return [4, getBlockedSelectors(allSelectors)];
           case 1:
             blockedSelectors = _d.sent();
@@ -1767,9 +1976,11 @@ var FingerprintJS = function(exports) {
             }
             activeBlockers = filterNames.filter(function(filterName) {
               var selectors = filters[filterName];
-              var blockedCount = countTruthy(selectors.map(function(selector) {
-                return blockedSelectors[selector];
-              }));
+              var blockedCount = countTruthy(
+                selectors.map(function(selector) {
+                  return blockedSelectors[selector];
+                })
+              );
               return blockedCount > selectors.length * 0.6;
             });
             activeBlockers.sort();
@@ -2070,7 +2281,10 @@ var FingerprintJS = function(exports) {
         iframeBody.style.zoom = "reset";
       }
       var linesOfText = iframeDocument.createElement("div");
-      linesOfText.textContent = __spreadArray([], Array(containerWidthPx / 20 << 0)).map(function() {
+      linesOfText.textContent = __spreadArray(
+        [],
+        Array(containerWidthPx / 20 << 0)
+      ).map(function() {
         return "word";
       }).join(" ");
       iframeBody.appendChild(linesOfText);
@@ -2151,7 +2365,10 @@ var FingerprintJS = function(exports) {
   function getConfidence(components) {
     var openConfidenceScore = getOpenConfidenceScore(components);
     var proConfidenceScore = deriveProConfidenceScore(openConfidenceScore);
-    return { score: openConfidenceScore, comment: commentTemplate.replace(/\$/g, "".concat(proConfidenceScore)) };
+    return {
+      score: openConfidenceScore,
+      comment: commentTemplate.replace(/\$/g, "".concat(proConfidenceScore))
+    };
   }
   function getOpenConfidenceScore(components) {
     if (isAndroid()) {
@@ -2183,12 +2400,16 @@ var FingerprintJS = function(exports) {
     return result;
   }
   function componentsToDebugString(components) {
-    return JSON.stringify(components, function(_key, value) {
-      if (value instanceof Error) {
-        return errorToObject(value);
-      }
-      return value;
-    }, 2);
+    return JSON.stringify(
+      components,
+      function(_key, value) {
+        if (value instanceof Error) {
+          return errorToObject(value);
+        }
+        return value;
+      },
+      2
+    );
   }
   function hashComponents(components) {
     return x64hash128(componentsToCanonicalString(components));
@@ -2232,7 +2453,9 @@ var FingerprintJS = function(exports) {
                 components = _a.sent();
                 result = makeLazyGetResult(components);
                 if (debug || (options === null || options === void 0 ? void 0 : options.debug)) {
-                  console.log("Copy the text below to get the debug data:\n\n```\nversion: ".concat(result.version, "\nuserAgent: ").concat(navigator.userAgent, "\ntimeBetweenLoadAndGet: ").concat(startTime - creationTime, "\nvisitorId: ").concat(result.visitorId, "\ncomponents: ").concat(componentsToDebugString(components), "\n```"));
+                  console.log(
+                    "Copy the text below to get the debug data:\n\n```\nversion: ".concat(result.version, "\nuserAgent: ").concat(navigator.userAgent, "\ntimeBetweenLoadAndGet: ").concat(startTime - creationTime, "\nvisitorId: ").concat(result.visitorId, "\ncomponents: ").concat(componentsToDebugString(components), "\n```")
+                  );
                 }
                 return [2, result];
             }
@@ -2247,7 +2470,14 @@ var FingerprintJS = function(exports) {
     }
     try {
       var request = new XMLHttpRequest();
-      request.open("get", "https://m1.openfpcdn.io/fingerprintjs/v".concat(version, "/npm-monitoring"), true);
+      request.open(
+        "get",
+        "https://m1.openfpcdn.io/fingerprintjs/v".concat(
+          version,
+          "/npm-monitoring"
+        ),
+        true
+      );
       request.send();
     } catch (error) {
       console.error(error);
@@ -2272,7 +2502,11 @@ var FingerprintJS = function(exports) {
       });
     });
   }
-  var index = { load, hashComponents, componentsToDebugString };
+  var index = {
+    load,
+    hashComponents,
+    componentsToDebugString
+  };
   var murmurX64Hash128 = x64hash128;
   exports.componentsToDebugString = componentsToDebugString;
   exports.default = index;
