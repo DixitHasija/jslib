@@ -333,13 +333,13 @@
         justify-content: left;
         align-items: center;
         /* height: 100vh; */
-        font-size: 13px;
+        font-size: 14px;
         max-width: 600px;
         
     }
     .pincode-container{
         text-align: left;
-        padding: 20px;
+        padding: 10px 20px;
     }
 
     h2 {
@@ -385,7 +385,7 @@
         padding: 12px;
         border: none;
         border-radius: 5px;
-        font-size: 13px;
+        font-size: 14px;
         color: black;
     }
 
@@ -396,7 +396,7 @@
         color: #26A0A9;
         border: none;
         border-radius: 5px;
-        font-size: 13px;
+        font-size: 14px;
         cursor: pointer;
     }
 
@@ -421,12 +421,12 @@
         }
 
         input[type="text"] {
-            font-size: 13px;
+            font-size: 14px;
             padding: 10px;
         }
 
         button {
-            font-size: 13px;
+            font-size: 14px;
             padding: 10px;
         }
     }
@@ -437,7 +437,7 @@
         background-color: #F7F7F8;
         padding: 10px 20px;
         border-radius: 10px;
-        font-size: 13px;
+        font-size: 14px;
         font-weight: 500;
         color: #333;
         margin-top:10px;
@@ -477,7 +477,7 @@
     .promise-badges-container {
         display: flex;
         width: 100%;
-        padding: 20px;
+        padding: 10px 20px;
         flex-wrap: wrap;
     }
     .promise-badges {
@@ -486,19 +486,19 @@
         line-height: 16px;
         align-items: center;
         flex: 1 1 50%;
-        padding: 15px 0px;
+        padding: 10px 0px;
     }
     .promise-badges img{
-        width: 24px;
-        height: 24px;
-        padding-right: 10px;
+        width: 32px;
+        height: 32px;
+        margin-right: 10px;
         cursor: pointer;
     }
     .promise-badges .text {
         color: #263238;
     }
      #promise-input-error-msg {
-        font-size: 12px;
+        font-size: 14px;
         color: #D82C0D;
         line-height: 22px;
         white-space: nowrap;
