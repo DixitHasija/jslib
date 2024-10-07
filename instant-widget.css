@@ -340,6 +340,7 @@
     .pincode-container{
         text-align: left;
         padding: 10px 20px;
+        width: 100%;
     }
 
     h2 {
