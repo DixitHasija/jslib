@@ -355,7 +355,7 @@
         align-items: center;
         background-color: #f7f7f7;
         border-radius: 10px;
-        padding: 5px;
+        padding: 5px 15px;
         
     }
     .input-container>input {
@@ -489,8 +489,8 @@
         padding: 15px 0px;
     }
     .promise-badges img{
-        width: 18px;
-        height: 18px;
+        width: 24px;
+        height: 24px;
         padding-right: 10px;
         cursor: pointer;
     }
@@ -523,7 +523,7 @@
         font-family: Arial, Helvetica, sans-serif !important;
     }
 
-    .d-none {
+    .d-none , .shine.shimmer-lines.d-none {
         display: none!important;
     }
 
