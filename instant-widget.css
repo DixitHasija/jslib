@@ -339,7 +339,7 @@
     }
     .pincode-container{
         text-align: left;
-        padding: 10px 20px;
+        padding: 10px;
         width: 100%;
     }
 
@@ -478,7 +478,7 @@
     .promise-badges-container {
         display: flex;
         width: 100%;
-        padding: 10px 20px;
+        padding: 10px;
         flex-wrap: wrap;
     }
     .promise-badges {
