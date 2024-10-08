@@ -382,7 +382,7 @@
         padding:5px 20px;
     }
 
-    input[type="text"] {
+    input[type="text"], input[type="number"] {
         padding: 12px;
         border: none;
         border-radius: 5px;
@@ -526,6 +526,14 @@
 
     .d-none , .shine.shimmer-lines.d-none {
         display: none!important;
+    }
+    input[type="number"]::-webkit-inner-spin-button, 
+    input[type="number"]::-webkit-outer-spin-button { 
+        -webkit-appearance: none;
+        margin: 0; 
+    }
+    input[type="number"] {
+        -moz-appearance: textfield;
     }
 
 /* New theme CSS ends */
