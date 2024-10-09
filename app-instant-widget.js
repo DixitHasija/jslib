@@ -100,7 +100,7 @@ var badge_list = {
     text: "Best selling product",
   },
 };
-const new_badge_list =
+const badgeList =
 {
   1: {
     icon: "delivery_guaranteed.svg",
@@ -164,10 +164,11 @@ const new_badge_list =
     text: "Best selling product",
   }
 };
-// const badge_path = "https://sr-cdn.shiprocket.in/sr-promise/images/badge_icons/";
-const badge_path = "https://jslib-dixithasijas-projects.vercel.app/";
-const theme_variant = "variant_d";
 
+// const badge_path = "https://sr-cdn.shiprocket.in/sr-promise/images/";
+const badge_path    = "https://jslib-dixithasijas-projects.vercel.app/";
+const theme_variant = "v2"; //globalCheckActiveDetails?.data?.[0]?.extra_settings?.widget_variant
+const theme_mode = "light"; //globalCheckActiveDetails?.data?.[0]?.extra_settings?.widget_theme
 
 var sellerEmail = document.currentScript.src
   .split("?")[1]
@@ -2585,7 +2586,7 @@ const preventInputTypeNumberArrowFunctionality = () => {
     });
 };
 const getBadgeObjectFromId = (_id) => { 
-  let badgeObj = new_badge_list[_id];
+  let badgeObj = badgeList[_id];
   badgeObj.icon = badge_path + theme_variant + '/' + badgeObj.icon;
   return badgeObj;
 };
