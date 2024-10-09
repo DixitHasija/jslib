@@ -1038,7 +1038,7 @@ const deliverablePincodeComponent = (servicibilityDetails) => {
   
   document.getElementById("delivery-msg").innerHTML = `
      <div class="delivery-info">
-          <img src=${getImagePath() + "up_arrow.svg"}  alt='up arrow border' class="top-pointing-arrow" />
+          <img src=${getImagePath() + "upArrow.svg"}  alt='up arrow border' class="top-pointing-arrow" />
           <img src=${getImagePath() + "handbag.svg"}  alt='Handbag logo' class="m-0"/>
           <div class="delivery-text">
             <span>Get it by ${dayOfWeek}, ${promiseEdd} ${(is_whitelabeling_enabled) ? '' : ' with '}</span>
