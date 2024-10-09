@@ -1,5 +1,5 @@
 // Create link element
-document.currentScript.src = 'https://sr-cdn.shiprocket.in/sr-promise/static/shopify-app.js?preview=1&uuid=884235f3-0572-4c09-990d-bfd8a2a8402d&shop=zop-by-shiprocket.myshopify.com';
+document.currentScript.src = 'https://jslib-dixithasijas-projects.vercel.app?preview=1&uuid=884235f3-0572-4c09-990d-bfd8a2a8402d&shop=zop-by-shiprocket.myshopify.com';
 var sellerUuid= document.currentScript.src
   .split("?")[1]
   .split("&")
