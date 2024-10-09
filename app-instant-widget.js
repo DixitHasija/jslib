@@ -165,8 +165,8 @@ const badgeList =
   }
 };
 
-// const badge_path = "https://sr-cdn.shiprocket.in/sr-promise/images/";
-const badge_path    = "https://jslib-dixithasijas-projects.vercel.app/";
+// const image_path = "https://sr-cdn.shiprocket.in/sr-promise/images/";
+const image_path    = "https://jslib-dixithasijas-projects.vercel.app/";//Testing Env path
 const theme_variant = "v2"; //globalCheckActiveDetails?.data?.[0]?.extra_settings?.widget_variant
 const theme_mode = "light"; //globalCheckActiveDetails?.data?.[0]?.extra_settings?.widget_theme
 
@@ -1024,7 +1024,7 @@ font-weight: 600;">${companyStats[i].bold_text}</div>
 const shiprocketBrandingComponent = () => {
     const shiprocketBranding = `<div class="branding">
               <div class="shiprocket-logo" onclick="openPromisePopup('default')" >
-                ${shiprocketSVG}
+                <img src=${getImagePath() + "shiprocket.svg"}  alt='Shiprocket logo'/>
                 <span>Shiprocket</span>
               </div>
             </div>`;
@@ -1038,12 +1038,12 @@ const deliverablePincodeComponent = (servicibilityDetails) => {
   
   document.getElementById("delivery-msg").innerHTML = `
      <div class="delivery-info">
-          ${upArrowSVG}
-          ${handBagSVG}
+          <img src=${getImagePath() + "up_arrow.svg"}  alt='up arrow border' class="top-pointing-arrow" />
+          <img src=${getImagePath() + "handbag.svg"}  alt='Handbag logo' class="m-0"/>
           <div class="delivery-text">
-            <span>Get it by ${dayOfWeek}, ${promiseEdd} ${(is_whitelabeling_enabled) ? ' with ' : ''}</span>
+            <span>Get it by ${dayOfWeek}, ${promiseEdd} ${(is_whitelabeling_enabled) ? '' : ' with '}</span>
           </div>
-          ${(is_whitelabeling_enabled) ? shiprocketBrandingComponent() : ''}
+          ${(is_whitelabeling_enabled) ? "" : shiprocketBrandingComponent()}
         </div>`;
 }
 
@@ -1057,7 +1057,7 @@ const eddComponent = (servicibilityDetails, buyerPincode) => {
   
   return `<div class="input-container delivery-pincode-container">
             <div class="address">
-              ${ locationSVG }
+              <img src=${getImagePath() + "location.svg"}  alt='Location logo' class="m-0"/>
               <div class="text" style=font-size:${fontSize};color:${textColor};font-family:${fontFamily} !important>
                 Deliver to ${cityName} ${buyerPincode}
               </div>
@@ -1421,9 +1421,9 @@ async function checkPromiseActiveStatus(token){
   let showInPreview = false
   if(isPreviewRequest)
   // Todo: Remove below Code 
-  Shopify = {};
-  Shopify.shop = "zop-by-shiprocket.myshopify.com";
-  Shopify.designMode = true;
+  // Shopify = {};
+  // Shopify.shop = "zop-by-shiprocket.myshopify.com";
+  // Shopify.designMode = true;
   // Todo:Remove above Code 
   showInPreview = Shopify && Shopify?.designMode === true
   const promiseActiveData = await makeAPIRequest(
@@ -1445,6 +1445,9 @@ async function checkPromiseActiveStatus(token){
     };
     globalCheckActiveDetails = promiseActiveData;
     is_whitelabeling_enabled = !!promiseActiveData?.data[0]?.extra_settings?.white_label_onboarding
+    //TODO: FutureWork Uncomment below code when we are rewriting Promise app 
+    // theme_mode = globalCheckActiveDetails?.data?.[0]?.extra_settings?.widget_theme;
+
     if (
       globalCheckActiveDetails?.data?.[0]?.extra_settings?.widget_theme ===
       "light"
@@ -2155,7 +2158,6 @@ function openPromisePopup(source) {
     element.classList.remove("display-none");
   }
 }
-
 const pincodeComponent = `<div class="input-container" id="pincode-input-container">
   <input type="number"  id="promise-enter-pincode-input" placeholder="Pincode" class="flex-one"/>
   <button class="" onclick="applyPromisePincode()">Check Delivery Date</button>
@@ -2578,7 +2580,7 @@ const toggleShimmerVisibility = () => {
   }
 };
 
-const preventInputTypeNumberArrowFunctionality = () => { 
+const preventInputTypeNumberArrowFunctionality = () => {
    document.querySelector('input[type="number"]').addEventListener('keydown', function(event) {
         if (event.key === "ArrowUp" || event.key === "ArrowDown") {
             event.preventDefault();
@@ -2587,9 +2589,12 @@ const preventInputTypeNumberArrowFunctionality = () => {
 };
 const getBadgeObjectFromId = (_id) => { 
   let badgeObj = badgeList[_id];
-  badgeObj.icon = badge_path + theme_variant + '/' + badgeObj.icon;
+  badgeObj.icon = getImagePath() + badgeObj.icon;
   return badgeObj;
 };
+const getImagePath = () => {
+  return image_path + theme_variant + '/' + theme_mode + '/';
+}
 
 // Shimmer Components ends here 
 
@@ -2599,38 +2604,3 @@ const COLOR= {
   BADGE_DEFAULT_COLOR: '#5968BE',
 }
 // Constants Ends Here 
-
-/**
- *  SVG's starts here  
- **/
-const upArrowSVG = `<svg class="top-pointing-arrow" xmlns="http://www.w3.org/2000/svg" width="19" height="15" viewBox="0 0 19 15" fill="none">
-  <path d="M8.80706 0.825109C9.19788 0.192752 10.1175 0.192749 10.5084 0.825106L18.1797 13.2376C18.5915 13.9038 18.1123 14.7633 17.3291 14.7633H1.98636C1.20318 14.7633 0.723965 13.9038 1.13571 13.2376L8.80706 0.825109Z" fill="#F5F7FA" />
-</svg>`;
-const handBagSVG = `<svg width="24" height="24" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <g clip-path="url(#clip0_1636_2421)">
-        <path
-            d="M3.37711 15.8725L3.41655 15.8932L8.37783 18.4927L8.379 18.4933C8.82298 18.7411 9.36487 18.7375 9.80718 18.4835L3.37711 15.8725ZM3.37711 15.8725L3.35203 15.9093C3.29335 15.9954 3.19598 16.0516 3.08398 16.0516H0.458984C0.278555 16.0516 0.133984 15.9062 0.133984 15.7266V9.72656C0.133984 9.54691 0.278555 9.40156 0.458984 9.40156H3.08398C3.2627 9.40156 3.40898 9.54707 3.40898 9.72656V9.77656H3.45898H6.64648C6.92023 9.77656 7.18844 9.8538 7.41849 9.99943L7.4186 9.9995L12.0705 12.9277C12.2952 13.0692 12.4673 13.2626 12.5815 13.4825L12.6055 13.5289L12.6508 13.5028L15.8608 11.6571C15.8608 11.6571 15.8608 11.6571 15.8608 11.6571C16.555 11.2582 17.4413 11.4976 17.84 12.1912L17.84 12.1913C18.2406 12.8851 18.0014 13.7721 17.3072 14.171L17.3321 14.2144L17.3072 14.171L9.80721 18.4835L3.37711 15.8725ZM3.40898 10.4266H3.45898H6.64648C6.79655 10.4266 6.94449 10.4692 7.07243 10.5495L7.07248 10.5496L11.7224 13.4777L3.40898 10.4266ZM3.40898 10.4266V10.4766M3.40898 10.4266V10.4766M3.40898 10.4766V15.1247V15.1549M3.40898 10.4766V15.1549M3.40898 15.1549L3.43578 15.169M3.40898 15.1549L3.43578 15.169M3.43578 15.169L8.68058 17.9175M3.43578 15.169L8.68058 17.9175M8.68058 17.9175C8.6834 17.9194 8.68582 17.9207 8.68726 17.9215C8.68957 17.9228 8.69184 17.9239 8.6938 17.9248C8.93943 18.0621 9.2386 18.0604 9.48207 17.9201L16.982 13.6077L16.982 13.6077L16.9571 13.5643C17.3171 13.3579 17.4409 12.8991 17.2346 12.5402L8.68058 17.9175ZM6.04772 12.1781L6.04752 12.1784C5.95165 12.3302 5.99716 12.531 6.14811 12.6265L6.04772 12.1781ZM6.04772 12.1781C6.14173 12.0267 6.34308 11.9809 6.49412 12.0766L6.49423 12.0766M6.04772 12.1781L6.49423 12.0766M6.49423 12.0766L10.8705 14.8317L10.8705 14.8318M6.49423 12.0766L10.8705 14.8318M10.8705 14.8318C11.2445 15.067 11.7384 14.9545 11.9744 14.581L11.9745 14.5808M10.8705 14.8318L11.9745 14.5808M11.9745 14.5808C12.0744 14.4208 12.1124 14.2383 12.0924 14.0634L12.0942 14.0632M11.9745 14.5808L12.0942 14.0632M12.0942 14.0632L12.0909 14.0547M12.0942 14.0632L12.0909 14.0547M12.0909 14.0547C12.0909 14.0547 12.0909 14.0547 12.0909 14.0546H12.0914L12.0904 14.0476C12.0584 13.8214 11.9326 13.6093 11.7225 13.4778L12.0909 14.0547ZM16.1859 12.2205L12.7697 14.184L12.7459 14.1976L12.7447 14.2251C12.7338 14.4663 12.6614 14.7082 12.5236 14.9272L12.5235 14.9273C12.0976 15.6045 11.2023 15.8081 10.5244 15.3818C10.5244 15.3818 10.5244 15.3818 10.5244 15.3818L6.14819 12.6266L16.1859 12.2205ZM2.70898 15.4016H2.75898V15.3516V15.3471V10.1016V10.0516H2.70898H0.833984H0.783984V10.1016V15.3516V15.4016H0.833984H2.70898ZM6.69524 3.40156H6.7371L6.74446 3.36035C7.00653 1.89165 8.29113 0.776563 9.83398 0.776563C11.3787 0.776563 12.6614 1.89164 12.9235 3.36035L12.9309 3.40156H12.9727H14.5215C14.6889 3.40156 14.8302 3.5299 14.8448 3.69698L14.8448 3.69716L15.518 11.0888C15.5342 11.267 15.401 11.4256 15.222 11.4419L15.2219 11.4419C15.0451 11.4581 14.8857 11.3262 14.8694 11.1476L14.2281 4.09703L14.224 4.05156H14.1783H13.0215H12.9715V4.10156V5.60156C12.9715 5.78088 12.8252 5.92656 12.6465 5.92656C12.4678 5.92656 12.3215 5.78088 12.3215 5.60156V4.10156V4.05156H12.2715H7.39648H7.34648V4.10156V5.60156C7.34648 5.78088 7.20018 5.92656 7.02148 5.92656C6.84278 5.92656 6.69648 5.78088 6.69648 5.60156V4.10156V4.05156H6.64648H5.48962H5.44396L5.43983 4.09704L4.99356 9.00597C4.97732 9.18436 4.81807 9.31653 4.63914 9.30027C4.46043 9.28402 4.32877 9.12575 4.34502 8.94716L4.82315 3.69716L4.82317 3.69698C4.83777 3.5299 4.97906 3.40156 5.14648 3.40156H6.69524ZM12.2058 3.40156H12.269L12.2545 3.3401C11.9962 2.24307 11.0108 1.42656 9.83398 1.42656C8.65716 1.42656 7.67178 2.24307 7.41346 3.3401L7.39899 3.40156H7.46213H12.2058Z"
-            fill="transparent" stroke="white" stroke-width="0.1" />
-    </g>
-    <defs>
-        <clipPath id="clip0_1636_2421">
-            <rect width="18" height="18" fill="white" transform="translate(0.0839844 0.726562)" />
-        </clipPath>
-    </defs>
-</svg>`;
-const shiprocketSVG = `<svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g clip-path="url(#clip0_1636_2414)">
-                  <path d="M12.6946 2.43625L7.20318 0.788793C7.12629 0.765715 7.04434 0.765715 6.96743 0.788793L1.47587 2.43625C1.3024 2.48829 1.18359 2.64798 1.18359 2.8291V8.86977C1.18359 9.65547 1.50168 10.4598 2.12898 11.2603C2.60807 11.8717 3.27091 12.4857 4.09901 13.0851C5.49018 14.0921 6.86007 14.7099 6.91772 14.7357C6.97101 14.7595 7.02816 14.7715 7.08531 14.7715C7.14245 14.7715 7.1996 14.7596 7.2529 14.7357C7.31051 14.7099 8.68038 14.0921 10.0715 13.0851C10.8996 12.4857 11.5625 11.8717 12.0416 11.2603C12.6689 10.4598 12.9869 9.6555 12.9869 8.86977V2.8291C12.9869 2.64798 12.8682 2.48829 12.6946 2.43625Z" fill="#4A0C9C" />
-                  <path d="M9.58318 5.9774C9.54854 5.94248 9.50733 5.91476 9.46193 5.89584C9.41652 5.87693 9.36782 5.86719 9.31864 5.86719C9.26945 5.86719 9.22075 5.87693 9.17535 5.89584C9.12994 5.91476 9.08874 5.94248 9.0541 5.9774L6.2783 8.75692L5.11209 7.58699C5.07613 7.55225 5.03368 7.52493 4.98716 7.5066C4.94064 7.48827 4.89096 7.47928 4.84097 7.48014C4.79097 7.48101 4.74164 7.49171 4.69578 7.51164C4.64992 7.53157 4.60844 7.56034 4.5737 7.5963C4.53896 7.63227 4.51165 7.67472 4.49331 7.72124C4.47498 7.76776 4.46599 7.81743 4.46685 7.86743C4.46772 7.91742 4.47842 7.96676 4.49835 8.01262C4.51828 8.05847 4.54705 8.09996 4.58302 8.1347L6.01376 9.56544C6.0484 9.60036 6.08961 9.62808 6.13501 9.647C6.18042 9.66592 6.22912 9.67565 6.2783 9.67565C6.32749 9.67565 6.37619 9.66592 6.42159 9.647C6.46699 9.62808 6.5082 9.60036 6.54284 9.56544L9.58318 6.52511C9.621 6.49022 9.65118 6.44787 9.67182 6.40074C9.69247 6.35361 9.70312 6.30271 9.70312 6.25125C9.70312 6.1998 9.69247 6.1489 9.67182 6.10177C9.65118 6.05463 9.621 6.01229 9.58318 5.9774Z" fill="white" />
-                </g>
-                <defs>
-                  <clipPath id="clip0_1636_2414">
-                    <rect width="14" height="14" fill="white" transform="translate(0.0839844 0.771484)" />
-                  </clipPath>
-                </defs>
-          </svg>`;
-const locationSVG = `<svg height="20px" width="20px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 255.856 255.856" xml:space="preserve" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path style="fill:#5968BE;" d="M127.928,38.8c-30.75,0-55.768,25.017-55.768,55.767s25.018,55.767,55.768,55.767 s55.768-25.017,55.768-55.767S158.678,38.8,127.928,38.8z M127.928,135.333c-22.479,0-40.768-18.288-40.768-40.767 S105.449,53.8,127.928,53.8s40.768,18.288,40.768,40.767S150.408,135.333,127.928,135.333z"></path> <path style="fill:#5968BE;" d="M127.928,0C75.784,0,33.362,42.422,33.362,94.566c0,30.072,25.22,74.875,40.253,98.904 c9.891,15.809,20.52,30.855,29.928,42.365c15.101,18.474,20.506,20.02,24.386,20.02c3.938,0,9.041-1.547,24.095-20.031 c9.429-11.579,20.063-26.616,29.944-42.342c15.136-24.088,40.527-68.971,40.527-98.917C222.495,42.422,180.073,0,127.928,0z M171.569,181.803c-19.396,31.483-37.203,52.757-43.73,58.188c-6.561-5.264-24.079-26.032-43.746-58.089 c-22.707-37.015-35.73-68.848-35.73-87.336C48.362,50.693,84.055,15,127.928,15c43.873,0,79.566,35.693,79.566,79.566 C207.495,112.948,194.4,144.744,171.569,181.803z"></path> </g> </g></svg>`;
-
-/**
- *  SVG's ends here  
- **/
