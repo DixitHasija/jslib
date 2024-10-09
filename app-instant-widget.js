@@ -19,7 +19,7 @@ var hideSovaURLs = [
   "sova-gutheal",
   "plug-the-flow-synbiotic-supplement-for-diarrhoea-ibs-relief",
   "one-swift-motion-supplement-for-constipation-relief",
-  "metabolic-fuel-synbiotic-supplement",ˀ
+  "metabolic-fuel-synbiotic-supplement",
   "fat-loss-support",
 ];
 var widgetTypeMap = {
@@ -165,8 +165,8 @@ const badgeList =
   }
 };
 
-// const image_path = "https://sr-cdn.shiprocket.in/sr-promise/images/";
-const image_path    = "https://jslib-dixithasijas-projects.vercel.app/";//Testing Env path
+const image_path = "https://sr-cdn.shiprocket.in/sr-promise/images/";
+// const image_path    = "https://jslib-dixithasijas-projects.vercel.app/";//Testing Env path
 const theme_variant = "v2"; //globalCheckActiveDetails?.data?.[0]?.extra_settings?.widget_variant
 const theme_mode = "light"; //globalCheckActiveDetails?.data?.[0]?.extra_settings?.widget_theme
 
