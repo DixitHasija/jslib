@@ -1062,7 +1062,7 @@ const eddComponent = (servicibilityDetails, buyerPincode) => {
                 Deliver to ${cityName} ${buyerPincode}
               </div>
             </div>
-            <button onclick="editPromisePincode()">Change</button>
+            <button class="flex-one"  onclick="editPromisePincode()">Change</button>
           </div>
     `;
 };
