@@ -1056,7 +1056,7 @@ const eddComponent = (servicibilityDetails, buyerPincode) => {
   const cityName = servicibilityDetails?.data[0]?.postcode_info?.city ? servicibilityDetails?.data[0]?.postcode_info?.city.charAt(0).toUpperCase() + servicibilityDetails?.data[0]?.postcode_info?.city.slice(1) + " - " : "";
   
   return `<div class="input-container delivery-pincode-container">
-            <div class="address">
+            <div class="address flex-one">
               <img src=${getImagePath() + "location.svg"}  alt='Location logo' class="m-0"/>
               <div class="text" style=font-size:${fontSize};color:${textColor};font-family:${fontFamily} !important>
                 Deliver to ${cityName} ${buyerPincode}
@@ -1461,8 +1461,9 @@ async function checkPromiseActiveStatus(token){
 
     // Overide if Shopify && Shopify?.shop === "zop-by-shiprocket.myshopify.com"
     if (Shopify && Shopify?.shop === "zop-by-shiprocket.myshopify.com") {
-      promiseABVersion = "D";
-      localStorage.setItem("_p_version_theme__", promiseABVersion);
+      // Commenting for the timing 
+      // promiseABVersion = "D";
+      // localStorage.setItem("_p_version_theme__", promiseABVersion);
     }
     localStorage.setItem("_p_active_status_", JSON.stringify(promiseData));
     return showInPreview == true
@@ -2160,7 +2161,7 @@ function openPromisePopup(source) {
 }
 const pincodeComponent = `<div class="input-container" id="pincode-input-container">
   <input type="number"  id="promise-enter-pincode-input" placeholder="Pincode" class="flex-one"/>
-  <button class="" onclick="applyPromisePincode()">Check Delivery Date</button>
+  <button class="overflow-hidden" onclick="applyPromisePincode()">Check Delivery Date</button>
   <div class="flex-basic-100 d-none" id="promise-input-error-msg"></div>
 </div>`;
 function editPromisePincode() {
