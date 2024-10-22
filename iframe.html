@@ -43,13 +43,20 @@ const CONSTANTS = {
   CHANNEL: "channel",
   TRACK_INFO: "track_info",
   UEID: "ueid",
+  UEID_IDENTIFICATION_SOURCE: "ueid_identification_source",
+  UEID_IDENTIFICATION_VERIFIED: "ueid_identification_verified",
+  UEID_IDENTIFICATION_TIME: "ueid_identification_time",
   UMID: "umid",
+  UMID_IDENTIFICATION_SOURCE: "umid_identification_source",
+  UMID_IDENTIFICATION_VERIFIED: "umid_identification_verified",
+  UMID_IDENTIFICATION_TIME: "umid_identification_time",
   USER_PROFILE: "_uc_session_v1",
   USER_MOBILE_KEY: "sc_mid",
   UWID: "uwid",
   INCOGNITO: "incognito",
   OLD_USER_PROFILE: "_uc_session"
 };
+const DOMAIN = "sr-cdn.shiprocket.in";
 const MESSAGE_EVENT_LIST = {
   GET_USER_PROFILE_FROM_IFRAME: "getUserProfileFromIframe",
   SET_USER_PROFILE_TO_IFRAME: "setUserProfileToIframe",
@@ -61,75 +68,10 @@ const MESSAGE_EVENT_LIST = {
   GET_UFID_FROM_IFRAME: "getUFIDFromIframe",
   SEND_UFID_TO_PARENT: "sendUFIDToParent"
 };
-const LOCALSTORAGE_KEY = "__uc_site";
-const objectName = LOCALSTORAGE_KEY;
-let localStorageObject = {};
-function set(key, value) {
-  localStorage.setItem(key, value);
-  localStorageObject = jsonParse(value);
-}
-function get() {
-  var _a;
-  if (localStorageObject && localStorageObject.key && ((_a = localStorageObject == null ? void 0 : localStorageObject.key) == null ? void 0 : _a.length)) {
-    localStorageObject = jsonParse(localStorage.getItem(objectName));
-  } else {
-    localStorageObject = jsonParse(localStorage.getItem(objectName));
-  }
-  return localStorageObject;
-}
-function clear() {
-  localStorage.clear();
-}
-function len() {
-  return localStorage.length;
-}
-function wget(_value) {
-  const object = get();
-  if (_value && object) {
-    return object[_value];
-  } else {
-    return object;
-  }
-}
-function wSet(_key, _value) {
-  var _a;
-  let data = wget();
-  if (data && ((_a = Object.keys(data)) == null ? void 0 : _a.length)) ;
-  else {
-    data = {};
-  }
-  data[_key] = _value;
-  set(objectName, jsonStringify(data));
-}
-function wRemove(_key) {
-  let object = wget();
-  delete object[_key];
-  set(objectName, object);
-}
-function directSet(_key, _value) {
-  set(_key, jsonStringify(_value));
-}
-function directGet(_key) {
-  return localStorage.getItem(_key);
-}
-function directRemove(_key) {
-  localStorage.removeItem(_key);
-}
-const LocalStorageService = {
-  set: wSet,
-  get: wget,
-  clear,
-  remove: wRemove,
-  len,
-  directSet,
-  directGet,
-  directRemove
-};
 function getRandomUUID() {
   var _a;
   if (self && (self == null ? void 0 : self.crypto) && ((_a = self == null ? void 0 : self.crypto) == null ? void 0 : _a.randomUUID)) ;
   else {
-    if (!self.crypto) self.crypto = {};
     self.crypto.randomUUID = function() {
       const crypto = self.crypto || self.msCrypto;
       if (!crypto || !crypto.getRandomValues) {
@@ -151,19 +93,25 @@ function getRandomUUID() {
   }
   return self.crypto.randomUUID();
 }
-function jsonStringify(json) {
-  if (!json) return null;
-  return JSON.stringify(json);
-}
-function jsonParse(string) {
-  if (!string) return null;
-  return JSON.parse(string);
-}
-function setCookie(name, value, days = 30) {
-  LocalStorageService.directSet(name, value);
+function setCookie(name, value, days = 180) {
+  let expires = "";
+  if (days) {
+    const date = /* @__PURE__ */ new Date();
+    date.setTime(date.getTime() + days * 24 * 60 * 60 * 1e3);
+    expires = "; expires=" + date.toUTCString();
+  }
+  document.cookie = name + "=" + (value || "") + expires + "; path=/; SameSite=None; Secure;domain=" + DOMAIN;
 }
 function getCookie(name) {
-  return LocalStorageService.directGet(name);
+  const cookies = document.cookie.split(";");
+  for (let cookie of cookies) {
+    const [cookieName, cookieValue] = cookie.split("=").map((c2) => c2.trim());
+    if (cookieName === name) {
+      console.log(name, cookieValue);
+      setCookie(name, cookieValue);
+      return decodeURIComponent(cookieValue);
+    }
+  }
 }
 var FingerprintJS = function(exports) {
   var __assign = function() {
