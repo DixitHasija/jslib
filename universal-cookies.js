@@ -387,6 +387,12 @@
   function removeOldUserProfile() {
     return LocalStorageService.directRemove(CONSTANTS.OLD_USER_PROFILE);
   }
+  function getThirdPartyCookieStatus() {
+    return LocalStorageService.get(CONSTANTS.THIRD_PARTY_COOKIE_BLOCKED);
+  }
+  function setThirdPartyCookieStatus(value) {
+    LocalStorageService.set(CONSTANTS.THIRD_PARTY_COOKIE_BLOCKED, value);
+  }
   const gsService = {
     getUDID,
     setUDID,
@@ -418,7 +424,9 @@
     getPrivateMode,
     setPrivateMode,
     getOldUserProfile,
-    removeOldUserProfile
+    removeOldUserProfile,
+    getThirdPartyCookieStatus,
+    setThirdPartyCookieStatus
   };
   function sendEvent(apiData) {
     if (intersectionInTwoArrays(BLOCKED_CHANNELS, gsService.getChannels()).length === 0) {
@@ -680,7 +688,7 @@
     );
   };
   let handleMessageEvent = (event) => {
-    var _a2, _b, _c, _d, _e, _f, _g, _h, _i, _j;
+    var _a2, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k;
     if (event.origin !== window.location.origin) ;
     switch ((_a2 = event == null ? void 0 : event.data) == null ? void 0 : _a2.name) {
       case MESSAGE_EVENT_LIST.SEND_USER_PROFILE_TO_PARENT: {
@@ -702,6 +710,10 @@
       }
       case MESSAGE_EVENT_LIST.SEND_UFID_TO_PARENT: {
         gsService.setUFID((_j = event == null ? void 0 : event.data) == null ? void 0 : _j.data);
+        break;
+      }
+      case MESSAGE_EVENT_LIST.SEND_THIRD_PARTY_COOKIE_STATUS_TO_PARENT: {
+        gsService.setUFID((_k = event == null ? void 0 : event.data) == null ? void 0 : _k.data);
         break;
       }
     }
