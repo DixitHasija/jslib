@@ -713,7 +713,7 @@
         break;
       }
       case MESSAGE_EVENT_LIST.SEND_THIRD_PARTY_COOKIE_STATUS_TO_PARENT: {
-        gsService.setUFID((_k = event == null ? void 0 : event.data) == null ? void 0 : _k.data);
+        gsService.setThirdPartyCookieStatus((_k = event == null ? void 0 : event.data) == null ? void 0 : _k.data);
         break;
       }
     }
