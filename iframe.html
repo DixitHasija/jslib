@@ -54,7 +54,9 @@ const CONSTANTS = {
   USER_MOBILE_KEY: "sc_mid",
   UWID: "uwid",
   INCOGNITO: "incognito",
-  OLD_USER_PROFILE: "_uc_session"
+  OLD_USER_PROFILE: "_uc_session",
+  THIRD_PARTY_COOKIE_BLOCKED: "third_party_cookie_block",
+  TEMPORARY_COOKIE: "temporary_cookie"
 };
 const DOMAIN = "sr-cdn.shiprocket.in";
 const MESSAGE_EVENT_LIST = {
@@ -63,6 +65,7 @@ const MESSAGE_EVENT_LIST = {
   SEND_USER_PROFILE_TO_PARENT: "sendUserProfileToParent",
   GET_UDID_FROM_IFRAME: "getUDIDFromIframe",
   SEND_UDID_TO_PARENT: "sendUDIDToParent",
+  SEND_UDID_TO_IFRAME: "sendUDIDToIframe",
   GET_UTID_FROM_IFRAME: "getUTIDFromIframe",
   SEND_UTID_TO_PARENT: "sendUTIDToParent",
   GET_UFID_FROM_IFRAME: "getUFIDFromIframe",
@@ -113,6 +116,9 @@ function getCookie(name) {
       return decodeURIComponent(cookieValue);
     }
   }
+}
+function removeCookie(name) {
+  document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;; path=/; SameSite=None; Secure;domain=" + DOMAIN;
 }
 var FingerprintJS = function(exports) {
   var __assign = function() {
@@ -2935,7 +2941,7 @@ i("math", function() {
   });
 });
 window.addEventListener("message", async function(event) {
-  var _a, _b;
+  var _a, _b, _c;
   if (event.origin !== window.location.origin) ;
   switch ((_a = event == null ? void 0 : event.data) == null ? void 0 : _a.name) {
     case MESSAGE_EVENT_LIST.GET_USER_PROFILE_FROM_IFRAME: {
@@ -2956,6 +2962,13 @@ window.addEventListener("message", async function(event) {
         setCookie(CONSTANTS.UDID, UDID);
       }
       postMessageMethod(MESSAGE_EVENT_LIST.SEND_UDID_TO_PARENT, UDID);
+      break;
+    }
+    case MESSAGE_EVENT_LIST.SEND_UDID_TO_IFRAME: {
+      let UDID = (_c = event == null ? void 0 : event.data) == null ? void 0 : _c.data;
+      if (UDID) {
+        setCookie(CONSTANTS.UDID, UDID);
+      }
       break;
     }
     case MESSAGE_EVENT_LIST.GET_UTID_FROM_IFRAME: {
@@ -2979,12 +2992,12 @@ window.addEventListener("message", async function(event) {
       break;
     }
     case GET_THIRD_PARTY_COOKIE_STATUS_FROM_IFRAME: {
-      setCookie("test_cookie", "1");
+      setCookie(CONSTANTS.TEMPORARY_COOKIE, "1");
       if (document.cookie.indexOf("test_cookie") !== -1) {
-        window.parent.postMessage("third-party-cookies-enabled", "*");
-        removeCookie("test_cookie");
+        postMessageMethod(MESSAGE_EVENT_LIST.SEND_THIRD_PARTY_COOKIE_STATUS_TO_PARENT, true);
+        removeCookie(CONSTANTS.TEMPORARY_COOKIE);
       } else {
-        window.parent.postMessage("third-party-cookies-blocked", "*");
+        postMessageMethod(MESSAGE_EVENT_LIST.SEND_THIRD_PARTY_COOKIE_STATUS_TO_PARENT, false);
       }
     }
   }
