@@ -58,7 +58,7 @@ const CONSTANTS = {
   THIRD_PARTY_COOKIE_BLOCKED: "third_party_cookie_block",
   TEMPORARY_COOKIE: "temporary_cookie"
 };
-const DOMAIN = "sr-cdn.shiprocket.in";
+const DOMAIN = "https://jslib-dixithasijas-projects.vercel.app";
 const MESSAGE_EVENT_LIST = {
   GET_USER_PROFILE_FROM_IFRAME: "getUserProfileFromIframe",
   SET_USER_PROFILE_TO_IFRAME: "setUserProfileToIframe",
@@ -2991,13 +2991,19 @@ window.addEventListener("message", async function(event) {
       postMessageMethod(MESSAGE_EVENT_LIST.SEND_UFID_TO_PARENT, UFID);
       break;
     }
-    case GET_THIRD_PARTY_COOKIE_STATUS_FROM_IFRAME: {
+    case MESSAGE_EVENT_LIST.GET_THIRD_PARTY_COOKIE_STATUS_FROM_IFRAME: {
       setCookie(CONSTANTS.TEMPORARY_COOKIE, "1");
       if (document.cookie.indexOf("test_cookie") !== -1) {
-        postMessageMethod(MESSAGE_EVENT_LIST.SEND_THIRD_PARTY_COOKIE_STATUS_TO_PARENT, true);
+        postMessageMethod(
+          MESSAGE_EVENT_LIST.SEND_THIRD_PARTY_COOKIE_STATUS_TO_PARENT,
+          true
+        );
         removeCookie(CONSTANTS.TEMPORARY_COOKIE);
       } else {
-        postMessageMethod(MESSAGE_EVENT_LIST.SEND_THIRD_PARTY_COOKIE_STATUS_TO_PARENT, false);
+        postMessageMethod(
+          MESSAGE_EVENT_LIST.SEND_THIRD_PARTY_COOKIE_STATUS_TO_PARENT,
+          false
+        );
       }
     }
   }
