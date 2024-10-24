@@ -462,7 +462,8 @@
       [CONSTANTS_MAPPING.UWID]: gsService.getUWID(),
       [CONSTANTS_MAPPING.UEID]: gsService.getUEID(),
       [CONSTANTS_MAPPING.UMID]: gsService.getUMID(),
-      [CONSTANTS_MAPPING.INCOGNITO]: gsService.getPrivateMode()
+      [CONSTANTS_MAPPING.INCOGNITO]: gsService.getPrivateMode(),
+      [CONSTANTS_MAPPING.THIRD_PARTY_COOKIE_BLOCKED]: gsService.getThirdPartyCookieStatus()
     };
     const UMIDIS = gsService.getUMIDIdentificationSource();
     if (UMIDIS) {
