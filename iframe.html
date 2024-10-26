@@ -58,8 +58,6 @@ const CONSTANTS = {
   THIRD_PARTY_COOKIE_BLOCKED: "third_party_cookie_blocked",
   TEMPORARY_COOKIE: "temporary_cookie"
 };
-const DOMAIN = "jslib-dixithasijas-projects.vercel.app";
-  
 const MESSAGE_EVENT_LIST = {
   GET_USER_PROFILE_FROM_IFRAME: "getUserProfileFromIframe",
   SET_USER_PROFILE_TO_IFRAME: "setUserProfileToIframe",
@@ -73,6 +71,70 @@ const MESSAGE_EVENT_LIST = {
   SEND_UFID_TO_PARENT: "sendUFIDToParent",
   GET_THIRD_PARTY_COOKIE_STATUS_FROM_IFRAME: "getThirdPartyCookieStatusFromIframe",
   SEND_THIRD_PARTY_COOKIE_STATUS_TO_PARENT: "sendThirdPartyCookieStatusToParent"
+};
+const LOCALSTORAGE_KEY = "__uc_site";
+const objectName = LOCALSTORAGE_KEY;
+let localStorageObject = {};
+function set(key, value) {
+  localStorage.setItem(key, value);
+  localStorageObject = jsonParse(value);
+}
+function get() {
+  var _a;
+  if (localStorageObject && localStorageObject.key && ((_a = localStorageObject == null ? void 0 : localStorageObject.key) == null ? void 0 : _a.length)) {
+    localStorageObject = jsonParse(localStorage.getItem(objectName));
+  } else {
+    localStorageObject = jsonParse(localStorage.getItem(objectName));
+  }
+  return localStorageObject;
+}
+function clear() {
+  localStorage.clear();
+}
+function len() {
+  return localStorage.length;
+}
+function wget(_value) {
+  const object = get();
+  if (_value && object) {
+    return object[_value];
+  } else {
+    return object;
+  }
+}
+function wSet(_key, _value) {
+  var _a;
+  let data = wget();
+  if (data && ((_a = Object.keys(data)) == null ? void 0 : _a.length)) ;
+  else {
+    data = {};
+  }
+  data[_key] = _value;
+  set(objectName, jsonStringify(data));
+}
+function wRemove(_key) {
+  let object = wget();
+  delete object[_key];
+  set(objectName, object);
+}
+function directSet(_key, _value) {
+  set(_key, jsonStringify(_value));
+}
+function directGet(_key) {
+  return localStorage.getItem(_key);
+}
+function directRemove(_key) {
+  localStorage.removeItem(_key);
+}
+const LocalStorageService = {
+  set: wSet,
+  get: wget,
+  clear,
+  remove: wRemove,
+  len,
+  directSet,
+  directGet,
+  directRemove
 };
 function getRandomUUID() {
   var _a;
@@ -99,27 +161,22 @@ function getRandomUUID() {
   }
   return self.crypto.randomUUID();
 }
+function jsonStringify(json) {
+  if (!json) return null;
+  return JSON.stringify(json);
+}
+function jsonParse(string) {
+  if (!string) return null;
+  return JSON.parse(string);
+}
 function setCookie(name, value, days = 365) {
-  let expires = "";
-  if (days) {
-    const date = /* @__PURE__ */ new Date();
-    date.setTime(date.getTime() + days * 24 * 60 * 60 * 1e3);
-    expires = "; expires=" + date.toUTCString();
-  }
-  document.cookie = name + "=" + (value || "") + expires + "; path=/; SameSite=None; Secure;domain=" + DOMAIN;
+  return LocalStorageService.directSet(name, value);
 }
 function getCookie(name) {
-  const cookies = document.cookie.split(";");
-  for (let cookie of cookies) {
-    const [cookieName, cookieValue] = cookie.split("=").map((c2) => c2.trim());
-    if (cookieName === name) {
-      setCookie(name, cookieValue);
-      return decodeURIComponent(cookieValue);
-    }
-  }
+  return LocalStorageService.directGet(name);
 }
 function removeCookie(name) {
-  document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;; path=/; SameSite=None; Secure;domain=" + DOMAIN;
+  return LocalStorageService.directRemove(name);
 }
 var FingerprintJS = function(exports) {
   var __assign = function() {
