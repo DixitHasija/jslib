@@ -105,6 +105,69 @@
     CHECKOUT: true,
     MY_SR: true
   };
+  const objectName = LOCALSTORAGE_KEY;
+  let localStorageObject = {};
+  function set(key, value) {
+    localStorage.setItem(key, value);
+    localStorageObject = jsonParse(value);
+  }
+  function get() {
+    var _a2;
+    if (localStorageObject && localStorageObject.key && ((_a2 = localStorageObject == null ? void 0 : localStorageObject.key) == null ? void 0 : _a2.length)) {
+      localStorageObject = jsonParse(localStorage.getItem(objectName));
+    } else {
+      localStorageObject = jsonParse(localStorage.getItem(objectName));
+    }
+    return localStorageObject;
+  }
+  function clear() {
+    localStorage.clear();
+  }
+  function len() {
+    return localStorage.length;
+  }
+  function wget(_value) {
+    const object = get();
+    if (_value && object) {
+      return object[_value];
+    } else {
+      return object;
+    }
+  }
+  function wSet(_key, _value) {
+    var _a2;
+    let data = wget();
+    if (data && ((_a2 = Object.keys(data)) == null ? void 0 : _a2.length)) ;
+    else {
+      data = {};
+    }
+    data[_key] = _value;
+    set(objectName, jsonStringify(data));
+  }
+  function wRemove(_key) {
+    let object = wget();
+    delete object[_key];
+    set(objectName, object);
+  }
+  function directSet(_key, _value) {
+    set(_key, jsonStringify(_value));
+  }
+  function directGet(_key) {
+    return localStorage.getItem(_key);
+  }
+  function directRemove(_key) {
+    localStorage.removeItem(_key);
+  }
+  const LocalStorageService = {
+    set: wSet,
+    get: wget,
+    clear,
+    remove: wRemove,
+    len,
+    directSet,
+    directGet,
+    directRemove
+  };
   function getRandomUUID() {
     var _a2;
     if (self && (self == null ? void 0 : self.crypto) && ((_a2 = self == null ? void 0 : self.crypto) == null ? void 0 : _a2.randomUUID)) ;
@@ -210,69 +273,6 @@
     );
     return foundKey;
   }
-  const objectName = LOCALSTORAGE_KEY;
-  let localStorageObject = {};
-  function set(key, value) {
-    localStorage.setItem(key, value);
-    localStorageObject = jsonParse(value);
-  }
-  function get() {
-    var _a2;
-    if (localStorageObject && localStorageObject.key && ((_a2 = localStorageObject == null ? void 0 : localStorageObject.key) == null ? void 0 : _a2.length)) {
-      localStorageObject = jsonParse(localStorage.getItem(objectName));
-    } else {
-      localStorageObject = jsonParse(localStorage.getItem(objectName));
-    }
-    return localStorageObject;
-  }
-  function clear() {
-    localStorage.clear();
-  }
-  function len() {
-    return localStorage.length;
-  }
-  function wget(_value) {
-    const object = get();
-    if (_value && object) {
-      return object[_value];
-    } else {
-      return object;
-    }
-  }
-  function wSet(_key, _value) {
-    var _a2;
-    let data = wget();
-    if (data && ((_a2 = Object.keys(data)) == null ? void 0 : _a2.length)) ;
-    else {
-      data = {};
-    }
-    data[_key] = _value;
-    set(objectName, jsonStringify(data));
-  }
-  function wRemove(_key) {
-    let object = wget();
-    delete object[_key];
-    set(objectName, object);
-  }
-  function directSet(_key, _value) {
-    set(_key, jsonStringify(_value));
-  }
-  function directGet(_key) {
-    return localStorage.getItem(_key);
-  }
-  function directRemove(_key) {
-    localStorage.removeItem(_key);
-  }
-  const LocalStorageService = {
-    set: wSet,
-    get: wget,
-    clear,
-    remove: wRemove,
-    len,
-    directSet,
-    directGet,
-    directRemove
-  };
   function getUDID() {
     return LocalStorageService.get(CONSTANTS.UDID);
   }
@@ -4508,9 +4508,9 @@
   async function onLoad() {
     registerChannelId();
     gsService.getUFID();
-    UWID = gsService.getUWID(CONSTANTS.UWID);
-    UDID = gsService.getUDID(CONSTANTS.UDID);
-    gsService.getUTID(CONSTANTS.UTID);
+    UWID = gsService.getUWID();
+    UDID = gsService.getUDID();
+    gsService.getUTID();
     if (!UWID) {
       UWID = getRandomUUID();
       gsService.setUWID(UWID);
