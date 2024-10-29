@@ -4268,7 +4268,9 @@
           gsService.setUTID(ThumbmarkJsObject);
         }
         if (!gsService.getUDID()) {
-          gsService.setUDID(getRandomUUID());
+          return;
+          
+          // gsService.setUDID(getRandomUUID());
         }
         expiredObjectList = validateEventListAndRemoveUnwantedEvents(expiredObjectList);
         Object.keys(expiredObjectList).forEach((event_name) => {
