@@ -4234,6 +4234,10 @@
     return isNewMD5;
   }
   async function triggerExpireEvent(_EVENT_TTL = EVENT_TTL) {
+    if (!gsService.getUDID()) {
+      return;
+      
+    }
     var _a2;
     let trackingInfoObject = gsService.getTrackInfo();
     if (trackingInfoObject && Object.keys(trackingInfoObject).length) {
