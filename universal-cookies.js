@@ -24,7 +24,9 @@
     INCOGNITO: "incognito",
     OLD_USER_PROFILE: "_uc_session",
     THIRD_PARTY_COOKIE_BLOCKED: "third_party_cookie_blocked",
-    TEMPORARY_COOKIE: "temporary_cookie"
+    TEMPORARY_COOKIE: "temporary_cookie",
+    BROWSER_NAME: "browser_name",
+    DEVICE_TYPE: "device_type"
   };
   const CONSTANTS_MAPPING = {
     UDID: "udid",
@@ -44,7 +46,8 @@
     UMID_IDENTIFICATION_TIME: "umid_identification_time",
     UWID: "uwid",
     INCOGNITO: "incognito",
-    THIRD_PARTY_COOKIE_BLOCKED: "third_party_cookie_blocked"
+    THIRD_PARTY_COOKIE_BLOCKED: "third_party_cookie_blocked",
+    DEVICE_TYPE: "device_type"
   };
   const EVENTS_NAME = {
     ON_LOAD: "page_view",
@@ -273,6 +276,20 @@
     );
     return foundKey;
   }
+  function getBrowserName() {
+    const userAgent = navigator.userAgent;
+    if (userAgent.includes("Chrome")) return "Chrome";
+    else if (userAgent.includes("Firefox")) return "Firefox";
+    else if (userAgent.includes("Safari") && !userAgent.includes("Chrome")) return "Safari";
+    else if (userAgent.includes("Edge")) return "Edge";
+    else if (userAgent.includes("Trident") || userAgent.includes("MSIE")) return "Internet Explorer";
+    else return "Unknown";
+  }
+  function getDeviceType() {
+    const userAgent = navigator.userAgent.toLowerCase();
+    if (/mobile|android|iphone|ipad|tablet/i.test(userAgent)) return "Mobile";
+    return "Laptop";
+  }
   function getUDID() {
     return LocalStorageService.get(CONSTANTS.UDID);
   }
@@ -463,7 +480,9 @@
       [CONSTANTS_MAPPING.UEID]: gsService.getUEID(),
       [CONSTANTS_MAPPING.UMID]: gsService.getUMID(),
       [CONSTANTS_MAPPING.INCOGNITO]: gsService.getPrivateMode(),
-      [CONSTANTS_MAPPING.THIRD_PARTY_COOKIE_BLOCKED]: gsService.getThirdPartyCookieStatus()
+      [CONSTANTS_MAPPING.THIRD_PARTY_COOKIE_BLOCKED]: gsService.getThirdPartyCookieStatus(),
+      [CONSTANTS_MAPPING.BROWSER_NAME]: getBrowserName(),
+      [CONSTANTS_MAPPING.BROWSER_NAME]: getDeviceType()
     };
     const UMIDIS = gsService.getUMIDIdentificationSource();
     if (UMIDIS) {
@@ -649,7 +668,7 @@
       self.iframe.height = "400";
       self.iframe.style.border = "none";
       self.iframe.style.display = "none";
-      self.iframe.src = "https://jslib-dixithasijas-projects.vercel.app/iframe.html";
+      self.iframe.src = "https://sr-cdn.shiprocket.in/sr-promise/static/iframe.html";
       self.iframe.id = I_FRAME_ID;
       document.body.appendChild(self.iframe);
       await loadIframeAsync(iframe);
@@ -4234,10 +4253,6 @@
     return isNewMD5;
   }
   async function triggerExpireEvent(_EVENT_TTL = EVENT_TTL) {
-    if (!gsService.getUDID()) {
-      return;
-      
-    }
     var _a2;
     let trackingInfoObject = gsService.getTrackInfo();
     if (trackingInfoObject && Object.keys(trackingInfoObject).length) {
@@ -4271,11 +4286,7 @@
           const ThumbmarkJsObject = await getUTIDHash();
           gsService.setUTID(ThumbmarkJsObject);
         }
-        if (!gsService.getUDID()) {
-          return;
-          
-          // gsService.setUDID(getRandomUUID());
-        }
+        if (!gsService.getUDID()) ;
         expiredObjectList = validateEventListAndRemoveUnwantedEvents(expiredObjectList);
         Object.keys(expiredObjectList).forEach((event_name) => {
           apiBodyDataMapper(event_name, expiredObjectList[event_name].payload);
@@ -4549,8 +4560,8 @@
       }
     } else {
       getCookie();
-      UDID && sendUDIDToIframe(UDID);
     }
+    UDID && sendUDIDToIframe(UDID);
     if (gsService.getOldUserProfile()) {
       gsService.removeOldUserProfile();
     }
