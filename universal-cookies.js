@@ -4227,12 +4227,6 @@
         Object.keys(payload).forEach(async (key) => {
         });
       }
-      if (!gsService.getUDID()) {
-        debugger;
-        console.info("Event hold due to unavailability of UDID");
-        // return true;
-        
-      }
       const onlyTrackingInfoUpdatingEventsList = [
         EVENTS_NAME.UPDATE_UMID,
         EVENTS_NAME.UPDATE_UEID,
