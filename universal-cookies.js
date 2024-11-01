@@ -47,6 +47,7 @@
     UWID: "uwid",
     INCOGNITO: "incognito",
     THIRD_PARTY_COOKIE_BLOCKED: "third_party_cookie_blocked",
+    BROWSER_NAME: "browser_name",
     DEVICE_TYPE: "device_type"
   };
   const EVENTS_NAME = {
@@ -482,7 +483,7 @@
       [CONSTANTS_MAPPING.INCOGNITO]: gsService.getPrivateMode(),
       [CONSTANTS_MAPPING.THIRD_PARTY_COOKIE_BLOCKED]: gsService.getThirdPartyCookieStatus(),
       [CONSTANTS_MAPPING.BROWSER_NAME]: getBrowserName(),
-      [CONSTANTS_MAPPING.BROWSER_NAME]: getDeviceType()
+      [CONSTANTS_MAPPING.DEVICE_TYPE]: getDeviceType()
     };
     const UMIDIS = gsService.getUMIDIdentificationSource();
     if (UMIDIS) {
@@ -4617,4 +4618,3 @@
   exports2.ua = ua;
   Object.defineProperty(exports2, Symbol.toStringTag, { value: "Module" });
 });
-
