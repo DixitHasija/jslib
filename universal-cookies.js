@@ -4230,7 +4230,8 @@
       if (!gsService.getUDID()) {
         debugger;
         console.info("Event hold due to unavailability of UDID");
-        return true;
+        // return true;
+        
       }
       const onlyTrackingInfoUpdatingEventsList = [
         EVENTS_NAME.UPDATE_UMID,
