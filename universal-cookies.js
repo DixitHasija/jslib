@@ -281,9 +281,11 @@
     const userAgent = navigator.userAgent;
     if (userAgent.includes("Chrome")) return "Chrome";
     else if (userAgent.includes("Firefox")) return "Firefox";
-    else if (userAgent.includes("Safari") && !userAgent.includes("Chrome")) return "Safari";
+    else if (userAgent.includes("Safari") && !userAgent.includes("Chrome"))
+      return "Safari";
     else if (userAgent.includes("Edge")) return "Edge";
-    else if (userAgent.includes("Trident") || userAgent.includes("MSIE")) return "Internet Explorer";
+    else if (userAgent.includes("Trident") || userAgent.includes("MSIE"))
+      return "Internet Explorer";
     else return "Unknown";
   }
   function getDeviceType() {
@@ -4194,6 +4196,11 @@
     const skipEventList = [];
     let isNewMD5 = false;
     if (skipEventList == null ? void 0 : skipEventList.includes(event_name)) {
+      return true;
+    }
+    if (!gsService.getUDID()) {
+      debugger;
+      console.info("Event hold due to unavailability of UDID");
       return true;
     }
     let SHA_256_KEY = await get_SHA_256(getURL());
