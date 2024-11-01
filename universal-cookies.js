@@ -4198,11 +4198,6 @@
     if (skipEventList == null ? void 0 : skipEventList.includes(event_name)) {
       return true;
     }
-    if (!gsService.getUDID()) {
-      debugger;
-      console.info("Event hold due to unavailability of UDID");
-      return true;
-    }
     let SHA_256_KEY = await get_SHA_256(getURL());
     let trackingInfoObject = gsService.getTrackInfo();
     let currentTrackingInfo = {};
@@ -4231,6 +4226,11 @@
       if (!gsService.getUMID() || !gsService.getUEID()) {
         Object.keys(payload).forEach(async (key) => {
         });
+      }
+      if (!gsService.getUDID()) {
+        debugger;
+        console.info("Event hold due to unavailability of UDID");
+        return true;
       }
       const onlyTrackingInfoUpdatingEventsList = [
         EVENTS_NAME.UPDATE_UMID,
