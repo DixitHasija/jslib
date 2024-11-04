@@ -16485,6 +16485,7 @@ window.wigzo = (function(_module) {
     }
 
     _module.WebPushManager = function (onSuccess, onError) {
+    debugger
         onSuccess = onSuccess || function() {};
         onError = onError || function() {};
 
@@ -20225,4 +20226,14 @@ window.wigzo = (function (_module) {
 
 }(window.wigzo || {}));
 
+
+
+window.wigzo = (function (_module) {
+
+
+
+alert("Hi this side Dixit kumar hasija");
+console.log(_module.setPushDelayed,'dixit')
+    return _module;
+}(window.wigzo || {}));
 
