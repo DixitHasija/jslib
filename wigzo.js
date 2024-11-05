@@ -18103,7 +18103,7 @@ window.wigzo = (function (_module) {
       }
     }
 
-    if (_module.h.indexOf("//app.wigzo") == 0 || _module.h.indexOf("//tracker.wigzopush") == 0 }|| true) {
+    if (_module.h.indexOf("//app.wigzo") == 0 || _module.h.indexOf("//tracker.wigzopush") == 0 || true) {
       /* We have loaded this JS from standard host */
       //_module["SERVICES"] = "https://services.wigzopush.com";
       _module["APP"] = "https://tracker.wigzopush.com";
