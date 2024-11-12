@@ -4546,7 +4546,7 @@
     }).then((currentToken) => {
       if (currentToken) {
         debugger;
-        pushSubscription;
+        
         async function getPushSubscription2() {
           const registration = await navigator.serviceWorker.ready;
           const pushSubscription2 = await registration.pushManager.getSubscription();
