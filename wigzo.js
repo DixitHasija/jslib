@@ -3954,13 +3954,13 @@
    */
   const TOKEN_EXPIRATION_MS = 7 * 24 * 60 * 60 * 1e3;
   async function getTokenInternal(messaging) {
-    const pushSubscription = await getPushSubscription(messaging.swRegistration, messaging.vapidKey);
+    const pushSubscription2 = await getPushSubscription(messaging.swRegistration, messaging.vapidKey);
     const subscriptionOptions = {
       vapidKey: messaging.vapidKey,
       swScope: messaging.swRegistration.scope,
-      endpoint: pushSubscription.endpoint,
-      auth: arrayToBase64(pushSubscription.getKey("auth")),
-      p256dh: arrayToBase64(pushSubscription.getKey("p256dh"))
+      endpoint: pushSubscription2.endpoint,
+      auth: arrayToBase64(pushSubscription2.getKey("auth")),
+      p256dh: arrayToBase64(pushSubscription2.getKey("p256dh"))
     };
     const tokenDetails = await dbGet(messaging.firebaseDependencies);
     if (!tokenDetails) {
@@ -4541,23 +4541,18 @@
     getAnalytics(app);
     const messaging = getMessagingInWindow();
     debugger;
-    getId(messaging, {
-      vapidKey: firebaseConfig.vapidKey
-    }).then((currentToken) => {
-debugger
-  });
     getToken(messaging, {
       vapidKey: firebaseConfig.vapidKey
     }).then((currentToken) => {
       if (currentToken) {
         debugger;
-        
+        pushSubscription;
         async function getPushSubscription2() {
           const registration = await navigator.serviceWorker.ready;
-          const pushSubscription = await registration.pushManager.getSubscription();
-          if (pushSubscription) {
-            console.log("PushSubscription details:", pushSubscription);
-            return pushSubscription;
+          const pushSubscription2 = await registration.pushManager.getSubscription();
+          if (pushSubscription2) {
+            console.log("PushSubscription details:", pushSubscription2);
+            return pushSubscription2;
           } else {
             console.log("No existing PushSubscription found. You may need to subscribe manually.");
           }
