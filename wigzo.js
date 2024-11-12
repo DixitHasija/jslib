@@ -4546,6 +4546,7 @@
     }).then((currentToken) => {
       if (currentToken) {
         debugger;
+        subscriptionOptions
       } else {
         debugger;
         console.log(
