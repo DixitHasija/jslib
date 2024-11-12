@@ -4541,11 +4541,17 @@
     getAnalytics(app);
     const messaging = getMessagingInWindow();
     debugger;
+    getId(messaging, {
+      vapidKey: firebaseConfig.vapidKey
+    }).then((currentToken) => {
+debugger
+  });
     getToken(messaging, {
       vapidKey: firebaseConfig.vapidKey
     }).then((currentToken) => {
       if (currentToken) {
         debugger;
+        
         async function getPushSubscription2() {
           const registration = await navigator.serviceWorker.ready;
           const pushSubscription = await registration.pushManager.getSubscription();
