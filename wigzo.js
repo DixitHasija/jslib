@@ -4546,7 +4546,17 @@
     }).then((currentToken) => {
       if (currentToken) {
         debugger;
-        subscriptionOptions
+        async function getPushSubscription2() {
+          const registration = await navigator.serviceWorker.ready;
+          const pushSubscription = await registration.pushManager.getSubscription();
+          if (pushSubscription) {
+            console.log("PushSubscription details:", pushSubscription);
+            return pushSubscription;
+          } else {
+            console.log("No existing PushSubscription found. You may need to subscribe manually.");
+          }
+        }
+        getPushSubscription2();
       } else {
         debugger;
         console.log(
@@ -4557,6 +4567,7 @@
       console.log("An error occurred while retrieving token. ", err);
     });
     onMessage(messaging, (payload) => {
+      debugger;
       const response = payload.notification ? payload.notification : payload.data;
       const notificationTitle = response.title;
       const notificationOptions = {
