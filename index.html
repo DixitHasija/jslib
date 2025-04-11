@@ -30,9 +30,10 @@
       id="uc_shiprocket"
     ></script> -->
     <script>
-     const localstorage_data =document.getElementById("localstorage_data");
+     const div = document.createElement('div');
+      div.id = 'localStorageViewer';
       if (localStorage.length === 0) {
-        localstorage_data.innerHTML += '<p>No items in localStorage.</p>';
+        div.innerHTML += '<p>No items in localStorage.</p>';
       } else {
         for (let i = 0; i < localStorage.length; i++) {
           const key = localStorage.key(i);
@@ -42,7 +43,7 @@
           item.className = 'item';
     
           item.innerHTML = `<span class="key">${key}:</span> ${value}`;
-          localstorage_data.appendChild(item);
+          div.appendChild(item);
         }
       }
 
@@ -340,6 +341,5 @@
       }
     </script> -->
     <!-- <button type="button" id="addPost">post</button> -->
-<div id="localstorage_data"></div>
   </body>
 </html>
