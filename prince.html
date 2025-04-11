@@ -21,7 +21,8 @@ Hello
     } else {
       const nameFromUrl = getQueryParam(nameKey);
       // if (nameFromUrl) {
-        localStorage.setItem(nameKey, window.location.href);
+        localStorage.setItem(nameKey, window.location.ancestorOrigins[0]);
+        
       // }
     }
 
