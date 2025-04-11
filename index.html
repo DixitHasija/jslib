@@ -16,10 +16,10 @@
       src="https://jslib-xsmq.vercel.app/universal-cookies.js?channel_id=2"
       id="uc_shiprocket"
     ></script> -->
-    <script
+<!--     <script
       src="https://jslib-dixithasijas-projects.vercel.app/universal-cookies.js?channel_id=8"
       id="uc_shiprocket"
-    ></script>
+    ></script> -->
 <!--     <script
       src="./dist/uc.js?channel_id=2" 
       id="uc_shiprocket"
@@ -30,24 +30,36 @@
       id="uc_shiprocket"
     ></script> -->
     <script>
-     const div = document.createElement('div');
-      div.id = 'localStorageViewer';
-      if (localStorage.length === 0) {
-        div.innerHTML += '<p>No items in localStorage.</p>';
-      } else {
-        for (let i = 0; i < localStorage.length; i++) {
-          const key = localStorage.key(i);
-          const value = localStorage.getItem(key);
-    
-          const item = document.createElement('div');
-          item.className = 'item';
-    
-          item.innerHTML = `<span class="key">${key}:</span> ${value}`;
-          div.appendChild(item);
-        }
-      }
-// 4. Add the div to the document body
-  document.body.appendChild(div);
+      const getLocalstorage = () => {
+          const div = document.createElement('div');
+          div.id = 'localStorageViewer';
+          div.style.padding = '10px';
+          div.style.border = '1px solid #ccc';
+          div.style.marginTop = '20px';
+          div.style.backgroundColor = '#f9f9f9';
+        
+          if (localStorage.length === 0) {
+            div.innerHTML += '<p>No items in localStorage.</p>';
+          } else {
+            for (let i = 0; i < localStorage.length; i++) {
+              const key = localStorage.key(i);
+              const value = localStorage.getItem(key);
+        
+              const item = document.createElement('div');
+              item.className = 'item';
+        
+              item.innerHTML = `<span class="key" style="font-weight: bold;">${key}:</span> ${value}`;
+              div.appendChild(item);
+            }
+          }
+        
+          // ✅ Append the div to the body so it's visible
+          document.body.appendChild(div);
+        };
+        
+        setTimeout(() => {
+          getLocalstorage();
+        }, 5000);
     </script>
     <script>
       // Calling universal analytics Order Tracking method.
