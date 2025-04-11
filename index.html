@@ -30,6 +30,24 @@
       id="uc_shiprocket"
     ></script> -->
     <script>
+     const localstorage_data =document.getElementById("localstorage_data");
+      if (localStorage.length === 0) {
+        localstorage_data.innerHTML += '<p>No items in localStorage.</p>';
+      } else {
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i);
+          const value = localStorage.getItem(key);
+    
+          const item = document.createElement('div');
+          item.className = 'item';
+    
+          item.innerHTML = `<span class="key">${key}:</span> ${value}`;
+          localstorage_data.appendChild(item);
+        }
+      }
+
+    </script>
+    <script>
       // Calling universal analytics Order Tracking method.
       // (function () {
       const _eventTrigger = function () {
