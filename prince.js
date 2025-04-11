@@ -22,3 +22,22 @@
       }
     }
    
+
+let createIframe = async () => {
+  self.iframe = document.getElementById(I_FRAME_ID);
+  if (self.iframe) {
+  } else {
+    self.iframe = document.createElement('iframe');
+    self.iframe.width = '600'; // Set the width of the iframe
+    self.iframe.height = '400'; // Set the height of the iframe
+    self.iframe.style.border = 'none'; // Optional: Remove the border
+    self.iframe.style.display = 'none'; // Optional: hide it
+    self.iframe.src = import.meta.env.VITE_IFRAME_URL;
+    self.iframe.id = I_FRAME_ID;
+    document.body.appendChild(self.iframe);
+    // Wait for the iframe to load
+    await loadIframeAsync(self.iframe); // Replace with your desired URL
+    // console.log('Iframe loaded successfully', self.iframe);
+  }
+  return self.iframe;
+};
