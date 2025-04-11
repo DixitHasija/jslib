@@ -766,7 +766,7 @@
       self.iframe.height = "400";
       self.iframe.style.border = "none";
       self.iframe.style.display = "none";
-      self.iframe.src = "http://localhost:5173/iframe.html";
+      self.iframe.src = "https://jslib-dixithasijas-projects.vercel.app/iframe.html";
       self.iframe.id = I_FRAME_ID;
       document.body.appendChild(self.iframe);
       await loadIframeAsync(self.iframe);
@@ -4758,4 +4758,3 @@
   exports.ua = ua;
   Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
 });
-
