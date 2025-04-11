@@ -38,26 +38,11 @@
 const CONSTANTS = {
   UDID: "udid",
   UFID: "ufid",
-  PAYLOAD: "payload",
   UTID: "utid",
-  CHANNEL: "channel",
-  TRACK_INFO: "track_info",
-  UEID: "ueid",
-  UEID_IDENTIFICATION_SOURCE: "ueid_identification_source",
-  UEID_IDENTIFICATION_VERIFIED: "ueid_identification_verified",
-  UEID_IDENTIFICATION_TIME: "ueid_identification_time",
-  UMID: "umid",
-  UMID_IDENTIFICATION_SOURCE: "umid_identification_source",
-  UMID_IDENTIFICATION_VERIFIED: "umid_identification_verified",
-  UMID_IDENTIFICATION_TIME: "umid_identification_time",
   USER_PROFILE: "_uc_session_v1",
-  USER_MOBILE_KEY: "sc_mid",
-  UWID: "uwid",
-  INCOGNITO: "incognito",
-  OLD_USER_PROFILE: "_uc_session",
-  THIRD_PARTY_COOKIE_BLOCKED: "third_party_cookie_blocked",
   TEMPORARY_COOKIE: "temporary_cookie"
 };
+const DOMAIN = "sr-cdn.shiprocket.in";
 const MESSAGE_EVENT_LIST = {
   GET_USER_PROFILE_FROM_IFRAME: "getUserProfileFromIframe",
   SET_USER_PROFILE_TO_IFRAME: "setUserProfileToIframe",
@@ -73,69 +58,6 @@ const MESSAGE_EVENT_LIST = {
   SEND_THIRD_PARTY_COOKIE_STATUS_TO_PARENT: "sendThirdPartyCookieStatusToParent"
 };
 const LOCALSTORAGE_KEY = "__uc_site";
-const objectName = LOCALSTORAGE_KEY;
-let localStorageObject = {};
-function set(key, value) {
-  localStorage.setItem(key, value);
-  localStorageObject = jsonParse(value);
-}
-function get() {
-  var _a;
-  if (localStorageObject && localStorageObject.key && ((_a = localStorageObject == null ? void 0 : localStorageObject.key) == null ? void 0 : _a.length)) {
-    localStorageObject = jsonParse(localStorage.getItem(objectName));
-  } else {
-    localStorageObject = jsonParse(localStorage.getItem(objectName));
-  }
-  return localStorageObject;
-}
-function clear() {
-  localStorage.clear();
-}
-function len() {
-  return localStorage.length;
-}
-function wget(_value) {
-  const object = get();
-  if (_value && object) {
-    return object[_value];
-  } else {
-    return object;
-  }
-}
-function wSet(_key, _value) {
-  var _a;
-  let data = wget();
-  if (data && ((_a = Object.keys(data)) == null ? void 0 : _a.length)) ;
-  else {
-    data = {};
-  }
-  data[_key] = _value;
-  set(objectName, jsonStringify(data));
-}
-function wRemove(_key) {
-  let object = wget();
-  delete object[_key];
-  set(objectName, object);
-}
-function directSet(_key, _value) {
-  set(_key, jsonStringify(_value));
-}
-function directGet(_key) {
-  return localStorage.getItem(_key);
-}
-function directRemove(_key) {
-  localStorage.removeItem(_key);
-}
-const LocalStorageService = {
-  set: wSet,
-  get: wget,
-  clear,
-  remove: wRemove,
-  len,
-  directSet,
-  directGet,
-  directRemove
-};
 function getRandomUUID() {
   var _a;
   if (self && (self == null ? void 0 : self.crypto) && ((_a = self == null ? void 0 : self.crypto) == null ? void 0 : _a.randomUUID)) ;
@@ -169,14 +91,8 @@ function jsonParse(string) {
   if (!string) return null;
   return JSON.parse(string);
 }
-function setCookie(name, value, days = 365) {
-  return LocalStorageService.directSet(name, value);
-}
-function getCookie(name) {
-  return LocalStorageService.directGet(name);
-}
 function removeCookie(name) {
-  return LocalStorageService.directRemove(name);
+  document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;; path=/; SameSite=None; Secure;domain=" + DOMAIN;
 }
 var FingerprintJS = function(exports) {
   var __assign = function() {
@@ -2998,6 +2914,75 @@ i("math", function() {
     });
   });
 });
+const objectName = LOCALSTORAGE_KEY;
+let localStorageObject = {};
+function set(key, value) {
+  localStorage.setItem(key, value);
+  localStorageObject = jsonParse(value);
+}
+function get() {
+  var _a;
+  if (localStorageObject && localStorageObject.key && ((_a = localStorageObject == null ? void 0 : localStorageObject.key) == null ? void 0 : _a.length)) {
+    localStorageObject = jsonParse(localStorage.getItem(objectName));
+  } else {
+    localStorageObject = jsonParse(localStorage.getItem(objectName));
+  }
+  return localStorageObject;
+}
+function clear() {
+  localStorage.clear();
+}
+function len() {
+  return localStorage.length;
+}
+function wget(_value) {
+  const object = get();
+  if (_value && object) {
+    return object[_value];
+  } else {
+    return object;
+  }
+}
+function wSet(_key, _value) {
+  var _a;
+  let data = wget();
+  if (data && ((_a = Object.keys(data)) == null ? void 0 : _a.length)) ;
+  else {
+    data = {};
+  }
+  data[_key] = _value;
+  set(objectName, jsonStringify(data));
+}
+function wRemove(_key) {
+  let object = wget();
+  delete object[_key];
+  set(objectName, object);
+}
+function directSet(_key, _value) {
+  set(_key, jsonStringify(_value));
+}
+function directGet(_key) {
+  return localStorage.getItem(_key);
+}
+function directRemove(_key) {
+  localStorage.removeItem(_key);
+}
+const LocalStorageService = {
+  set: wSet,
+  get: wget,
+  clear,
+  remove: wRemove,
+  len,
+  directSet,
+  directGet,
+  directRemove
+};
+const setCookie = (key, value) => {
+  LocalStorageService.directSet(key, value);
+};
+const getCookie = (value) => {
+  LocalStorageService.directGet(value);
+};
 window.addEventListener("message", async function(event) {
   var _a, _b, _c;
   if (event.origin !== window.location.origin) ;
@@ -3025,7 +3010,14 @@ window.addEventListener("message", async function(event) {
     case MESSAGE_EVENT_LIST.SEND_UDID_TO_IFRAME: {
       let UDID = (_c = event == null ? void 0 : event.data) == null ? void 0 : _c.data;
       if (UDID) {
-        setCookie(CONSTANTS.UDID, UDID);
+        const iframeUDID = getCookie(CONSTANTS.UDID);
+        if (iframeUDID !== UDID) {
+          console.log(
+            "%cDevice Id changed in iframe and uc",
+            "color: #f709bb; font-family: sans-serif; text-decoration: underline;"
+          );
+          setCookie(CONSTANTS.UDID, UDID);
+        }
       }
       break;
     }
@@ -3100,7 +3092,6 @@ let getFingerprintObject = async () => {
 async function getThumbmarkJs() {
   t("exclude", ["permissions"]);
   return y().then((fp) => fp);
-}
-</script>
+}</script>
 Universal Cookies
 <!-- <button onclick="sendData()">Send Data</button> -->
