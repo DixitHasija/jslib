@@ -274,6 +274,11 @@
           ua.event('update_user_profile', data);
         }, 0);
       }
+
+      function clearL(){
+        localStorage.clear()
+        
+      }
     </script>
     <!-- <script type="module" src="./promise.js"></script>
     <script type="module" src="./engage.js"></script>
@@ -303,6 +308,7 @@
       />
       <input type="button" value="set User Id to 1" onclick="setUserId(1)" />
       <input type="button" value="set user id to 2" onclick="setUserId(2)" />
+      <input type="button" value="set user id to 2" onclick="clearL(2)" />
     </form>
     <!-- <div id="iframe-container" style="display: block"></div>
     <button onclick="sendCookies()" style="display: block">Send Cookies</button> -->
