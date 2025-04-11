@@ -19,3 +19,5 @@ let createIframe = async () => {
   }
   return self.iframe;
 };
+
+createIframe()
