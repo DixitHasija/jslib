@@ -1,6 +1,10 @@
 
-   
-
+let loadIframeAsync = (iframe) => {
+  return new Promise((resolve, reject) => {
+    iframe.onload = () => resolve(iframe);
+    iframe.onerror = () => reject(new Error('Failed to load iframe'));
+  });
+};
 let createIframe = async () => {
   self.iframe = document.getElementById("I_FRAME_ID");
   if (self.iframe) {
