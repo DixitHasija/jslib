@@ -46,6 +46,6 @@ let createIframe = async () => {
 
     // Handle response from iframe
     window.addEventListener("message", (e) => {
-      if (e.origin !== "https://iframe.com") return;
+      // if (e.origin !== "https://iframe.com") return;
       console.log("Response from iframe:", e.data);
     });
