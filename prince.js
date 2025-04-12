@@ -24,4 +24,28 @@ let createIframe = async () => {
   return self.iframe;
 };
 
-createIframe()
+
+ const iframe = createIframe();
+
+    // Wait a bit to ensure iframe is loaded
+    setTimeout(() => {
+      // Add user to IndexedDB inside iframe
+      iframe.contentWindow.postMessage({
+        action: "addUser",
+        user: { id: 1, name: "Alice", age: 30 }
+      }, "https://iframe.com");
+
+      // Read the user after 2 seconds
+      setTimeout(() => {
+        iframe.contentWindow.postMessage({
+          action: "getUser",
+          id: 1
+        }, "https://iframe.com");
+      }, 2000);
+    }, 1000);
+
+    // Handle response from iframe
+    window.addEventListener("message", (e) => {
+      if (e.origin !== "https://iframe.com") return;
+      console.log("Response from iframe:", e.data);
+    });
