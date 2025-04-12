@@ -40,7 +40,7 @@ let createIframe = async () => {
         iframe.contentWindow.postMessage({
           action: "getUser",
           id: 1
-        }, "https://iframe.com");
+        }, "https://jslib-git-main-dixithasijas-projects.vercel.app");
       }, 2000);
     }, 1000);
 
