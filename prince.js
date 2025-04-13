@@ -25,7 +25,7 @@ let createIframe = async () => {
 };
 
 
- const iframe = createIframe();
+ const iframe = await  createIframe();
 
     // Wait a bit to ensure iframe is loaded
     setTimeout(() => {
