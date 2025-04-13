@@ -24,8 +24,8 @@ let createIframe = async () => {
   return self.iframe;
 };
 
-const onLoad = () => {
-const iframe = await  createIframe();
+const onLoad = async() => {
+  const iframe = await  createIframe();
 }
  onLoad();
 
