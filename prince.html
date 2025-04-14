@@ -53,7 +53,7 @@ Hello
       const tx = db.transaction("users", "readonly");
       const store = tx.objectStore("users");
       const req = store.get(e.data.id);
-
+        debugger
       req.onsuccess = () => {
         e.source.postMessage({ user: req.result }, e.origin);
       };
