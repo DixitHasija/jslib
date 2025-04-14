@@ -36,7 +36,7 @@ const onLoad = async() => {
       iframe.contentWindow.postMessage({
         action: "addUser",
         user: { id: 1, name: "Alice", age: 30 }
-      }, "https://iframe.com");
+      }, "*");
 
       // Read the user after 2 seconds
       setTimeout(() => {
