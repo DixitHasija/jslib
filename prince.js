@@ -38,7 +38,7 @@ const onLoad = async() => {
         user: { id: Math.random(), name: window.location.ancestorOrigins[0], age: Math.random() }
       }, "*");
        const storedValue = localStorage.getItem("shared_id");
-      if(storedValue){
+      if(!storedValue){
         localStorage.setItem("shared_id", window.location.href);
       }
         
