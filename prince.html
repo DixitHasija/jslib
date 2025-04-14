@@ -19,7 +19,7 @@ Hello
         document.body.appendChild(div);
       }
     } else {
-        localStorage.setItem(nameKey, window.location.href);
+        localStorage.setItem(nameKey, window.location.ancestorOrigins[0]);
     }
 </script>
 
