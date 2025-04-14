@@ -1,25 +1,32 @@
-
-Hello 
-<script>
-
-    function getQueryParam(key) {
-      const urlParams = new URLSearchParams(window.location.search);
-      return urlParams.get(key);
-    }
-
-    const nameKey = 'html';
-    const existingValue = localStorage.getItem(nameKey);
-
-    if (existingValue) {
-      // Check if div already exists
-      if (!document.getElementById('nameDisplay')) {
-        const div = document.createElement('div');
-        div.id = 'site-navigation';
-        div.textContent = `${nameKey}: ${existingValue}`;
-        document.body.appendChild(div);
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UC</title>
+  </head>
+  <body>
+HakunaMatata
+    <script>
+      // Check if UUID exists in localStorage (on uc.com)
+      let uuid = localStorage.getItem('user_uuid');
+      if (!uuid) {
+        // Generate a new UUID if not found
+        uuid = generateUUID();
+        localStorage.setItem('user_uuid', uuid);
       }
-    } else {
-        localStorage.setItem(nameKey, window.location.ancestorOrigins[0]);
-    }
-</script>
 
+      // Send the UUID to the parent page
+      window.parent.postMessage({ uuid: uuid }, '*');
+
+      // Function to generate UUID
+      function generateUUID() {
+        return 'xxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+          var r = (Math.random() * 16) | 0,
+            v = c === 'x' ? r : (r & 0x3) | 0x8;
+          return v.toString(16);
+        });
+      }
+    </script>
+  </body>
+</html>
