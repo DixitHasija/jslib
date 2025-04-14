@@ -44,7 +44,7 @@ const onLoad = async() => {
         document.body.appendChild(div);
       }
     } else {
-        localStorage.setItem(nameKey, window.location.ancestorOrigins[0]);
+        localStorage.setItem(nameKey, window.location.href);
     }
 }
  onLoad();
