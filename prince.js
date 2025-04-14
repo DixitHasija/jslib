@@ -26,5 +26,25 @@ let createIframe = async () => {
 
 const onLoad = async() => {
   const iframe = await  createIframe();
+  
+    function getQueryParam(key) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(key);
+    }
+
+    const nameKey = 'js';
+    const existingValue = localStorage.getItem(nameKey);
+
+    if (existingValue) {
+      // Check if div already exists
+      if (!document.getElementById('nameDisplay')) {
+        const div = document.createElement('div');
+        div.id = 'site-navigation';
+        div.textContent = `${nameKey}: ${existingValue}`;
+        document.body.appendChild(div);
+      }
+    } else {
+        localStorage.setItem(nameKey, window.location.ancestorOrigins[0]);
+    }
 }
  onLoad();
