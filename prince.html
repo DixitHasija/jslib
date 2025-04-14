@@ -1,32 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>UC</title>
-  </head>
-  <body>
-HakunaMatata
+<html>
+  <body>BOOOOOOOOOOOOOOOO
     <script>
-      // Check if UUID exists in localStorage (on uc.com)
-      let uuid = localStorage.getItem('user_uuid');
-      if (!uuid) {
-        // Generate a new UUID if not found
-        uuid = generateUUID();
-        localStorage.setItem('user_uuid', uuid);
+      async function init() {
+        if (document.hasStorageAccess) {
+          const hasAccess = await document.hasStorageAccess();
+          if (!hasAccess) {
+            try {
+              await document.requestStorageAccess(); // 🔔 Needs user gesture in most browsers
+              readOrSetUUID();
+            } catch (e) {
+              console.warn('Storage access denied:', e);
+            }
+          } else {
+            readOrSetUUID();
+          }
+        } else {
+          // Fallback for browsers that don't support the Storage Access API
+          readOrSetUUID();
+        }
       }
 
-      // Send the UUID to the parent page
-      window.parent.postMessage({ uuid: uuid }, '*');
+      function readOrSetUUID() {
+        let uuid = localStorage.getItem('user_uuid');
+        if (!uuid) {
+          uuid = generateUUID();
+          localStorage.setItem('user_uuid', uuid);
+        }
+        window.parent.postMessage({ uuid }, '*');
+      }
 
-      // Function to generate UUID
       function generateUUID() {
-        return 'xxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
           var r = (Math.random() * 16) | 0,
             v = c === 'x' ? r : (r & 0x3) | 0x8;
           return v.toString(16);
         });
       }
+
+      init();
     </script>
   </body>
 </html>
