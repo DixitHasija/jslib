@@ -35,7 +35,7 @@ const onLoad = async() => {
       debugger
       iframe.contentWindow.postMessage({
         action: "addUser",
-        user: { id: Math.random(), name: window.location.ancestorOrigins[0], age: Math.random(); }
+        user: { id: Math.random(), name: window.location.ancestorOrigins[0], age: Math.random() }
       }, "*");
 
       // Read the user after 2 seconds
