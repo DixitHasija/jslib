@@ -32,6 +32,7 @@ const onLoad = async() => {
     // Wait a bit to ensure iframe is loaded
     setTimeout(() => {
       // Add user to IndexedDB inside iframe
+      debugger
       iframe.contentWindow.postMessage({
         action: "addUser",
         user: { id: 1, name: "Alice", age: 30 }
