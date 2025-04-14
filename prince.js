@@ -27,24 +27,16 @@ let createIframe = async () => {
 const onLoad = async() => {
   const iframe = await  createIframe();
   
-    function getQueryParam(key) {
-      const urlParams = new URLSearchParams(window.location.search);
-      return urlParams.get(key);
-    }
-
-    const nameKey = 'js';
-    const existingValue = localStorage.getItem(nameKey);
-
-    if (existingValue) {
-      // Check if div already exists
-      if (!document.getElementById('nameDisplay')) {
-        const div = document.createElement('div');
-        div.id = 'site-navigation';
-        div.textContent = `${nameKey}: ${existingValue}`;
-        document.body.appendChild(div);
+    // Listen for messages from iframe
+  window.addEventListener('message', function(event) {
+    if (event.origin !== 'https://uc.com') {
+      var uuid = event.data.uuid;
+      if (uuid) {
+        // Store the UUID in localStorage of the parent website
+        localStorage.setItem('shared_uuid', uuid);
+        console.log('UUID received from uc.com: ' + uuid);
       }
-    } else {
-        localStorage.setItem(nameKey, window.location.href);
     }
+  });
 }
  onLoad();
