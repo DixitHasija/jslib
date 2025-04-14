@@ -28,34 +28,3 @@ const onLoad = async() => {
   const iframe = await  createIframe();
 }
  onLoad();
-
-    // Wait a bit to ensure iframe is loaded
-    setTimeout(() => {
-      // Add user to IndexedDB inside iframe
-      debugger
-      iframe.contentWindow.postMessage({
-        action: "addUser",
-        user: { id: Math.random(), name: window.location.ancestorOrigins[0], age: Math.random() }
-      }, "*");
-       const storedValue = localStorage.getItem("shared_id");
-      if(!storedValue){
-        localStorage.setItem("shared_id", window.location.href);
-      }
-        
-      // Read the user after 2 seconds
-      setTimeout(() => {
-        iframe.contentWindow.postMessage({
-          action: "getUser",
-          id: 1
-        }, "*");
-        const storedValue = localStorage.getItem("shared_id");
-        console.log(storedValue);
-          // event.source.postMessage({ type: "RETURN_ID", value: storedValue }, event.origin);
-      }, 2000);
-    }, 1000);
-
-    // Handle response from iframe
-    window.addEventListener("message", (e) => {
-      // if (e.origin !== "https://iframe.com") return;
-      console.log("Response from iframe:", e.data);
-    });
