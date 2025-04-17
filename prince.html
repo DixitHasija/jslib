@@ -26,6 +26,7 @@ function getOrCreateAIUUID() {
     const existingUUID = getCookie('ai-uuid');
     
     if (existingUUID) {
+      alert('Existing AI UUID generated: ' + existingUUID);
         return existingUUID;
     }
     
