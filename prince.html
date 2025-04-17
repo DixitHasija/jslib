@@ -34,6 +34,8 @@ function getOrCreateAIUUID() {
     
     return newUUID;
 }
+
+const getCookie = name => Object.fromEntries(document.cookie.split('; ').map(c => c.split('=')))[name];
 const myAIUUID = getOrCreateAIUUID();
 console.log('Current AI UUID:', myAIUUID);
       // Check if the element already exists
