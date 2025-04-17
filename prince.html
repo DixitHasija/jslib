@@ -17,7 +17,8 @@ function setCookie(name, value, days = 365) {
     (value || '') +
     expires +
     '; path=/; SameSite=None; Secure;domain=' +
-    DOMAIN;
+    window.location.hostname;
+  
 }
 
       
