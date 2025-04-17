@@ -36,6 +36,18 @@ function getOrCreateAIUUID() {
 }
 const myAIUUID = getOrCreateAIUUID();
 console.log('Current AI UUID:', myAIUUID);
+      // Check if the element already exists
+let cookieDiv = document.getElementById('cookieDisplay');
+
+if (!cookieDiv) {
+  // Create the div if it doesn't exist
+  cookieDiv = document.createElement('div');
+  cookieDiv.id = 'cookieDisplay';
+  document.body.appendChild(cookieDiv);
+}
+
+// Set the text content to document.cookie
+cookieDiv.textContent = document.cookie;
       
     </script>
   </body>
