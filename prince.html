@@ -148,7 +148,58 @@ function detectBrowserInfo() {
   return `${name} (version ${version})${inApp}`;
 }
       alert(detectBrowserInfo())
-      
+function getDeviceOSType() {
+  const userAgent = navigator.userAgent.toLowerCase();
+  const platform = navigator.platform.toLowerCase();
+
+  // iOS/iPadOS Detection
+  if (
+    /iphone|ipad|ipod/.test(userAgent) ||
+    (navigator.maxTouchPoints > 0 &&
+      /Macintosh/.test(userAgent) &&
+      !window.MSStream)
+  ) {
+    return 'iOS';
+  }
+
+  // Android Detection
+  if (
+    /android/.test(userAgent) ||
+    (navigator.maxTouchPoints > 0 && /Linux/.test(platform))
+  ) {
+    return 'Android';
+  }
+
+  // Windows Detection
+  if (
+    /win/.test(platform) ||
+    /windows/.test(userAgent) ||
+    navigator.plugins.length === 0
+  ) {
+    return 'Windows';
+  }
+
+  // macOS Detection
+  if (
+    /mac/.test(platform) ||
+    /macintosh/.test(userAgent) ||
+    (navigator.plugins.length > 0 && /Macintosh/.test(userAgent))
+  ) {
+    return 'macOS';
+  }
+
+  // Linux Detection
+  if (
+    /linux/.test(platform) ||
+    /linux/.test(userAgent) ||
+    (navigator.plugins.length > 0 && /Linux/.test(platform))
+  ) {
+    return 'Linux';
+  }
+
+  return 'Unknown';
+}
+      alert(getDeviceOSType());
     </script>
   </body>
 </html>
