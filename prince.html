@@ -106,6 +106,48 @@ if (!cookieDiv) {
 
 // Set the text content to document.cookie
 cookieDiv.textContent = document.cookie;
+function detectBrowserInfo() {
+  if (typeof navigator === 'undefined') {
+    return 'unknown browser (unknown version)';
+  }
+
+  const ua = navigator.userAgent;
+  const aliasMap = { Edg: 'Edge', OPR: 'Opera' };
+
+  const patterns = [
+    /(?<name>Edge|Edg)\/(?<version>\d+(?:\.\d+)?)/,
+    /(?<name>(?:Chrome|Chromium|OPR|Opera|Vivaldi|Brave))\/(?<version>\d+(?:\.\d+)?)/,
+    /(?<name>(?:Firefox|Waterfox|Iceweasel|IceCat))\/(?<version>\d+(?:\.\d+)?)/,
+    /(?<name>Safari)\/(?<version>\d+(?:\.\d+)?)/,
+    /(?<name>MSIE|Trident|IEMobile).+?(?<version>\d+(?:\.\d+)?)/,
+    /(?<name>[A-Za-z]+)\/(?<version>\d+(?:\.\d+)?)/,
+    /(?<name>SamsungBrowser)\/(?<version>\d+(?:\.\d+)?)/,
+  ];
+
+  let name = 'unknown';
+  let version = 'unknown';
+
+  for (const pattern of patterns) {
+    const match = ua.match(pattern);
+    if (match?.groups) {
+      name = aliasMap[match.groups.name] || match.groups.name;
+      version = match.groups.version;
+      break;
+    }
+  }
+
+  let inApp = '';
+  if (/FBAN|FBAV/i.test(ua)) {
+    inApp = ' (Facebook In-App Browser)';
+  } else if (/Instagram/i.test(ua)) {
+    inApp = ' (Instagram In-App Browser)';
+  } else if (/Messenger|FB_IAB/i.test(ua)) {
+    inApp = ' (Messenger In-App Browser)';
+  }
+
+  return `${name} (version ${version})${inApp}`;
+}
+      alert(detectBrowserInfo())
       
     </script>
   </body>
