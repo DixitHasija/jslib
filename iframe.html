@@ -55,22 +55,23 @@ const MESSAGE_EVENT_LIST = {
   GET_UFID_FROM_IFRAME: "getUFIDFromIframe",
   SEND_UFID_TO_PARENT: "sendUFIDToParent",
   GET_THIRD_PARTY_COOKIE_STATUS_FROM_IFRAME: "getThirdPartyCookieStatusFromIframe",
-  SEND_THIRD_PARTY_COOKIE_STATUS_TO_PARENT: "sendThirdPartyCookieStatusToParent"
+  SEND_THIRD_PARTY_COOKIE_STATUS_TO_PARENT: "sendThirdPartyCookieStatusToParent",
+  GET_TEMPORARY_UFID_FROM_IFRAME: "getTemporaryUFIDFromIframe",
+  SEND_TEMPORARY_UFID_To_PARENT: "sendTemporaryUFIDToParent"
 };
-const LOCALSTORAGE_KEY = "__uc_site";
 function getRandomUUID() {
   var _a;
   if (self && (self == null ? void 0 : self.crypto) && ((_a = self == null ? void 0 : self.crypto) == null ? void 0 : _a.randomUUID)) ;
   else {
     self.crypto.randomUUID = function() {
-      const crypto = self.crypto || self.msCrypto;
-      if (!crypto || !crypto.getRandomValues) {
+      const crypto2 = self.crypto || self.msCrypto;
+      if (!crypto2 || !crypto2.getRandomValues) {
         throw new Error(
           "crypto.getRandomValues() not supported by this browser"
         );
       }
       const bytes = new Uint8Array(16);
-      crypto.getRandomValues(bytes);
+      crypto2.getRandomValues(bytes);
       bytes[6] = bytes[6] & 15 | 64;
       bytes[8] = bytes[8] & 63 | 128;
       const byteToHex = [];
@@ -83,13 +84,24 @@ function getRandomUUID() {
   }
   return self.crypto.randomUUID();
 }
-function jsonStringify(json) {
-  if (!json) return null;
-  return JSON.stringify(json);
+function setCookie(name, value, days = 365) {
+  let expires = "";
+  if (days) {
+    const date = /* @__PURE__ */ new Date();
+    date.setTime(date.getTime() + days * 24 * 60 * 60 * 1e3);
+    expires = "; expires=" + date.toUTCString();
+  }
+  document.cookie = name + "=" + (value || "") + expires + "; path=/; SameSite=None; Secure;domain=" + DOMAIN;
 }
-function jsonParse(string) {
-  if (!string) return null;
-  return JSON.parse(string);
+function getCookie(name) {
+  const cookies = document.cookie.split(";");
+  for (let cookie of cookies) {
+    const [cookieName, cookieValue] = cookie.split("=").map((c2) => c2.trim());
+    if (cookieName === name) {
+      setCookie(name, cookieValue);
+      return decodeURIComponent(cookieValue);
+    }
+  }
 }
 function removeCookie(name) {
   document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;; path=/; SameSite=None; Secure;domain=" + DOMAIN;
@@ -806,7 +818,7 @@ var FingerprintJS = function(exports) {
       isItGecko && /android/i.test(navigator.appVersion)
     ]) >= 2;
   }
-  function getAudioFingerprint() {
+  function getAudioFingerprint2() {
     var w2 = window;
     var AudioContext = w2.OfflineAudioContext || w2.webkitOfflineAudioContext;
     if (!AudioContext) {
@@ -1197,7 +1209,7 @@ var FingerprintJS = function(exports) {
     }
     return plugins;
   }
-  function getCanvasFingerprint() {
+  function getCanvasFingerprint2() {
     var winding = false;
     var geometry;
     var text;
@@ -2239,7 +2251,7 @@ var FingerprintJS = function(exports) {
     fonts: getFonts,
     domBlockers: getDomBlockers,
     fontPreferences: getFontPreferences,
-    audio: getAudioFingerprint,
+    audio: getAudioFingerprint2,
     screenFrame: getRoundedScreenFrame,
     osCpu: getOsCpu,
     languages: getLanguages,
@@ -2255,7 +2267,7 @@ var FingerprintJS = function(exports) {
     cpuClass: getCpuClass,
     platform: getPlatform,
     plugins: getPlugins,
-    canvas: getCanvasFingerprint,
+    canvas: getCanvasFingerprint2,
     touchSupport: getTouchSupport,
     vendor: getVendor,
     vendorFlavors: getVendorFlavors,
@@ -2914,74 +2926,119 @@ i("math", function() {
     });
   });
 });
-const objectName = LOCALSTORAGE_KEY;
-let localStorageObject = {};
-function set(key, value) {
-  localStorage.setItem(key, value);
-  localStorageObject = jsonParse(value);
-}
-function get() {
-  var _a;
-  if (localStorageObject && localStorageObject.key && ((_a = localStorageObject == null ? void 0 : localStorageObject.key) == null ? void 0 : _a.length)) {
-    localStorageObject = jsonParse(localStorage.getItem(objectName));
-  } else {
-    localStorageObject = jsonParse(localStorage.getItem(objectName));
-  }
-  return localStorageObject;
-}
-function clear() {
-  localStorage.clear();
-}
-function len() {
-  return localStorage.length;
-}
-function wget(_value) {
-  const object = get();
-  if (_value && object) {
-    return object[_value];
-  } else {
-    return object;
-  }
-}
-function wSet(_key, _value) {
-  var _a;
-  let data = wget();
-  if (data && ((_a = Object.keys(data)) == null ? void 0 : _a.length)) ;
-  else {
-    data = {};
-  }
-  data[_key] = _value;
-  set(objectName, jsonStringify(data));
-}
-function wRemove(_key) {
-  let object = wget();
-  delete object[_key];
-  set(objectName, object);
-}
-function directSet(_key, _value) {
-  set(_key, jsonStringify(_value));
-}
-function directGet(_key) {
-  return localStorage.getItem(_key);
-}
-function directRemove(_key) {
-  localStorage.removeItem(_key);
-}
-const LocalStorageService = {
-  set: wSet,
-  get: wget,
-  clear,
-  remove: wRemove,
-  len,
-  directSet,
-  directGet,
-  directRemove
+const sha256 = async (data) => {
+  const buffer = new TextEncoder().encode(data);
+  const hashBuffer = await crypto.subtle.digest("SHA-256", buffer);
+  return [...new Uint8Array(hashBuffer)].map((b) => b.toString(16).padStart(2, "0")).join("");
 };
-const setCookie = (key, value) => {
-  LocalStorageService.directSet(key, value);
+const getCanvasFingerprint = () => {
+  try {
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+    ctx.textBaseline = "top";
+    ctx.font = "16px Arial";
+    ctx.fillText("UC_Fingerprint", 2, 2);
+    return canvas.toDataURL();
+  } catch (e2) {
+    return "";
+  }
 };
-const getCookie = (value) => {
-  LocalStorageService.directGet(value);
+const getWebGLFingerprint = () => {
+  try {
+    const canvas = document.createElement("canvas");
+    const gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+    if (!gl) return "";
+    const debugInfo = gl.getExtension("WEBGL_debug_renderer_info");
+    const renderer = debugInfo ? gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) : "";
+    const vendor = debugInfo ? gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL) : "";
+    return renderer + "|" + vendor;
+  } catch (e2) {
+    return "";
+  }
+};
+const getAudioFingerprint = async () => {
+  try {
+    const ctx = new (window.OfflineAudioContext || window.webkitOfflineAudioContext)(1, 44100, 44100);
+    const oscillator = ctx.createOscillator();
+    const compressor = ctx.createDynamicsCompressor();
+    oscillator.type = "triangle";
+    oscillator.frequency.setValueAtTime(1e4, ctx.currentTime);
+    oscillator.connect(compressor);
+    compressor.connect(ctx.destination);
+    oscillator.start(0);
+    ctx.startRendering();
+    return await new Promise((resolve) => {
+      ctx.oncomplete = (event) => {
+        const hash = sha256(event.renderedBuffer.getChannelData(0).toString());
+        resolve(hash);
+      };
+    });
+  } catch (e2) {
+    return "";
+  }
+};
+const gatherEntropy = async () => {
+  return {
+    userAgent: navigator.userAgent,
+    languages: navigator.languages,
+    platform: navigator.platform,
+    hardwareConcurrency: navigator.hardwareConcurrency,
+    deviceMemory: navigator.deviceMemory || "unknown",
+    screen: `${screen.width}x${screen.height}x${screen.colorDepth}`,
+    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    plugins: [...navigator.plugins].map((p) => p.name).join(","),
+    touchSupport: "ontouchstart" in window,
+    canvas: getCanvasFingerprint(),
+    webgl: getWebGLFingerprint(),
+    audio: await getAudioFingerprint()
+  };
+};
+const hashEntropy = async (entropy) => {
+  const str = JSON.stringify(entropy);
+  return await sha256(str);
+};
+const getStoredUUID = () => {
+  return new Promise((resolve) => {
+    const req = indexedDB.open("uc_fp_db", 1);
+    req.onsuccess = () => {
+      const db = req.result;
+      const tx = db.transaction("uuidStore", "readonly");
+      const store = tx.objectStore("uuidStore");
+      const getReq = store.get("uuid");
+      getReq.onsuccess = () => resolve(getReq.result || null);
+      getReq.onerror = () => resolve(null);
+    };
+    req.onupgradeneeded = () => {
+      const db = req.result;
+      db.createObjectStore("uuidStore");
+    };
+    req.onerror = () => resolve(null);
+  });
+};
+const storeUUID = (uuid) => {
+  const req = indexedDB.open("uc_fp_db", 1);
+  req.onsuccess = () => {
+    const db = req.result;
+    const tx = db.transaction("uuidStore", "readwrite");
+    const store = tx.objectStore("uuidStore");
+    store.put(uuid, "uuid");
+  };
+  req.onupgradeneeded = () => {
+    const db = req.result;
+    db.createObjectStore("uuidStore");
+  };
+};
+const get_new_fingerprint = async () => {
+  let uuid = await getStoredUUID();
+  if (!uuid) {
+    const entropy = await gatherEntropy();
+    uuid = await hashEntropy(entropy);
+    storeUUID(uuid);
+  }
+  return uuid;
+};
+const get_v2_finerprint = async () => {
+  return await get_new_fingerprint();
 };
 window.addEventListener("message", async function(event) {
   var _a, _b, _c;
@@ -3055,6 +3112,17 @@ window.addEventListener("message", async function(event) {
           true
         );
       }
+      break;
+    }
+    case MESSAGE_EVENT_LIST.GET_TEMPORARY_UFID_FROM_IFRAME: {
+      const fingerPrint_v2 = await get_v2_finerprint();
+      if (fingerPrint_v2) {
+        postMessageMethod(
+          MESSAGE_EVENT_LIST.SEND_TEMPORARY_UFID_To_PARENT,
+          fingerPrint_v2
+        );
+      }
+      break;
     }
   }
 });
@@ -3069,6 +3137,12 @@ let getUserProfile = () => {
   }
 };
 let setData = (data) => {
+  let userProfile = getCookie(CONSTANTS.USER_PROFILE);
+  debugger;
+  if (userProfile) {
+    userProfile = JSON.parse(userProfile);
+    data = { ...userProfile, ...data };
+  }
   setCookie(CONSTANTS.USER_PROFILE, JSON.stringify(data));
 };
 let postMessageMethod = (name, data) => {
