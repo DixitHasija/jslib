@@ -1,4 +1,5 @@
-<script type="module" crossorigin>(function polyfill() {
+<script type="module" crossorigin>var _a, _b, _c;
+(function polyfill() {
   const relList = document.createElement("link").relList;
   if (relList && relList.supports && relList.supports("modulepreload")) {
     return;
@@ -59,9 +60,10 @@ const MESSAGE_EVENT_LIST = {
   GET_TEMPORARY_UFID_FROM_IFRAME: "getTemporaryUFIDFromIframe",
   SEND_TEMPORARY_UFID_To_PARENT: "sendTemporaryUFIDToParent"
 };
+!((_c = (_b = (_a = window.ShopifyAnalytics) == null ? void 0 : _a.meta) == null ? void 0 : _b.page) == null ? void 0 : _c.customerId);
 function getRandomUUID() {
-  var _a;
-  if (self && (self == null ? void 0 : self.crypto) && ((_a = self == null ? void 0 : self.crypto) == null ? void 0 : _a.randomUUID)) ;
+  var _a2;
+  if (self && (self == null ? void 0 : self.crypto) && ((_a2 = self == null ? void 0 : self.crypto) == null ? void 0 : _a2.randomUUID)) ;
   else {
     self.crypto.randomUUID = function() {
       const crypto2 = self.crypto || self.msCrypto;
@@ -283,13 +285,13 @@ var FingerprintJS = function(exports) {
     }
     return __awaiter(this, void 0, void 0, function() {
       var results, lastLoopReleaseTime, i2, now;
-      return __generator(this, function(_a) {
-        switch (_a.label) {
+      return __generator(this, function(_a2) {
+        switch (_a2.label) {
           case 0:
             results = Array(items.length);
             lastLoopReleaseTime = Date.now();
             i2 = 0;
-            _a.label = 1;
+            _a2.label = 1;
           case 1:
             if (!(i2 < items.length)) return [3, 4];
             results[i2] = callback(items[i2], i2);
@@ -299,8 +301,8 @@ var FingerprintJS = function(exports) {
             lastLoopReleaseTime = now;
             return [4, wait(0)];
           case 2:
-            _a.sent();
-            _a.label = 3;
+            _a2.sent();
+            _a2.label = 3;
           case 3:
             ++i2;
             return [3, 1];
@@ -485,12 +487,12 @@ var FingerprintJS = function(exports) {
     return ("00000000" + (h1[0] >>> 0).toString(16)).slice(-8) + ("00000000" + (h1[1] >>> 0).toString(16)).slice(-8) + ("00000000" + (h2[0] >>> 0).toString(16)).slice(-8) + ("00000000" + (h2[1] >>> 0).toString(16)).slice(-8);
   }
   function errorToObject(error) {
-    var _a;
+    var _a2;
     return __assign(
       {
         name: error.name,
         message: error.message,
-        stack: (_a = error.stack) === null || _a === void 0 ? void 0 : _a.split("\n")
+        stack: (_a2 = error.stack) === null || _a2 === void 0 ? void 0 : _a2.split("\n")
       },
       error
     );
@@ -532,7 +534,7 @@ var FingerprintJS = function(exports) {
     }
   }
   function parseSimpleCssSelector(selector) {
-    var _a, _b;
+    var _a2, _b2;
     var errorMessage = "Unexpected syntax '".concat(selector, "'");
     var tagMatch = /^\s*([a-z-]*)(.*)$/i.exec(selector);
     var tag = tagMatch[1] || void 0;
@@ -560,7 +562,7 @@ var FingerprintJS = function(exports) {
           if (attributeMatch) {
             addAttribute(
               attributeMatch[1],
-              (_b = (_a = attributeMatch[4]) !== null && _a !== void 0 ? _a : attributeMatch[5]) !== null && _b !== void 0 ? _b : ""
+              (_b2 = (_a2 = attributeMatch[4]) !== null && _a2 !== void 0 ? _a2 : attributeMatch[5]) !== null && _b2 !== void 0 ? _b2 : ""
             );
           } else {
             throw new Error(errorMessage);
@@ -644,12 +646,12 @@ var FingerprintJS = function(exports) {
     return function getComponents() {
       return __awaiter(this, void 0, void 0, function() {
         var sourceGetters, componentPromises, componentArray, components, index2;
-        return __generator(this, function(_a) {
-          switch (_a.label) {
+        return __generator(this, function(_a2) {
+          switch (_a2.label) {
             case 0:
               return [4, sourceGettersPromise];
             case 1:
-              sourceGetters = _a.sent();
+              sourceGetters = _a2.sent();
               return [
                 4,
                 mapWithBreaks(sourceGetters, function(sourceGetter) {
@@ -659,14 +661,14 @@ var FingerprintJS = function(exports) {
                 })
               ];
             case 2:
-              componentPromises = _a.sent();
+              componentPromises = _a2.sent();
               return [
                 4,
                 Promise.all(componentPromises)
                 // Keeping the component keys order the same as the source keys order
               ];
             case 3:
-              componentArray = _a.sent();
+              componentArray = _a2.sent();
               components = {};
               for (index2 = 0; index2 < includedSources.length; ++index2) {
                 components[includedSources[index2]] = componentArray[index2];
@@ -754,11 +756,11 @@ var FingerprintJS = function(exports) {
     ]) >= 3;
   }
   function isGecko() {
-    var _a, _b;
+    var _a2, _b2;
     var w2 = window;
     return countTruthy([
       "buildID" in navigator,
-      "MozAppearance" in ((_b = (_a = document.documentElement) === null || _a === void 0 ? void 0 : _a.style) !== null && _b !== void 0 ? _b : {}),
+      "MozAppearance" in ((_b2 = (_a2 = document.documentElement) === null || _a2 === void 0 ? void 0 : _a2.style) !== null && _b2 !== void 0 ? _b2 : {}),
       "onmozfullscreenchange" in w2,
       "mozInnerScreenX" in w2,
       "CSSMozDocumentRule" in w2,
@@ -842,7 +844,7 @@ var FingerprintJS = function(exports) {
     oscillator.connect(compressor);
     compressor.connect(context.destination);
     oscillator.start(0);
-    var _a = startRenderingAudio(context), renderPromise = _a[0], finishRendering = _a[1];
+    var _a2 = startRenderingAudio(context), renderPromise = _a2[0], finishRendering = _a2[1];
     var fingerprintPromise = renderPromise.then(
       function(buffer) {
         return getHash(buffer.getChannelData(0).subarray(hashFromIndex));
@@ -952,7 +954,7 @@ var FingerprintJS = function(exports) {
     return error;
   }
   function withIframe(action, initialHtml, domPollInterval) {
-    var _a, _b, _c;
+    var _a2, _b2, _c2;
     if (domPollInterval === void 0) {
       domPollInterval = 50;
     }
@@ -1001,11 +1003,11 @@ var FingerprintJS = function(exports) {
                 }
                 d2.body.appendChild(iframe);
                 var checkReadyState = function() {
-                  var _a2, _b2;
+                  var _a3, _b3;
                   if (isComplete) {
                     return;
                   }
-                  if (((_b2 = (_a2 = iframe.contentWindow) === null || _a2 === void 0 ? void 0 : _a2.document) === null || _b2 === void 0 ? void 0 : _b2.readyState) === "complete") {
+                  if (((_b3 = (_a3 = iframe.contentWindow) === null || _a3 === void 0 ? void 0 : _a3.document) === null || _b3 === void 0 ? void 0 : _b3.readyState) === "complete") {
                     resolve();
                   } else {
                     setTimeout(checkReadyState, 10);
@@ -1018,7 +1020,7 @@ var FingerprintJS = function(exports) {
             _d.sent();
             _d.label = 6;
           case 6:
-            if (!!((_b = (_a = iframe.contentWindow) === null || _a === void 0 ? void 0 : _a.document) === null || _b === void 0 ? void 0 : _b.body))
+            if (!!((_b2 = (_a2 = iframe.contentWindow) === null || _a2 === void 0 ? void 0 : _a2.document) === null || _b2 === void 0 ? void 0 : _b2.body))
               return [3, 8];
             return [4, wait(domPollInterval)];
           case 7:
@@ -1029,7 +1031,7 @@ var FingerprintJS = function(exports) {
           case 9:
             return [2, _d.sent()];
           case 10:
-            (_c = iframe.parentNode) === null || _c === void 0 ? void 0 : _c.removeChild(iframe);
+            (_c2 = iframe.parentNode) === null || _c2 === void 0 ? void 0 : _c2.removeChild(iframe);
             return [
               7
               /*endfinally*/
@@ -1044,12 +1046,12 @@ var FingerprintJS = function(exports) {
     });
   }
   function selectorToElement(selector) {
-    var _a = parseSimpleCssSelector(selector), tag = _a[0], attributes = _a[1];
+    var _a2 = parseSimpleCssSelector(selector), tag = _a2[0], attributes = _a2[1];
     var element = document.createElement(
       tag !== null && tag !== void 0 ? tag : "div"
     );
-    for (var _i = 0, _b = Object.keys(attributes); _i < _b.length; _i++) {
-      var name_1 = _b[_i];
+    for (var _i = 0, _b2 = Object.keys(attributes); _i < _b2.length; _i++) {
+      var name_1 = _b2[_i];
       var value = attributes[name_1].join(" ");
       if (name_1 === "style") {
         addStyleString(element.style, value);
@@ -1060,8 +1062,8 @@ var FingerprintJS = function(exports) {
     return element;
   }
   function addStyleString(style, source) {
-    for (var _i = 0, _a = source.split(";"); _i < _a.length; _i++) {
-      var property = _a[_i];
+    for (var _i = 0, _a2 = source.split(";"); _i < _a2.length; _i++) {
+      var property = _a2[_i];
       var match = /^\s*([\w-]+)\s*:\s*(.+?)(\s*!([\w-]+))?\s*$/.exec(property);
       if (match) {
         var name_2 = match[1], value = match[2], priority = match[4];
@@ -1128,8 +1130,8 @@ var FingerprintJS = function(exports) {
     "ZWAdobeF"
   ];
   function getFonts() {
-    return withIframe(function(_2, _a) {
-      var document2 = _a.document;
+    return withIframe(function(_2, _a2) {
+      var document2 = _a2.document;
       var holder = document2.body;
       holder.style.fontSize = textSize;
       var spansContainer = document2.createElement("div");
@@ -1213,7 +1215,7 @@ var FingerprintJS = function(exports) {
     var winding = false;
     var geometry;
     var text;
-    var _a = makeCanvasContext(), canvas = _a[0], context = _a[1];
+    var _a2 = makeCanvasContext(), canvas = _a2[0], context = _a2[1];
     if (!isSupported(canvas, context)) {
       geometry = text = "";
     } else {
@@ -1265,12 +1267,12 @@ var FingerprintJS = function(exports) {
     canvas.width = 122;
     canvas.height = 110;
     context.globalCompositeOperation = "multiply";
-    for (var _i = 0, _a = [
+    for (var _i = 0, _a2 = [
       ["#f2f", 40, 40],
       ["#2ff", 80, 40],
       ["#ff2", 60, 80]
-    ]; _i < _a.length; _i++) {
-      var _b = _a[_i], color = _b[0], x2 = _b[1], y2 = _b[2];
+    ]; _i < _a2.length; _i++) {
+      var _b2 = _a2[_i], color = _b2[0], x2 = _b2[1], y2 = _b2[2];
       context.fillStyle = color;
       context.beginPath();
       context.arc(x2, y2, 40, 0, Math.PI * 2, true);
@@ -1297,7 +1299,7 @@ var FingerprintJS = function(exports) {
     try {
       document.createEvent("TouchEvent");
       touchEvent = true;
-    } catch (_a) {
+    } catch (_a2) {
       touchEvent = false;
     }
     var touchStart = "ontouchstart" in window;
@@ -1372,8 +1374,8 @@ var FingerprintJS = function(exports) {
     return function() {
       return __awaiter(_this, void 0, void 0, function() {
         var frameSize;
-        return __generator(this, function(_a) {
-          switch (_a.label) {
+        return __generator(this, function(_a2) {
+          switch (_a2.label) {
             case 0:
               frameSize = getCurrentScreenFrame();
               if (!isFrameSizeNull(frameSize)) return [3, 2];
@@ -1386,9 +1388,9 @@ var FingerprintJS = function(exports) {
               if (!getFullscreenElement()) return [3, 2];
               return [4, exitFullscreen()];
             case 1:
-              _a.sent();
+              _a2.sent();
               frameSize = getCurrentScreenFrame();
-              _a.label = 2;
+              _a2.label = 2;
             case 2:
               if (!isFrameSizeNull(frameSize)) {
                 screenFrameBackup = frameSize;
@@ -1405,12 +1407,12 @@ var FingerprintJS = function(exports) {
     return function() {
       return __awaiter(_this, void 0, void 0, function() {
         var frameSize, processSize;
-        return __generator(this, function(_a) {
-          switch (_a.label) {
+        return __generator(this, function(_a2) {
+          switch (_a2.label) {
             case 0:
               return [4, screenFrameGetter()];
             case 1:
-              frameSize = _a.sent();
+              frameSize = _a2.sent();
               processSize = function(sideSize) {
                 return sideSize === null ? null : round(sideSize, roundingPrecision);
               };
@@ -1455,8 +1457,8 @@ var FingerprintJS = function(exports) {
     return replaceNaN(toInt(navigator.hardwareConcurrency), void 0);
   }
   function getTimezone() {
-    var _a;
-    var DateTimeFormat = (_a = window.Intl) === null || _a === void 0 ? void 0 : _a.DateTimeFormat;
+    var _a2;
+    var DateTimeFormat = (_a2 = window.Intl) === null || _a2 === void 0 ? void 0 : _a2.DateTimeFormat;
     if (DateTimeFormat) {
       var timezone = new DateTimeFormat().resolvedOptions().timeZone;
       if (timezone) {
@@ -1518,7 +1520,7 @@ var FingerprintJS = function(exports) {
   }
   function getVendorFlavors() {
     var flavors = [];
-    for (var _i = 0, _a = [
+    for (var _i = 0, _a2 = [
       // Blink and some browsers on iOS
       "chrome",
       // Safari on macOS
@@ -1547,8 +1549,8 @@ var FingerprintJS = function(exports) {
       "puffinDevice"
       // UC on iOS and Opera on Android have no specific global variables
       // Edge for Android isn't checked
-    ]; _i < _a.length; _i++) {
-      var key = _a[_i];
+    ]; _i < _a2.length; _i++) {
+      var key = _a2[_i];
       var value = window[key];
       if (value && typeof value === "object") {
         flavors.push(key);
@@ -1875,11 +1877,11 @@ var FingerprintJS = function(exports) {
       ]
     };
   }
-  function getDomBlockers(_a) {
-    var _b = _a === void 0 ? {} : _a, debug = _b.debug;
+  function getDomBlockers(_a2) {
+    var _b2 = _a2 === void 0 ? {} : _a2, debug = _b2.debug;
     return __awaiter(this, void 0, void 0, function() {
       var filters, filterNames, allSelectors, blockedSelectors, activeBlockers;
-      var _c;
+      var _c2;
       return __generator(this, function(_d) {
         switch (_d.label) {
           case 0:
@@ -1888,8 +1890,8 @@ var FingerprintJS = function(exports) {
             }
             filters = getFilters();
             filterNames = Object.keys(filters);
-            allSelectors = (_c = []).concat.apply(
-              _c,
+            allSelectors = (_c2 = []).concat.apply(
+              _c2,
               filterNames.map(function(filterName) {
                 return filters[filterName];
               })
@@ -1919,11 +1921,11 @@ var FingerprintJS = function(exports) {
     return isWebKit() || isAndroid();
   }
   function getBlockedSelectors(selectors) {
-    var _a;
+    var _a2;
     return __awaiter(this, void 0, void 0, function() {
       var d2, root, elements, blockedSelectors, i2, element, holder, i2;
-      return __generator(this, function(_b) {
-        switch (_b.label) {
+      return __generator(this, function(_b2) {
+        switch (_b2.label) {
           case 0:
             d2 = document;
             root = d2.createElement("div");
@@ -1941,12 +1943,12 @@ var FingerprintJS = function(exports) {
               root.appendChild(holder);
               elements[i2] = element;
             }
-            _b.label = 1;
+            _b2.label = 1;
           case 1:
             if (!!d2.body) return [3, 3];
             return [4, wait(50)];
           case 2:
-            _b.sent();
+            _b2.sent();
             return [3, 1];
           case 3:
             d2.body.appendChild(root);
@@ -1957,7 +1959,7 @@ var FingerprintJS = function(exports) {
                 }
               }
             } finally {
-              (_a = root.parentNode) === null || _a === void 0 ? void 0 : _a.removeChild(root);
+              (_a2 = root.parentNode) === null || _a2 === void 0 ? void 0 : _a2.removeChild(root);
             }
             return [2, blockedSelectors];
         }
@@ -1969,19 +1971,19 @@ var FingerprintJS = function(exports) {
   }
   function printDebug(filters, blockedSelectors) {
     var message = "DOM blockers debug:\n```";
-    for (var _i = 0, _a = Object.keys(filters); _i < _a.length; _i++) {
-      var filterName = _a[_i];
+    for (var _i = 0, _a2 = Object.keys(filters); _i < _a2.length; _i++) {
+      var filterName = _a2[_i];
       message += "\n".concat(filterName, ":");
-      for (var _b = 0, _c = filters[filterName]; _b < _c.length; _b++) {
-        var selector = _c[_b];
+      for (var _b2 = 0, _c2 = filters[filterName]; _b2 < _c2.length; _b2++) {
+        var selector = _c2[_b2];
         message += "\n  ".concat(blockedSelectors[selector] ? "🚫" : "➡️", " ").concat(selector);
       }
     }
     console.log("".concat(message, "\n```"));
   }
   function getColorGamut() {
-    for (var _i = 0, _a = ["rec2020", "p3", "srgb"]; _i < _a.length; _i++) {
-      var gamut = _a[_i];
+    for (var _i = 0, _a2 = ["rec2020", "p3", "srgb"]; _i < _a2.length; _i++) {
+      var gamut = _a2[_i];
       if (matchMedia("(color-gamut: ".concat(gamut, ")")).matches) {
         return gamut;
       }
@@ -2167,9 +2169,9 @@ var FingerprintJS = function(exports) {
     return withNaturalFonts(function(document2, container) {
       var elements = {};
       var sizes = {};
-      for (var _i = 0, _a = Object.keys(presets); _i < _a.length; _i++) {
-        var key = _a[_i];
-        var _b = presets[key], _c = _b[0], style = _c === void 0 ? {} : _c, _d = _b[1], text = _d === void 0 ? defaultText : _d;
+      for (var _i = 0, _a2 = Object.keys(presets); _i < _a2.length; _i++) {
+        var key = _a2[_i];
+        var _b2 = presets[key], _c2 = _b2[0], style = _c2 === void 0 ? {} : _c2, _d = _b2[1], text = _d === void 0 ? defaultText : _d;
         var element = document2.createElement("span");
         element.textContent = text;
         element.style.whiteSpace = "nowrap";
@@ -2218,9 +2220,9 @@ var FingerprintJS = function(exports) {
     }, '<!doctype html><html><head><meta name="viewport" content="width=device-width, initial-scale=1">');
   }
   function getVideoCard() {
-    var _a;
+    var _a2;
     var canvas = document.createElement("canvas");
-    var gl = (_a = canvas.getContext("webgl")) !== null && _a !== void 0 ? _a : canvas.getContext("experimental-webgl");
+    var gl = (_a2 = canvas.getContext("webgl")) !== null && _a2 !== void 0 ? _a2 : canvas.getContext("experimental-webgl");
     if (gl && "getExtension" in gl) {
       var debugInfo = gl.getExtension("WEBGL_debug_renderer_info");
       if (debugInfo) {
@@ -2317,8 +2319,8 @@ var FingerprintJS = function(exports) {
   }
   function componentsToCanonicalString(components) {
     var result = "";
-    for (var _i = 0, _a = Object.keys(components).sort(); _i < _a.length; _i++) {
-      var componentKey = _a[_i];
+    for (var _i = 0, _a2 = Object.keys(components).sort(); _i < _a2.length; _i++) {
+      var componentKey = _a2[_i];
       var component = components[componentKey];
       var value = component.error ? "error" : JSON.stringify(component.value);
       result += "".concat(result ? "|" : "").concat(componentKey.replace(/([:|\\])/g, "\\$1"), ":").concat(value);
@@ -2370,13 +2372,13 @@ var FingerprintJS = function(exports) {
       get: function(options) {
         return __awaiter(this, void 0, void 0, function() {
           var startTime, components, result;
-          return __generator(this, function(_a) {
-            switch (_a.label) {
+          return __generator(this, function(_a2) {
+            switch (_a2.label) {
               case 0:
                 startTime = Date.now();
                 return [4, getComponents()];
               case 1:
-                components = _a.sent();
+                components = _a2.sent();
                 result = makeLazyGetResult(components);
                 if (debug || (options === null || options === void 0 ? void 0 : options.debug)) {
                   console.log(
@@ -2409,8 +2411,8 @@ var FingerprintJS = function(exports) {
       console.error(error);
     }
   }
-  function load(_a) {
-    var _b = _a === void 0 ? {} : _a, delayFallback = _b.delayFallback, debug = _b.debug, _c = _b.monitoring, monitoring = _c === void 0 ? true : _c;
+  function load(_a2) {
+    var _b2 = _a2 === void 0 ? {} : _a2, delayFallback = _b2.delayFallback, debug = _b2.debug, _c2 = _b2.monitoring, monitoring = _c2 === void 0 ? true : _c2;
     return __awaiter(this, void 0, void 0, function() {
       var getComponents;
       return __generator(this, function(_d) {
@@ -3041,9 +3043,9 @@ const get_v2_finerprint = async () => {
   return await get_new_fingerprint();
 };
 window.addEventListener("message", async function(event) {
-  var _a, _b, _c;
+  var _a2, _b2, _c2;
   if (event.origin !== window.location.origin) ;
-  switch ((_a = event == null ? void 0 : event.data) == null ? void 0 : _a.name) {
+  switch ((_a2 = event == null ? void 0 : event.data) == null ? void 0 : _a2.name) {
     case MESSAGE_EVENT_LIST.GET_USER_PROFILE_FROM_IFRAME: {
       getUserProfile();
       break;
@@ -3052,7 +3054,7 @@ window.addEventListener("message", async function(event) {
       break;
     }
     case MESSAGE_EVENT_LIST.SET_USER_PROFILE_TO_IFRAME: {
-      setData((_b = event == null ? void 0 : event.data) == null ? void 0 : _b.data);
+      setData((_b2 = event == null ? void 0 : event.data) == null ? void 0 : _b2.data);
       break;
     }
     case MESSAGE_EVENT_LIST.GET_UDID_FROM_IFRAME: {
@@ -3065,7 +3067,7 @@ window.addEventListener("message", async function(event) {
       break;
     }
     case MESSAGE_EVENT_LIST.SEND_UDID_TO_IFRAME: {
-      let UDID = (_c = event == null ? void 0 : event.data) == null ? void 0 : _c.data;
+      let UDID = (_c2 = event == null ? void 0 : event.data) == null ? void 0 : _c2.data;
       if (UDID) {
         const iframeUDID = getCookie(CONSTANTS.UDID);
         if (iframeUDID !== UDID) {
@@ -3138,7 +3140,6 @@ let getUserProfile = () => {
 };
 let setData = (data) => {
   let userProfile = getCookie(CONSTANTS.USER_PROFILE);
-  debugger;
   if (userProfile) {
     userProfile = JSON.parse(userProfile);
     data = { ...userProfile, ...data };
@@ -3146,8 +3147,8 @@ let setData = (data) => {
   setCookie(CONSTANTS.USER_PROFILE, JSON.stringify(data));
 };
 let postMessageMethod = (name, data) => {
-  var _a;
-  (_a = self == null ? void 0 : self.parent) == null ? void 0 : _a.postMessage(
+  var _a2;
+  (_a2 = self == null ? void 0 : self.parent) == null ? void 0 : _a2.postMessage(
     {
       name,
       data
